@@ -5,9 +5,11 @@ import random
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 import pytest
+from logot import Logot
+from logot.logged import debug, warning
 from pydantic import ValidationError
 
 from guidellm.data.deserializers import DatasetDeserializerFactory
@@ -154,6 +156,7 @@ class TestWEKATraceFormat:
                 "tool_response_tokens_stdev",
                 "tool_response_tokens_min",
                 "tool_response_tokens_max",
+                "max_context_len",
             ),
             kwargs,
         )
@@ -522,9 +525,13 @@ class TestWEKATraceFormat:
         assert all_distinct(sibling_blocks)
 
     @pytest.mark.smoke
-    def test_multi_conversation_resets_relative_timestamp(
+    def test_multi_conversation_keeps_zero_when_traces_start_together(
         self, tmp_path: Path, deserializer
     ):
+        """Conversations that already start at t=0 stay at t=0 on the shared timeline.
+
+        ## WRITTEN BY AI ##
+        """
         n_rows = 2
         n_virtual_rows = 3
         trace = write_trace(
@@ -550,6 +557,182 @@ class TestWEKATraceFormat:
         assert timestamps1[0] == 0.0
         assert timestamps1[1] != 0.0
         assert timestamps2[0] == 0.0
+
+    @pytest.mark.smoke
+    def test_multi_conversation_keeps_later_start_on_shared_timeline(
+        self, tmp_path: Path, deserializer
+    ):
+        """A later conversation keeps its recorded offset from the dataset origin.
+
+        ## WRITTEN BY AI ##
+        """
+        trace = write_trace(
+            tmp_path,
+            json.dumps(
+                {
+                    "id": "stall",
+                    "requests": [
+                        {"t": 0.0, "in": 10, "out": 5, "hash_ids": []},
+                        {"t": 70.0, "in": 10, "out": 5, "hash_ids": []},
+                    ],
+                }
+            )
+            + "\n"
+            + json.dumps(
+                {
+                    "id": "quick",
+                    "requests": [
+                        {"t": 71.0, "in": 10, "out": 5, "hash_ids": []},
+                        {"t": 71.5, "in": 10, "out": 5, "hash_ids": []},
+                    ],
+                }
+            )
+            + "\n",
+        )
+        ds = self.deserialize(deserializer, trace)
+        ds_iter = iter(ds)
+        conv1 = load_graph_turns(next(ds_iter))
+        conv2 = load_graph_turns(next(ds_iter))
+        timestamps1 = [turn.columns["relative_timestamp_column"][0] for turn in conv1]
+        timestamps2 = [turn.columns["relative_timestamp_column"][0] for turn in conv2]
+        assert timestamps1 == pytest.approx([0.0, 70.0])
+        assert timestamps2 == pytest.approx([71.0, 71.5])
+
+    @pytest.mark.smoke
+    def test_earlier_conversation_warns_and_resets_origin(
+        self, tmp_path: Path, deserializer, logot: Logot
+    ):
+        """An earlier later-row timestamp warns; already-emitted graphs stay put.
+
+        ## WRITTEN BY AI ##
+        """
+        trace = write_trace(
+            tmp_path,
+            json.dumps(
+                {
+                    "id": "late_first",
+                    "requests": [
+                        {"t": 100.0, "in": 10, "out": 5, "hash_ids": []},
+                        {"t": 110.0, "in": 10, "out": 5, "hash_ids": []},
+                    ],
+                }
+            )
+            + "\n"
+            + json.dumps(
+                {
+                    "id": "early_second",
+                    "requests": [
+                        {"t": 50.0, "in": 10, "out": 5, "hash_ids": []},
+                        {"t": 60.0, "in": 10, "out": 5, "hash_ids": []},
+                    ],
+                }
+            )
+            + "\n",
+        )
+        ds = self.deserialize(deserializer, trace)
+        ds_iter = iter(ds)
+        conv1 = load_graph_turns(next(ds_iter))
+        conv2 = load_graph_turns(next(ds_iter))
+        timestamps1 = [turn.columns["relative_timestamp_column"][0] for turn in conv1]
+        timestamps2 = [turn.columns["relative_timestamp_column"][0] for turn in conv2]
+        assert timestamps1 == pytest.approx([0.0, 10.0])
+        assert timestamps2 == pytest.approx([0.0, 10.0])
+        logot.assert_logged(
+            warning(
+                "WEKA conversation 'early_second' starts earlier than previously "
+                "seen timestamps; the dataset is not ordered "
+                "chronologically, so relative timestamps of "
+                "conversations will be misaligned"
+            )
+        )
+
+    @pytest.mark.sanity
+    def test_max_context_len_discards_conversation_when_first_turn_exceeds(
+        self, tmp_path: Path, deserializer, logot: Logot
+    ):
+        """
+        Skip a conversation whose first turn already exceeds the token budget.
+
+        ## WRITTEN BY AI ##
+        """
+        trace = write_trace(
+            tmp_path,
+            '{"id": "conv0", "requests": ['
+            '{"t": 0, "in": 30, "out": 30, "hash_ids": []}, '
+            '{"t": 1, "in": 1, "out": 1, "hash_ids": []}]}\n',
+        )
+        ds = self.deserialize(deserializer, trace, max_context_len=50)
+        assert list(ds) == []
+        logot.assert_logged(
+            debug(
+                "WEKA conversation 'conv0' truncated: discarding 2 "
+                "turn(s) starting at node 'main_0' (turn tokens=60, running=0)"
+            )
+        )
+
+    @pytest.mark.sanity
+    def test_max_context_len_truncates_at_overflow_using_trace_origin(
+        self, tmp_path: Path, deserializer, logot: Logot
+    ):
+        """
+        Drop the overflowing turn and later turns. Relative timestamps stay on
+        the dataset origin, which is taken from every request time.
+
+        ## WRITTEN BY AI ##
+        """
+        # Emit order is 100, then 40, then 0. The last turn exceeds the budget
+        # and is dropped, but it still sets the dataset origin to 0.
+        trace = write_trace(
+            tmp_path,
+            '{"id": "conv0", "requests": ['
+            '{"t": 100.0, "in": 10, "out": 10, "hash_ids": []}, '
+            '{"t": 40.0, "in": 10, "out": 5, "hash_ids": []}, '
+            '{"t": 0.0, "in": 100, "out": 100, "hash_ids": []}]}\n',
+        )
+        ds = self.deserialize(deserializer, trace, max_context_len=40)
+        turns = load_graph_turns(next(iter(ds)))
+        assert [turn.node_id for turn in turns] == ["main_0", "main_1"]
+        assert [turn.columns["relative_timestamp_column"][0] for turn in turns] == [
+            100.0,
+            40.0,
+        ]
+        logot.assert_logged(
+            debug(
+                "WEKA conversation 'conv0' truncated: discarding 1 "
+                "turn(s) starting at node 'main_2' (turn tokens=200, running=35)"
+            )
+        )
+
+    @pytest.mark.regression
+    def test_max_context_len_unset_keeps_every_turn(
+        self, tmp_path: Path, deserializer, logot: Logot
+    ):
+        """
+        Leave conversations unchanged when no context-length cap is configured.
+
+        ## WRITTEN BY AI ##
+        """
+        trace = write_trace(
+            tmp_path,
+            '{"id": "conv0", "requests": ['
+            '{"t": 100.0, "in": 10, "out": 10, "hash_ids": []}, '
+            '{"t": 40.0, "in": 10, "out": 5, "hash_ids": []}, '
+            '{"t": 0.0, "in": 100, "out": 100, "hash_ids": [1]}]}\n',
+        )
+        ds = self.deserialize(deserializer, trace)
+        turns = load_graph_turns(next(iter(ds)))
+        assert [turn.node_id for turn in turns] == ["main_0", "main_1", "main_2"]
+        assert [turn.columns["relative_timestamp_column"][0] for turn in turns] == [
+            100.0,
+            40.0,
+            0.0,
+        ]
+        logot.assert_not_logged(
+            debug(
+                "WEKA conversation '%s' truncated: discarding %d "
+                "turn(s) starting at node '%s' (turn tokens=%d, running=%d)"
+            )
+        )
 
     @pytest.mark.sanity
     @pytest.mark.parametrize("hash_id_scope", [None, "global"])
@@ -676,6 +859,102 @@ class TestWEKATraceFormat:
         assert prompts[1] != prompts[0]
         assert prompts[3] != prompts[0]
         assert prompts[1] != prompts[3]
+
+    @pytest.mark.sanity
+    def test_copies_global_hash_id_scope_reuses_within_pass(
+        self, tmp_path: Path, deserializer, default_block_size
+    ):
+        """Global hash IDs reuse token blocks within a copies pass and differ across.
+
+        ## WRITTEN BY AI ##
+        """
+        n_rows = 2
+        n_virtual_rows = 2
+        n_in = default_block_size * 2
+        trace = write_trace(
+            tmp_path,
+            generate_weka_trace(
+                n_rows,
+                n_virtual_rows,
+                [TraceColumnGenerator("id", lambda i: f'"conv{i}"')],
+                [
+                    TraceColumnGenerator("t", lambda i: i),
+                    TraceColumnGenerator("in", lambda _: n_in),
+                    TraceColumnGenerator("out", lambda _: 5),
+                    TraceColumnGenerator("hash_ids", lambda i: [1, i + 2]),
+                ],
+            ),
+        )
+        source = trace_file_source(trace)
+        baseline = deserializer(
+            config=WEKATraceFormatArgs(source=source),
+            processor_factory=compatible_processor,
+            random_seed=42,
+        )
+        baseline_prompts = [
+            [turn.columns["text_column"][0] for turn in load_graph_turns(row)]
+            for row in baseline
+        ]
+        copied = deserializer(
+            config=WEKATraceFormatArgs(source=source, copies=2),
+            processor_factory=compatible_processor,
+            random_seed=42,
+        )
+        copied_prompts = [
+            [turn.columns["text_column"][0] for turn in load_graph_turns(row)]
+            for row in copied
+        ]
+        assert len(copied_prompts) == n_rows * 2
+        pass0 = copied_prompts[:n_rows]
+        pass1 = copied_prompts[n_rows:]
+        assert pass0 == baseline_prompts
+        assert pass0[0] == pass0[1]
+        assert pass1[0] == pass1[1]
+        assert pass0[0] != pass1[0]
+
+    @pytest.mark.sanity
+    def test_copies_local_hash_id_scope_isolates_per_conversation(
+        self, tmp_path: Path, deserializer, default_block_size
+    ):
+        """Local scope stays isolated per conversation on every copies pass.
+
+        ## WRITTEN BY AI ##
+        """
+        n_rows = 2
+        n_virtual_rows = 2
+        n_in = default_block_size * 2
+        trace = write_trace(
+            tmp_path,
+            generate_weka_trace(
+                n_rows,
+                n_virtual_rows,
+                [
+                    TraceColumnGenerator("id", lambda i: f'"conv{i}"'),
+                    TraceColumnGenerator("hash_id_scope", lambda _: '"local"'),
+                ],
+                [
+                    TraceColumnGenerator("t", lambda i: i),
+                    TraceColumnGenerator("in", lambda _: n_in),
+                    TraceColumnGenerator("out", lambda _: 5),
+                    TraceColumnGenerator("hash_ids", lambda i: [1, i + 2]),
+                ],
+            ),
+        )
+        copied = deserializer(
+            config=WEKATraceFormatArgs(source=trace_file_source(trace), copies=2),
+            processor_factory=compatible_processor,
+            random_seed=42,
+        )
+        copied_prompts = [
+            [turn.columns["text_column"][0] for turn in load_graph_turns(row)]
+            for row in copied
+        ]
+        pass0 = copied_prompts[:n_rows]
+        pass1 = copied_prompts[n_rows:]
+        assert pass0[0][0] != pass0[1][0]
+        assert pass0[0][0][: n_in // 2] == pass0[0][1][: n_in // 2]
+        assert pass1[0][0] != pass1[1][0]
+        assert pass0[0] != pass1[0]
 
     @pytest.mark.sanity
     def test_zero_prompt_tokens_empty_hash_ids(self, tmp_path: Path, deserializer):
@@ -902,9 +1181,8 @@ class TestWEKATraceFormat:
         ]
 
     @pytest.mark.sanity
-    @patch("guidellm.data.deserializers.trace_weka.logger")
     def test_subagent_without_preceding_parent_is_independent_root(
-        self, mock_logger, tmp_path: Path, deserializer
+        self, tmp_path: Path, deserializer, logot: Logot
     ):
         """A leading subagent is replayed as a root and the next parent joins it.
 
@@ -937,11 +1215,12 @@ class TestWEKATraceFormat:
             for parent in turns["main_0"].parents
         }
         assert main_parents == {"sa_0_0": "last"}
-        messages = [
-            call.args[0].format(*call.args[1:]) if call.args else ""
-            for call in mock_logger.warning.call_args_list
-        ]
-        assert any("no preceding parent turn" in message for message in messages)
+        logot.assert_logged(
+            warning(
+                "WEKA subagent 'explore' in conversation 'conv0' has no "
+                "preceding parent turn; replaying as an independent root"
+            )
+        )
 
     @pytest.mark.sanity
     def test_inner_timestamps_relative_to_spawn(self, tmp_path: Path, deserializer):
@@ -1042,9 +1321,8 @@ class TestWEKATraceFormat:
         assert len(turns) == 3
 
     @pytest.mark.sanity
-    @patch("guidellm.data.deserializers.trace_weka.logger")
     def test_overlap_warns_on_same_chain(
-        self, mock_logger, tmp_path: Path, deserializer
+        self, tmp_path: Path, deserializer, logot: Logot
     ):
         """Consecutive turns of one agent that overlap in time are logged at debug.
 
@@ -1070,18 +1348,18 @@ class TestWEKATraceFormat:
         )
         ds = self.deserialize(deserializer, trace)
         load_graph_turns(next(iter(ds)))
-        messages = [
-            call.args[0].format(*call.args[1:]) if call.args else ""
-            for call in mock_logger.debug.call_args_list
-        ]
-        assert any("overlapping requests" in message for message in messages)
-        assert any("will run until t=" in message for message in messages)
-        assert any("default" in message for message in messages)
+        logot.assert_logged(
+            debug(
+                "WEKA conversation 'conv0' agent 'default' has overlapping requests: "
+                "the request at t=0.0 will run until t=5.0, which is after "
+                "the next request at t=1.0; they will be serialized on "
+                "this chain"
+            )
+        )
 
     @pytest.mark.sanity
-    @patch("guidellm.data.deserializers.trace_weka.logger")
     def test_overlap_does_not_warn_for_parallel_subagents(
-        self, mock_logger, tmp_path: Path, deserializer
+        self, tmp_path: Path, deserializer, logot: Logot
     ):
         """Parallel subagents may share timestamps without an overlap debug log.
 
@@ -1113,11 +1391,9 @@ class TestWEKATraceFormat:
         )
         ds = self.deserialize(deserializer, trace)
         load_graph_turns(next(iter(ds)))
-        messages = [
-            call.args[0].format(*call.args[1:]) if call.args else ""
-            for call in mock_logger.debug.call_args_list
-        ]
-        assert not any("overlapping requests" in message for message in messages)
+        logot.assert_not_logged(
+            debug("WEKA conversation '%s' agent '%s' has overlapping requests: %s")
+        )
 
     @pytest.mark.smoke
     def test_tool_use_then_tool_result_maps_to_call_and_injection(

@@ -382,6 +382,57 @@ class TestRealtimeTranscriptionWSRequestHandler:
         assert "audio_chunks" not in resp.request_args
 
 
+class TestResponseMetricsPassthrough:
+    """A backend's own per-request metrics survive into the compiled stats."""
+
+    SPEC = {
+        "speculative_decoding": {
+            "mean_acceptance_length": 2.5,
+            "draft_acceptance_rate": 0.5,
+            "num_spec_steps": 4,
+            "num_accepted_draft_tokens": 6,
+            "num_draft_tokens": 12,
+        }
+    }
+
+    def test_non_streaming(self) -> None:
+        handler = TextCompletionsRequestHandler()
+        response = handler.compile_non_streaming(
+            GenerationRequest(request_id="r1", columns={"text_column": ["hi"]}),
+            GenerationRequestArguments(),
+            {
+                "id": "c1",
+                "choices": [{"text": "hello"}],
+                "usage": {},
+                "metrics": self.SPEC,
+            },
+        )
+        assert response.response_metrics == self.SPEC
+
+    def test_streaming(self) -> None:
+        handler = TextCompletionsRequestHandler()
+        handler.add_streaming_line('data: {"id": "c1", "choices": [{"text": "hello"}]}')
+        # vLLM attaches the metrics to the closing usage event, not to a text delta.
+        closing = stdlib_json.dumps(
+            {"choices": [], "usage": {"prompt_tokens": 1}, "metrics": self.SPEC}
+        )
+        handler.add_streaming_line(f"data: {closing}")
+        response = handler.compile_streaming(
+            GenerationRequest(request_id="r1", columns={"text_column": ["hi"]}),
+            GenerationRequestArguments(),
+        )
+        assert response.response_metrics == self.SPEC
+
+    def test_absent_when_the_backend_reports_none(self) -> None:
+        handler = TextCompletionsRequestHandler()
+        response = handler.compile_non_streaming(
+            GenerationRequest(request_id="r1", columns={"text_column": ["hi"]}),
+            GenerationRequestArguments(),
+            {"id": "c1", "choices": [{"text": "hello"}], "usage": {}},
+        )
+        assert response.response_metrics is None
+
+
 class TestTextCompletionsRequestHandler:
     """Test cases for TextCompletionsRequestHandler.
 
@@ -432,7 +483,7 @@ class TestTextCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data)
 
@@ -446,7 +497,7 @@ class TestTextCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, model="test-model")
 
@@ -459,7 +510,7 @@ class TestTextCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, stream=True)
 
@@ -477,6 +528,7 @@ class TestTextCompletionsRequestHandler:
         """
         instance = valid_instances
         data = GenerationRequest(
+            columns={"text_column": ["test"]},
             output_metrics=UsageMetrics(text_tokens=100),
         )
 
@@ -493,7 +545,7 @@ class TestTextCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, max_tokens=50)
 
@@ -506,7 +558,7 @@ class TestTextCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
         extras = GenerationRequestArguments(body={"temperature": 0.7, "top_p": 0.9})
 
         result = instance.format(data, extras=extras)
@@ -540,6 +592,7 @@ class TestTextCompletionsRequestHandler:
         """
         instance = valid_instances
         data = GenerationRequest(
+            columns={"text_column": ["test"]},
             output_metrics=UsageMetrics(text_tokens=100),
         )
 
@@ -909,7 +962,7 @@ class TestChatCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data)
 
@@ -925,7 +978,7 @@ class TestChatCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, model="gpt-4")
 
@@ -938,7 +991,7 @@ class TestChatCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, stream=True)
 
@@ -984,6 +1037,7 @@ class TestChatCompletionsRequestHandler:
         """
         instance = valid_instances
         data = GenerationRequest(
+            columns={"text_column": ["test"]},
             output_metrics=UsageMetrics(text_tokens=100),
         )
 
@@ -1000,7 +1054,7 @@ class TestChatCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, max_tokens=50)
 
@@ -1013,7 +1067,7 @@ class TestChatCompletionsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
         extras = GenerationRequestArguments(body={"temperature": 0.5, "top_k": 40})
 
         result = instance.format(data, extras=extras)
@@ -1041,6 +1095,43 @@ class TestChatCompletionsRequestHandler:
         assert result.body["messages"][0]["content"][0]["text"] == "Hello"
         assert result.body["messages"][0]["content"][1]["type"] == "text"
         assert result.body["messages"][0]["content"][1]["text"] == "How are you?"
+
+    @pytest.mark.sanity
+    def test_format_raw_messages_column_history_and_current(self, valid_instances):
+        """
+        raw_messages_column supplies OpenAI dicts for history and the current turn.
+
+        ## WRITTEN BY AI ##
+        """
+        instance = valid_instances
+        prev_request = GenerationRequest(
+            columns={
+                "raw_messages_column": [[{"role": "user", "content": "hello"}]],
+                "text_column": ["should not be used"],
+            }
+        )
+        prev_response = GenerationResponse(
+            request_id="prev",
+            request_args=None,
+            text="hi",
+        )
+        data = GenerationRequest(
+            columns={
+                "raw_messages_column": [[{"role": "user", "content": "again"}]],
+                "text_column": ["also ignored"],
+            }
+        )
+
+        result = instance.format(
+            data,
+            history=[(prev_request, prev_response)],
+        )
+
+        assert result.body["messages"] == [
+            {"role": "user", "content": "hello"},
+            {"role": "assistant", "content": "hi"},
+            {"role": "user", "content": "again"},
+        ]
 
     @pytest.mark.regression
     def test_content_extras_enrich_plain_text_only(self, valid_instances):
@@ -3174,7 +3265,7 @@ class TestResponsesRequestHandler:
         ## WRITTEN BY AI ##
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data)
 
@@ -3190,7 +3281,7 @@ class TestResponsesRequestHandler:
         ## WRITTEN BY AI ##
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, model="gpt-4o")
 
@@ -3204,7 +3295,7 @@ class TestResponsesRequestHandler:
         ## WRITTEN BY AI ##
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, stream=True)
 
@@ -3221,6 +3312,7 @@ class TestResponsesRequestHandler:
         """
         instance = valid_instances
         data = GenerationRequest(
+            columns={"text_column": ["test"]},
             output_metrics=UsageMetrics(text_tokens=100),
         )
 
@@ -3241,7 +3333,7 @@ class TestResponsesRequestHandler:
         ## WRITTEN BY AI ##
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, max_tokens=50)
 
@@ -3258,7 +3350,10 @@ class TestResponsesRequestHandler:
         """
         instance = valid_instances
         data = GenerationRequest(
-            columns={"prefix_column": ["You are a helpful assistant."]},
+            columns={
+                "prefix_column": ["You are a helpful assistant."],
+                "text_column": ["Hello"],
+            },
         )
 
         result = instance.format(data)
@@ -4702,7 +4797,10 @@ class TestResponsesRequestHandler:
         ]
         expected_tools = [{"type": "function", "name": "fn", "parameters": {}}]
         data = GenerationRequest(
-            columns={"tools_column": [stdlib_json.dumps(chat_tools)]},
+            columns={
+                "text_column": ["test"],
+                "tools_column": [stdlib_json.dumps(chat_tools)],
+            },
             turn_type="client_tool_call",
         )
 
@@ -4724,7 +4822,10 @@ class TestResponsesRequestHandler:
         """
         instance = valid_instances
         tools = [{"type": "function", "function": {"name": "fn", "parameters": {}}}]
-        data = GenerationRequest(turn_type="standard")
+        data = GenerationRequest(
+            columns={"text_column": ["test"]},
+            turn_type="standard",
+        )
 
         result = instance.format(
             data,
@@ -4744,6 +4845,20 @@ class TestResponsesRequestHandler:
         """
         instance = valid_instances
         tools = [{"type": "function", "function": {"name": "fn", "parameters": {}}}]
+        prior = GenerationRequest(
+            columns={"text_column": ["ask"]},
+            turn_type="client_tool_call",
+        )
+        prior_response = GenerationResponse(
+            request_id="r1",
+            request_args="{}",
+            tool_calls=[
+                ToolCall(
+                    id="call_1",
+                    function=ToolCallFunction(name="fn", arguments="{}"),
+                )
+            ],
+        )
         data = GenerationRequest(
             columns={
                 "tools_column": [stdlib_json.dumps(tools)],
@@ -4753,7 +4868,7 @@ class TestResponsesRequestHandler:
             output_metrics=UsageMetrics(text_tokens=50),
         )
 
-        result = instance.format(data)
+        result = instance.format(data, history=[(prior, prior_response)])
 
         assert result.body["tool_choice"] == "required"
         assert "ignore_eos" not in result.body
@@ -4770,6 +4885,20 @@ class TestResponsesRequestHandler:
         """
         instance = valid_instances
         tools = [{"type": "function", "function": {"name": "fn", "parameters": {}}}]
+        prior = GenerationRequest(
+            columns={"text_column": ["ask"]},
+            turn_type="client_tool_call",
+        )
+        prior_response = GenerationResponse(
+            request_id="r1",
+            request_args="{}",
+            tool_calls=[
+                ToolCall(
+                    id="call_1",
+                    function=ToolCallFunction(name="fn", arguments="{}"),
+                )
+            ],
+        )
         data = GenerationRequest(
             columns={"tool_response_column": ['{"status": "ok"}']},
             turn_type="tool_response_injection",
@@ -4778,6 +4907,7 @@ class TestResponsesRequestHandler:
 
         result = instance.format(
             data,
+            history=[(prior, prior_response)],
             extras=GenerationRequestArguments(body={"tools": tools}),
         )
 
@@ -5241,7 +5371,7 @@ class TestEmbeddingsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data)
 
@@ -5256,7 +5386,7 @@ class TestEmbeddingsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
 
         result = instance.format(data, model="BAAI/bge-small-en-v1.5")
 
@@ -5302,7 +5432,7 @@ class TestEmbeddingsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        data = GenerationRequest()
+        data = GenerationRequest(columns={"text_column": ["test"]})
         extras = GenerationRequestArguments(body={"user": "test-user"})
 
         result = instance.format(data, extras=extras)
@@ -5316,7 +5446,7 @@ class TestEmbeddingsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        request = GenerationRequest()
+        request = GenerationRequest(columns={"text_column": ["test"]})
         arguments = instance.format(request, model="test-model")
         response_data = {
             "object": "list",
@@ -5340,7 +5470,7 @@ class TestEmbeddingsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        request = GenerationRequest()
+        request = GenerationRequest(columns={"text_column": ["test"]})
         arguments = instance.format(request)
         response_data = {
             "object": "list",
@@ -5372,7 +5502,7 @@ class TestEmbeddingsRequestHandler:
         ### WRITTEN BY AI ###
         """
         instance = valid_instances
-        request = GenerationRequest()
+        request = GenerationRequest(columns={"text_column": ["test"]})
         arguments = instance.format(request)
 
         with pytest.raises(
@@ -5450,6 +5580,66 @@ class TestChatCompletionsToolChoiceOverride:
         result = handler.format(data, extras=extras)
 
         assert result.body["tool_choice"] == "auto"
+
+    @pytest.mark.sanity
+    def test_tool_choice_column_auto(self, handler):
+        """tool_choice_column sets tool_choice when extras do not.
+
+        ## WRITTEN BY AI ##
+        """
+        tools = [{"type": "function", "function": {"name": "fn"}}]
+        data = GenerationRequest(
+            columns={
+                "text_column": ["test"],
+                "tools_column": [json.dumps(tools)],
+                "tool_choice_column": ["auto"],
+            },
+            turn_type="client_tool_call",
+        )
+        result = handler.format(data)
+
+        assert result.body["tool_choice"] == "auto"
+
+    @pytest.mark.sanity
+    def test_tool_choice_column_required(self, handler):
+        """tool_choice_column required is the default dataset override.
+
+        ## WRITTEN BY AI ##
+        """
+        tools = [{"type": "function", "function": {"name": "fn"}}]
+        data = GenerationRequest(
+            columns={
+                "text_column": ["test"],
+                "tools_column": [json.dumps(tools)],
+                "tool_choice_column": ["required"],
+            },
+            turn_type="client_tool_call",
+        )
+        result = handler.format(data)
+
+        assert result.body["tool_choice"] == "required"
+
+    @pytest.mark.sanity
+    def test_tool_choice_column_invalid_raises(self, handler):
+        """Invalid tool_choice_column values raise instead of defaulting.
+
+        ## WRITTEN BY AI ##
+        """
+        tools = [{"type": "function", "function": {"name": "fn"}}]
+        data = GenerationRequest(
+            columns={
+                "text_column": ["test"],
+                "tools_column": [json.dumps(tools)],
+                "tool_choice_column": ["none"],
+            },
+            turn_type="client_tool_call",
+        )
+
+        with pytest.raises(
+            ValueError,
+            match="Unsupported tool_choice_column value 'none'",
+        ):
+            handler.format(data)
 
     @pytest.mark.sanity
     def test_no_override_without_tools(self, handler):
@@ -5548,8 +5738,20 @@ class TestChatCompletionsToolChoiceOverride:
         assert "ignore_eos" not in tc_result.body
         assert "stop" not in tc_result.body
 
+        prior_response = GenerationResponse(
+            request_id="r1",
+            request_args="{}",
+            tool_calls=[
+                ToolCall(
+                    id="call_1",
+                    function=ToolCallFunction(name="fn", arguments="{}"),
+                )
+            ],
+        )
         # Injection turn: token limits applied from output_metrics
-        inj_result = handler.format(injection_req)
+        inj_result = handler.format(
+            injection_req, history=[(tool_call_req, prior_response)]
+        )
         assert inj_result.body["max_completion_tokens"] == 100
         assert inj_result.body["ignore_eos"] is True
         assert inj_result.body["stop"] is None
@@ -5580,6 +5782,20 @@ class TestChatCompletionsToolChoiceOverride:
         ## WRITTEN BY AI ##
         """
         tools = [{"type": "function", "function": {"name": "fn"}}]
+        prior = GenerationRequest(
+            columns={"text_column": ["ask"]},
+            turn_type="client_tool_call",
+        )
+        prior_response = GenerationResponse(
+            request_id="r1",
+            request_args="{}",
+            tool_calls=[
+                ToolCall(
+                    id="call_1",
+                    function=ToolCallFunction(name="fn", arguments="{}"),
+                )
+            ],
+        )
         data = GenerationRequest(
             columns={
                 "tools_column": [json.dumps(tools)],
@@ -5588,7 +5804,7 @@ class TestChatCompletionsToolChoiceOverride:
             turn_type="tool_response_injection",
             output_metrics=UsageMetrics(text_tokens=50),
         )
-        result = handler.format(data)
+        result = handler.format(data, history=[(prior, prior_response)])
 
         assert result.body["tool_choice"] == "required"
         assert "ignore_eos" not in result.body
@@ -5602,6 +5818,20 @@ class TestChatCompletionsToolChoiceOverride:
         ## WRITTEN BY AI ##
         """
         tools = [{"type": "function", "function": {"name": "fn"}}]
+        prior = GenerationRequest(
+            columns={"text_column": ["ask"]},
+            turn_type="client_tool_call",
+        )
+        prior_response = GenerationResponse(
+            request_id="r1",
+            request_args="{}",
+            tool_calls=[
+                ToolCall(
+                    id="call_1",
+                    function=ToolCallFunction(name="fn", arguments="{}"),
+                )
+            ],
+        )
         data = GenerationRequest(
             columns={"tool_response_column": ['{"status": "ok"}']},
             turn_type="tool_response_injection",
@@ -5609,6 +5839,7 @@ class TestChatCompletionsToolChoiceOverride:
         )
         result = handler.format(
             data,
+            history=[(prior, prior_response)],
             extras=GenerationRequestArguments(body={"tools": tools}),
         )
 
@@ -6002,3 +6233,142 @@ class TestResponsesInjectionTurnFormat:
         assert len(fco) == 1
         assert fco[0]["call_id"] == "call_1"
         assert fco[0]["output"] == '{"ok": true}'
+
+
+_OTEL_COLUMNS = {
+    "raw_messages_column": [[{"role": "user", "content": "hello"}]],
+    "prompt_tokens_count_column": [8],
+    "output_tokens_count_column": [4],
+    "relative_timestamp_column": [0.0],
+}
+
+
+class TestRequestPayloadRequired:
+    """
+    Abort format() when the endpoint payload cannot be built from columns.
+
+    ## WRITTEN BY AI ##
+    """
+
+    @pytest.mark.smoke
+    def test_raw_messages_formats_chat(self):
+        """
+        OTEL-shaped raw_messages_column is enough for chat completions.
+
+        ## WRITTEN BY AI ##
+        """
+        result = ChatCompletionsRequestHandler().format(
+            GenerationRequest(columns=dict(_OTEL_COLUMNS))
+        )
+
+        assert result.body["messages"] == [{"role": "user", "content": "hello"}]
+
+    @pytest.mark.sanity
+    def test_raw_messages_raises_completions(self):
+        """
+        Completions cannot build a prompt from raw_messages_column.
+
+        ## WRITTEN BY AI ##
+        """
+        with pytest.raises(
+            ValueError,
+            match="Cannot build /v1/completions prompt: missing text_column "
+            "or prefix_column",
+        ) as exc_info:
+            TextCompletionsRequestHandler().format(
+                GenerationRequest(columns=dict(_OTEL_COLUMNS))
+            )
+
+        assert "raw_messages_column" in str(exc_info.value)
+
+    @pytest.mark.sanity
+    def test_raw_messages_raises_responses(self):
+        """
+        Responses cannot build input from raw_messages_column.
+
+        ## WRITTEN BY AI ##
+        """
+        with pytest.raises(
+            ValueError,
+            match="Cannot build /v1/responses input: missing text_column "
+            "or media columns",
+        ) as exc_info:
+            ResponsesRequestHandler().format(
+                GenerationRequest(columns=dict(_OTEL_COLUMNS))
+            )
+
+        assert "raw_messages_column" in str(exc_info.value)
+
+    @pytest.mark.sanity
+    def test_empty_columns_raises_chat(self):
+        """
+        Chat completions raise when messages cannot be built.
+
+        ## WRITTEN BY AI ##
+        """
+        with pytest.raises(
+            ValueError,
+            match="Cannot build /v1/chat/completions messages",
+        ):
+            ChatCompletionsRequestHandler().format(GenerationRequest())
+
+    @pytest.mark.sanity
+    def test_empty_columns_raises_completions(self):
+        """
+        Text completions raise when prompt cannot be built.
+
+        ## WRITTEN BY AI ##
+        """
+        with pytest.raises(
+            ValueError,
+            match="Cannot build /v1/completions prompt",
+        ):
+            TextCompletionsRequestHandler().format(GenerationRequest())
+
+    @pytest.mark.smoke
+    def test_injection_formats_without_raw_messages(self):
+        """
+        Tool injection builds messages from history, not raw_messages_column.
+
+        ## WRITTEN BY AI ##
+        """
+        prior = GenerationRequest(
+            columns={"text_column": ["ask"]},
+            turn_type="client_tool_call",
+        )
+        prior_response = GenerationResponse(
+            request_id="r1",
+            request_args="{}",
+            tool_calls=[
+                ToolCall(
+                    id="call_1",
+                    function=ToolCallFunction(name="get_data", arguments="{}"),
+                )
+            ],
+        )
+        injection = GenerationRequest(
+            columns={"tool_response_column": ['{"data": 42}']},
+            turn_type="tool_response_injection",
+        )
+
+        result = ChatCompletionsRequestHandler().format(
+            injection, history=[(prior, prior_response)]
+        )
+
+        tool_msgs = [m for m in result.body["messages"] if m.get("role") == "tool"]
+        assert len(tool_msgs) == 1
+        assert tool_msgs[0]["tool_call_id"] == "call_1"
+
+    @pytest.mark.sanity
+    def test_completions_extras_prompt_without_text_column(self):
+        """
+        Extras can supply prompt when dataset columns do not.
+
+        ## WRITTEN BY AI ##
+        """
+        extras = GenerationRequestArguments(body={"prompt": "from extras"})
+        result = TextCompletionsRequestHandler().format(
+            GenerationRequest(), extras=extras
+        )
+
+        assert result.body["prompt"] == "from extras"

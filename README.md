@@ -70,7 +70,7 @@ flowchart LR
     SC -->|quality: mean/min/max/n<br/>per-request scores| RP
 ```
 
-Source of truth for components: [`docs/guides/architecture.md`](docs/guides/architecture.md) and `src/guidellm/`.
+Source of truth for components: [`docs/en/guides/architecture.md`](docs/en/guides/architecture.md) and `src/guidellm/`.
 
 ## Quick start
 
@@ -92,7 +92,7 @@ guidellm run \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128
 ```
 
-You will see live progress and per-benchmark summaries (see [`docs/assets/sample-benchmarks.gif`](docs/assets/sample-benchmarks.gif)). GuideLLM writes `benchmarks.json` and `benchmarks.csv` to the current directory (or `GUIDELLM__DEFAULT_RESULTS_DIR` when set). Add formats with `--output` — see [output configuration](docs/guides/outputs.md#cli-output-configuration).
+You will see live progress and per-benchmark summaries (see [`docs/assets/sample-benchmarks.gif`](docs/assets/sample-benchmarks.gif)). GuideLLM writes `benchmarks.json` and `benchmarks.csv` to the current directory (or `GUIDELLM__DEFAULT_RESULTS_DIR` when set). Add formats with `--output` — see [output configuration](docs/en/guides/outputs.md#cli-output-configuration).
 
 ### No GPU? Test the pipeline anyway
 
@@ -103,10 +103,25 @@ guidellm run --backend kind=openai_http,target=http://localhost:8000 \
   --constraint kind=max_requests,count=100 \
   --data kind=synthetic_text,prompt_tokens=64,output_tokens=32
 ```
+Specifying `--output` replaces the default JSON and CSV outputs. See [output configuration](docs/en/guides/outputs.md#cli-output-configuration) for examples of selecting formats, including generating HTML alongside JSON and CSV.
 
-## Common patterns
+## Output Files and Reports
 
-**Rate-based load testing** — 10 req/s constant load for 20 seconds:
+Use JSON or YAML for detailed analysis, CSV for spreadsheet comparisons, HTML for self-contained visual reports, and PLOT for static performance graphs. See [supported file formats](docs/en/guides/outputs.md#supported-file-formats) for their contents and default filenames, and [configuring file outputs](docs/en/guides/outputs.md#configuring-file-outputs) to choose output paths.
+
+The console provides a summary of each benchmark. Its tables can be copied into spreadsheet software using `|` as the delimiter. See [console output](docs/en/guides/outputs.md#console-output) for progress and display controls.
+
+<img alt="Sample GuideLLM benchmark output" src="https://raw.githubusercontent.com/vllm-project/guidellm/main/docs/assets/sample-output.png" />
+
+## Common Use Cases and Configurations
+
+GuideLLM supports a wide range of LLM benchmarking workflows. The examples below show how to run typical scenarios and highlight the parameters that matter most. For a complete list of arguments, details, and options, run `guidellm run --help`.
+
+Each registry-backed option uses the form `--<option> kind=<TYPE>,<CONFIG>...`, where `CONFIG` is key=value pairs. For more complex configurations, use JSON or YAML, e.g. `--data '{"kind":"huggingface","source":"abisee/cnn_dailymail","load_kwargs":{"name":"3.0.0"}}'`.
+
+### Load Patterns
+
+Simulating different applications requires different traffic shapes. This example demonstrates rate-based load testing using a constant profile at 10 requests per second, running for 20 seconds with synthetic data of 128 prompt tokens and 256 output tokens.
 
 ```bash
 guidellm run \
@@ -125,7 +140,34 @@ guidellm run \
   --data-column-mapper kind=generative_column_mapper,column_mappings.text_column=article
 ```
 
-**Standard scenario** — built-in `chat` scenario, CLI overrides apply:
+**Key parameters:**
+
+- `--data`: Data type plus config — `synthetic_text`, `huggingface`, `json_file`, `csv_file`, `text_file`, `trace_synthetic`, and others. Repeat for multiple sources.
+- `--data-column-mapper`: Column mapping preprocessor and JSON config for fields such as `text_column` or `output_tokens_count_column`
+- `--data-loader type=pytorch,samples=1000`: Limit how many rows are loaded (`-1` for all)
+- `--tokenizer huggingface_auto "model=gpt2"`: Tokenizer for synthetic data or local token counting
+
+### Synthetic Visual Data
+
+GuideLLM can synthesize images and short videos on the fly so you can benchmark Vision-Language Model (VLM) serving configurations without bringing your own dataset. Two `--data` kinds — `synthetic_image` and `synthetic_video` — compose with `synthetic_text` for multimodal prompts. See [Synthetic Visual Data](docs/en/guides/multimodal/synthetic_vision.md) for example commands and the full list of configuration options.
+
+### Request Types and API Targets
+
+You can benchmark chat completions, text completions, or other supported request types. This example configures the benchmark to test the chat completions API using a custom dataset file, with GuideLLM automatically formatting requests to match the chat completions schema.
+
+```bash
+guidellm run \
+  --backend kind=openai_http,target=http://localhost:8000,request_format=/v1/chat/completions \
+  --data kind=json_file,path=path/to/data.json
+```
+
+**Key parameters:**
+
+- `--backend`: Backend type and connection settings, including the `target` OpenAI-compatible endpoint URL and `request_format` for the API endpoint (`/v1/chat/completions`, `/v1/completions`, `/v1/embeddings`, `/v1/audio/transcriptions`, and others)
+
+### Using Scenarios
+
+Built-in scenarios bundle schedules, dataset settings, and request formatting to standardize common testing patterns. This example uses the pre-configured chat scenario which includes appropriate defaults for chat model evaluation, with any additional CLI arguments overriding the scenario's settings.
 
 ```bash
 guidellm run \
@@ -152,7 +194,7 @@ guidellm run \
   --data kind=synthetic_image --data kind=synthetic_text,prompt_tokens=64,output_tokens=32
 ```
 
-See [Synthetic Visual Data](docs/guides/multimodal/synthetic_vision.md) for the full option list.
+See [Synthetic Visual Data](docs/en/guides/multimodal/synthetic_vision.md) for the full option list.
 
 **Key knobs** (full reference: `guidellm run --help`)
 
@@ -201,7 +243,7 @@ metrics:
 
 ## Architecture
 
-Grounded in `src/guidellm/` — the component chain mirrors [`docs/guides/architecture.md`](docs/guides/architecture.md):
+Grounded in `src/guidellm/` — the component chain mirrors [`docs/en/guides/architecture.md`](docs/en/guides/architecture.md):
 
 | Directory | Role |
 | --- | --- |
@@ -280,16 +322,14 @@ Standards: Black formatting, Ruff linting, Mypy type checking, pytest unit tests
 **Active development:** OTEL/WEKA trace replay; standard-workflow scenario improvements; stackable scenario files; per-benchmark constraint overrides; gRPC backend for vLLM-native servers.
 
 ## Docs
+Full reference at [vllm-project.github.io/guidellm](https://vllm-project.github.io/guidellm) and in [`docs/en/`](docs/en/):
 
-Full reference at [vllm-project.github.io/guidellm](https://vllm-project.github.io/guidellm) and in [`docs/`](docs/):
-
-- [Installation Guide](docs/getting-started/install.md) — step-by-step setup
-- [Backends Guide](docs/guides/backends.md) — supported backends and setup
-- [Datasets Guide](docs/guides/datasets.md) — data sources and loading
-- [Metrics Guide](docs/guides/metrics.md) — metric definitions and interpretation
-- [Outputs Guide](docs/guides/outputs.md) — output formats and configuration
-- [Architecture Overview](docs/guides/architecture.md) — design and component interactions
-- [Troubleshooting](docs/guides/troubleshooting.md) — common problems and fixes
+- [**Installation Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/getting-started/install.md) - This guide provides step-by-step instructions for installing GuideLLM, including prerequisites and setup tips.
+- [**Backends Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/backends.md) - A comprehensive overview of supported backends and how to set them up for use with GuideLLM.
+- [**Data/Datasets Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/datasets.md) - Information on supported datasets, including how to use them for benchmarking.
+- [**Metrics Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/metrics.md) - Detailed explanations of the metrics used in GuideLLM, including definitions and how to interpret them.
+- [**Outputs Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/outputs.md) - Information on the different output formats supported by GuideLLM and how to use them.
+- [**Architecture Overview**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/architecture.md) - A detailed look at GuideLLM's design, components, and how they interact.
 
 ## License
 

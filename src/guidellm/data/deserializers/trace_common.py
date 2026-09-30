@@ -7,6 +7,7 @@ requested input_length for replay benchmarks."""
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Callable, Iterable, Sequence
 from typing import Any, Protocol
 
@@ -27,13 +28,19 @@ from guidellm.data.deserializers.deserializer import (
     DatasetDeserializer,
     DatasetDeserializerFactory,
 )
-from guidellm.data.deserializers.trace_session_timing import TraceSessionTiming
+from guidellm.data.deserializers.trace_session_timing import (
+    TraceSessionTiming,
+    graph_max_timestamp,
+    graph_min_timestamp,
+    shift_graph_timestamps,
+)
 from guidellm.data.schemas import InvalidRowError
 from guidellm.data.schemas.conversation_graph_data import (
     ConversationGraphData,
     ConversationParentRef,
     ConversationTurnData,
 )
+from guidellm.logger import logger
 from guidellm.schemas.data.deserializers import TraceDataArgs
 from guidellm.utils.registry import RegistryMixin
 
@@ -44,6 +51,7 @@ __all__ = [
     "create_distinct_token_block",
     "create_prompt_from_hash_ids",
     "decode_prompt",
+    "duration_columns",
     "fill_hash_id_table",
     "generate_token_ids",
     "get_missing_columns",
@@ -86,6 +94,20 @@ def get_missing_columns(
     required_columns: list[str], actual_columns: list[str]
 ) -> list[str]:
     return [c for c in required_columns if c not in actual_columns]
+
+
+def duration_columns(row: dict, config: TraceDataArgs) -> dict[str, list[float]]:
+    """Map an optional duration column onto request scheduling columns.
+
+    :param row: Trace row that may contain ``config.duration_column``.
+    :param config: Trace format arguments naming that column.
+    :return: ``{"request_duration_column": [seconds]}`` when the column is
+        present and non-null, otherwise an empty dict.
+    """
+    column = config.duration_column
+    if column not in row or row[column] is None:
+        return {}
+    return {"request_duration_column": [float(row[column])]}
 
 
 def create_prompt_from_hash_ids(
@@ -158,16 +180,37 @@ def fill_hash_id_table(
             sibling_token_blocks[prev_id].add(block)
 
 
+def _seeded_faker(random_seed: int, copy_index: int) -> Faker:
+    """Build a Faker instance for sequential dataset copy ``copy_index``."""
+    faker = Faker()
+    faker.seed_instance(random_seed + copy_index * 1_000_003)
+    return faker
+
+
 class TraceFormatBase(Protocol):
     config: TraceDataArgs
+    dataset: Dataset
 
     def __init__(self, config, dataset: Dataset) -> None: ...
+
+    def has_duration_column(self) -> bool:
+        """
+        Return whether this trace includes the configured duration column.
+
+        The default checks top-level dataset columns. Nested formats override
+        this to look at the row shape they actually read. Called once at load.
+
+        :return: True when ``config.duration_column`` is present
+        """
+        return self.config.duration_column in self.dataset.column_names
 
     def __iter__(self) -> Iterable[Dataset]:
         """Returns the next conversation as a `Dataset`."""
 
     def reset(self) -> None:
         pass
+
+    def reset_hash_tables(self) -> None: ...
 
     def required_columns(self) -> Features: ...
 
@@ -213,6 +256,7 @@ class TraceFormatBase(Protocol):
                 "prompt_tokens_count_column": [turn[self.config.prompt_tokens_column]],
                 "output_tokens_count_column": [turn[self.config.output_tokens_column]],
                 "relative_timestamp_column": [relative_timestamp],
+                **duration_columns(turn, self.config),
             }
             turns.append(
                 ConversationTurnData(
@@ -286,36 +330,55 @@ class TraceExamplesIterable(_BaseExamplesIterable):
         self.config = config
         self.format = trace_format
         self.processor = processor
-        self.faker = Faker()
-        self.faker.seed_instance(random_seed)
+        self._copy_fakers = [
+            _seeded_faker(random_seed, copy_index)
+            for copy_index in range(config.copies)
+        ]
         self.iteration_count = 0
 
     def __iter__(self) -> Iterable[tuple[int, dict[str, Any]]]:
         self.iteration_count += 1
         samples_count = 0
-        # Fresh instance per iteration so packing state does not leak across epochs.
-        timing = TraceSessionTiming(
-            max_wait=self.config.max_wait,
-            max_session_wait=self.config.max_session_wait,
+        pass_offset = 0.0
+        # Shared across copies so packing sees the combined timeline.
+        packer = TraceSessionTiming(
             min_concurrent_sessions=self.config.min_concurrent_sessions,
-            time_scale=self.config.time_scale,
         )
-        for conv in self.format:  # type: ignore[attr-defined]
-            graph_data = self.format.build_conversation_graph(
-                conv, self.processor, self.faker
+        scaler = TraceSessionTiming(time_scale=self.config.time_scale)
+        for copy_index in range(self.config.copies):
+            self.format.reset_hash_tables()
+            faker_copy = self._copy_fakers[copy_index]
+            wait_timing = TraceSessionTiming(
+                max_wait=self.config.max_wait,
+                max_session_wait=self.config.max_session_wait,
             )
-            timing.apply(graph_data)
-            samples_count += len(graph_data.turns)
-            payload = json.dumps(graph_data.model_dump(mode="json"))
-            yield (
-                samples_count,
-                {
-                    "conversation_turns": (
-                        payload.decode() if isinstance(payload, bytes) else payload
-                    )
-                },
-            )
-            self.format.reset()
+            copy_min = math.inf
+            copy_max = -math.inf
+            for conv in self.format:  # type: ignore[attr-defined]
+                graph_data = self.format.build_conversation_graph(
+                    conv, self.processor, faker_copy
+                )
+                if not graph_data.turns:
+                    continue
+                wait_timing.apply_wait_caps(graph_data)
+                shift_graph_timestamps(graph_data, pass_offset)
+                copy_min = min(copy_min, graph_min_timestamp(graph_data))
+                copy_max = max(copy_max, graph_max_timestamp(graph_data))
+                packer.apply_pack(graph_data)
+                scaler.apply_scale(graph_data)
+                samples_count += len(graph_data.turns)
+                payload = json.dumps(graph_data.model_dump(mode="json"))
+                yield (
+                    samples_count,
+                    {
+                        "conversation_turns": (
+                            payload.decode() if isinstance(payload, bytes) else payload
+                        )
+                    },
+                )
+                self.format.reset()
+            if math.isfinite(copy_min):
+                pass_offset = copy_min + self.config.copy_offset * (copy_max - copy_min)
 
     @property
     def is_typed(self) -> bool:
@@ -412,6 +475,12 @@ def _handle_column_search(config: TraceDataArgs, trace_format: TraceFormatBase) 
     missing = trace_format.find_required_columns(list(features.keys()))
     if missing:
         raise DataNotSupportedError(f"Trace missing required columns: {missing}")
+    if not trace_format.has_duration_column():
+        logger.warning(
+            "Trace duration column '{}' is missing; schedule_turn=idle_gap "
+            "will treat each request as instantaneous.",
+            trace_format.config.duration_column,
+        )
 
 
 @DatasetDeserializerFactory.register(["trace_synthetic"])
