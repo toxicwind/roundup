@@ -615,7 +615,17 @@ _PRE_SCORING_CONFIG_KEYS = {
 # With conditional omission, a no-scorer run serializes with ZERO schema
 # deltas vs the pre-scoring schema: scoring-only fields are omitted when empty.
 _ADDITIVE_TOP_LEVEL: set = set()
-_ADDITIVE_REQUEST: set = set()
+# Upstream-additive (not scoring) optional RequestStats fields introduced
+# after the pre-scoring baseline 74ec8623^ and merged in f7c3cdbb:
+#   response_metrics        <- 148c3bab backend per-request metrics passthrough
+#   turn_predecessor_delay  <- 337fc750 turn predecessor delay metrics
+#   turn_scheduling_delay   <- 337fc750 scheduler delay metrics
+# The scoring feature itself still introduces ZERO deltas on no-scorer runs.
+_ADDITIVE_REQUEST: set = {
+    "response_metrics",
+    "turn_predecessor_delay",
+    "turn_scheduling_delay",
+}
 _ADDITIVE_CONFIG: set = set()
 
 

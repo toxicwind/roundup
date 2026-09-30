@@ -1006,6 +1006,7 @@ class TestChatCompletionsRequestHandler:
         """Strict compat drops fields strict servers reject (Mistral/Gemini 422/400)."""
         instance = valid_instances
         data = GenerationRequest(
+            columns={"text_column": ["test"]},
             output_metrics=UsageMetrics(text_tokens=100),
         )
 
@@ -1021,6 +1022,7 @@ class TestChatCompletionsRequestHandler:
         """Default (non-strict) keeps vLLM/OpenAI-specific fields."""
         instance = valid_instances
         data = GenerationRequest(
+            columns={"text_column": ["test"]},
             output_metrics=UsageMetrics(text_tokens=100),
         )
 
