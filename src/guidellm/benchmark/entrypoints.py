@@ -565,6 +565,7 @@ async def benchmark_generative_text(
         scorers=metrics_args.scorers,
         scorer_config=metrics_args.scorer_config,
         slo=metrics_args.slo,
+        confidence=metrics_args.confidence,
     ):
         if benchmark:
             report.benchmarks.append(benchmark)

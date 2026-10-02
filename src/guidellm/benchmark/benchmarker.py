@@ -72,6 +72,7 @@ class Benchmarker(
             BenchmarkerProgress[BenchmarkAccumulatorT, BenchmarkT] | None
         ) = None,
         slo: GoodputSLO | None = None,
+        confidence: float | None = 0.95,
     ) -> AsyncIterator[BenchmarkT]:
         """
         Execute benchmark runs across scheduling strategies in the profile.
@@ -94,6 +95,8 @@ class Benchmarker(
         :param progress: Independent trackers notified concurrently for lifecycle events
         :param slo: Per-request latency objectives defining which requests count
             toward goodput, or None to disable goodput measurement
+        :param confidence: Two-sided confidence level for the intervals reported
+            alongside request-level metrics, or None to omit them
         :yield: Compiled benchmark result for each strategy execution
         :raises Exception: If benchmark execution or compilation fails
         """
@@ -133,6 +136,7 @@ class Benchmarker(
                     scorers=scorers or [],
                     scorer_config=scorer_config or {},
                     slo=slo,
+                    confidence=confidence,
                     profile=InfoMixin.extract_from_obj(profile),
                     requests=InfoMixin.extract_from_obj(requests),
                     backend=InfoMixin.extract_from_obj(backend),

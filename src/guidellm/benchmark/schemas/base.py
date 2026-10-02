@@ -134,6 +134,15 @@ class BenchmarkConfig(StandardBaseDict):
             if not data.get(key):
                 data.pop(key, None)
         return data
+    confidence: float | None = Field(
+        default=0.95,
+        gt=0.0,
+        lt=1.0,
+        description=(
+            "Two-sided confidence level for the intervals reported alongside "
+            "request-level metrics. None reports those metrics without intervals"
+        ),
+    )
     profile: dict[str, Any] = Field(
         description="Profile instance coordinating multi-strategy execution",
     )
