@@ -9,7 +9,7 @@ import uuid
 import pytest
 from pydantic import ValidationError
 
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerationRequest,
     GenerationRequestArguments,
     StandardBaseDict,

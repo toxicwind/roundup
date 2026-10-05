@@ -9,8 +9,8 @@ import pytest
 from click.testing import CliRunner
 from pydantic import BaseModel, Field, ValidationError
 
-from guidellm.schemas.scheduler import ConstraintArgs
-from guidellm.utils.click_pydantic import (
+from roundup.schemas.scheduler import ConstraintArgs
+from roundup.utils.click_pydantic import (
     RegistryAwareCommand,
     _error_to_message,
     _resolve_param_name,

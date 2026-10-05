@@ -5,8 +5,8 @@ from multiprocessing import get_context
 
 import pytest
 
-from guidellm.scheduler import SchedulingStrategy, TraceReplayStrategy
-from guidellm.schemas import RequestInfo, RequestSettings
+from roundup.scheduler import SchedulingStrategy, TraceReplayStrategy
+from roundup.schemas import RequestInfo, RequestSettings
 
 TRACE_TIMESTAMPS = [0.0, 0.0, 0.0, 0.1, 0.1, 1.5, 2.0, 2.0, 3.5, 7.0]
 

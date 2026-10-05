@@ -5,7 +5,7 @@ import time
 
 import pytest
 
-from guidellm.utils.singleton import SingletonMixin, ThreadSafeSingletonMixin
+from roundup.utils.singleton import SingletonMixin, ThreadSafeSingletonMixin
 
 
 class TestSingletonMixin:

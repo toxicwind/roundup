@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.deserializers.file module.
+Unit tests for roundup.data.deserializers.file module.
 
 ### WRITTEN BY AI ###
 """
@@ -18,8 +18,8 @@ import pytest
 from datasets import Dataset
 from pyarrow import ipc
 
-from guidellm.data.deserializers.deserializer import DataNotSupportedError
-from guidellm.data.deserializers.file import (
+from roundup.data.deserializers.deserializer import DataNotSupportedError
+from roundup.data.deserializers.file import (
     ArrowFileDatasetDeserializer,
     CSVFileDatasetDeserializer,
     DBFileDatasetDeserializer,
@@ -29,7 +29,7 @@ from guidellm.data.deserializers.file import (
     TarFileDatasetDeserializer,
     TextFileDatasetDeserializer,
 )
-from guidellm.schemas.data import DBFileDataArgs, FileDataArgs
+from roundup.schemas.data import DBFileDataArgs, FileDataArgs
 
 
 def processor_factory():

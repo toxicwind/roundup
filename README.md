@@ -1,19 +1,19 @@
-*Fork: [toxicwind/guidellm](https://github.com/toxicwind/guidellm) · Upstream: [vllm-project/guidellm](https://github.com/vllm-project/guidellm)*
+*Fork: [toxicwind/roundup](https://github.com/toxicwind/roundup) · Upstream: [toxicwind/roundup](https://github.com/toxicwind/roundup)*
 
 <div align="right">
 
-[![License](https://img.shields.io/github/license/toxicwind/guidellm?style=for-the-badge)](LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/guidellm?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/guidellm/)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://pypi.org/project/guidellm/)
-[![Nightly Build](https://img.shields.io/github/actions/workflow/status/toxicwind/guidellm/nightly.yml?branch=main&label=Nightly%20Build&style=for-the-badge)](https://github.com/toxicwind/guidellm/actions/workflows/nightly.yml)
-[![Docs](https://img.shields.io/badge/Docs-mkdocs-1BC070?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://vllm-project.github.io/guidellm)
+[![License](https://img.shields.io/github/license/toxicwind/roundup?style=for-the-badge)](LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/roundup?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/roundup/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://pypi.org/project/roundup/)
+[![Nightly Build](https://img.shields.io/github/actions/workflow/status/toxicwind/roundup/nightly.yml?branch=main&label=Nightly%20Build&style=for-the-badge)](https://github.com/toxicwind/roundup/actions/workflows/nightly.yml)
+[![Docs](https://img.shields.io/badge/Docs-mkdocs-1BC070?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://toxicwind.github.io/roundup)
 
 </div>
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/guidellm-logo-light.png">
-    <img alt="GuideLLM Logo" src="docs/assets/guidellm-logo-dark.png" width="55%">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/roundup-logo-light.png">
+    <img alt="Roundup Logo" src="docs/assets/roundup-logo-dark.png" width="55%">
   </picture>
 </p>
 
@@ -21,9 +21,9 @@
 
 ## Hero
 
-**What.** GuideLLM simulates end-to-end interactions with OpenAI-compatible and vLLM-native servers, generates workload patterns that reflect production usage, and produces detailed reports that help teams understand system behavior, resource needs, and operational limits.
+**What.** Roundup simulates end-to-end interactions with OpenAI-compatible and vLLM-native servers, generates workload patterns that reflect production usage, and produces detailed reports that help teams understand system behavior, resource needs, and operational limits.
 
-**Why.** Most benchmark tools measure endpoints, not models — they miss TTFT, ITL, output distributions, and dataset-driven variation. GuideLLM captures complete latency and token-level statistics for **SLO-driven evaluation**, generates realistic configurable traffic patterns, and emits standardized reports for dashboards, analysis, and regression tracking. This fork adds the piece upstream never measures: **response content quality**, scored deterministically per-request alongside every performance metric.
+**Why.** Most benchmark tools measure endpoints, not models — they miss TTFT, ITL, output distributions, and dataset-driven variation. Roundup captures complete latency and token-level statistics for **SLO-driven evaluation**, generates realistic configurable traffic patterns, and emits standardized reports for dashboards, analysis, and regression tracking. This fork adds the piece upstream never measures: **response content quality**, scored deterministically per-request alongside every performance metric.
 
 **Who.** ML engineers and platform teams tuning LLM deployments, planning capacity, and tracking performance regressions across releases — anyone who needs to answer *"will this model serve our traffic within our SLOs, and does it answer well?"* before production does.
 
@@ -36,8 +36,8 @@
 - **High-throughput engine** — multiprocessing + multithreading + asyncio scheduler driving parallel request workers at production rates
 - **Standardized reports** — console, JSON, CSV, HTML (self-contained visual report), and static plots for dashboards and regression tracking
 - **Fork addition: deterministic response scoring** — pluggable `Scorer` protocol, registry, and `InstructionFollowingScorer` with thinking-block stripping; per-request scores persisted, quality aggregates (`mean/min/max/n`) reported next to performance numbers
-- **Flexible interfaces** — registry-backed CLI (`guidellm run / export / preprocess / mock-server / env`), Python API, JSON/YAML scenario configs, and `GUIDELLM__*` environment variables
-- **Mock server** — `guidellm mock-server` spins up an OpenAI-compatible test target with configurable latency, so you can benchmark the pipeline with no GPU at all
+- **Flexible interfaces** — registry-backed CLI (`roundup run / export / preprocess / mock-server / env`), Python API, JSON/YAML scenario configs, and `ROUNDUP__*` environment variables
+- **Mock server** — `roundup mock-server` spins up an OpenAI-compatible test target with configurable latency, so you can benchmark the pipeline with no GPU at all
 
 ## Benchmark flow
 
@@ -70,14 +70,14 @@ flowchart LR
     SC -->|quality: mean/min/max/n<br/>per-request scores| RP
 ```
 
-Source of truth for components: [`docs/en/guides/architecture.md`](docs/en/guides/architecture.md) and `src/guidellm/`.
+Source of truth for components: [`docs/en/guides/architecture.md`](docs/en/guides/architecture.md) and `src/roundup/`.
 
 ## Quick start
 
 Three commands: install, serve, benchmark.
 
 ```bash
-pip install guidellm[recommended]
+pip install roundup[recommended]
 ```
 
 ```bash
@@ -85,20 +85,20 @@ vllm serve "neuralmagic/Meta-Llama-3.1-8B-Instruct-quantized.w4a16"
 ```
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=sweep \
   --constraint kind=max_duration,seconds=30 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128
 ```
 
-You will see live progress and per-benchmark summaries (see [`docs/assets/sample-benchmarks.gif`](docs/assets/sample-benchmarks.gif)). GuideLLM writes `benchmarks.json` and `benchmarks.csv` to the current directory (or `GUIDELLM__DEFAULT_RESULTS_DIR` when set). Add formats with `--output` — see [output configuration](docs/en/guides/outputs.md#cli-output-configuration).
+You will see live progress and per-benchmark summaries (see [`docs/assets/sample-benchmarks.gif`](docs/assets/sample-benchmarks.gif)). Roundup writes `benchmarks.json` and `benchmarks.csv` to the current directory (or `ROUNDUP__DEFAULT_RESULTS_DIR` when set). Add formats with `--output` — see [output configuration](docs/en/guides/outputs.md#cli-output-configuration).
 
 ### No GPU? Test the pipeline anyway
 
 ```bash
-guidellm mock-server --port 8000 &
-guidellm run --backend kind=openai_http,target=http://localhost:8000 \
+roundup mock-server --port 8000 &
+roundup run --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=concurrent,streams=8 \
   --constraint kind=max_requests,count=100 \
   --data kind=synthetic_text,prompt_tokens=64,output_tokens=32
@@ -111,11 +111,11 @@ Use JSON or YAML for detailed analysis, CSV for spreadsheet comparisons, HTML fo
 
 The console provides a summary of each benchmark. Its tables can be copied into spreadsheet software using `|` as the delimiter. See [console output](docs/en/guides/outputs.md#console-output) for progress and display controls.
 
-<img alt="Sample GuideLLM benchmark output" src="https://raw.githubusercontent.com/vllm-project/guidellm/main/docs/assets/sample-output.png" />
+<img alt="Sample Roundup benchmark output" src="https://raw.githubusercontent.com/toxicwind/roundup/main/docs/assets/sample-output.png" />
 
 ## Common Use Cases and Configurations
 
-GuideLLM supports a wide range of LLM benchmarking workflows. The examples below show how to run typical scenarios and highlight the parameters that matter most. For a complete list of arguments, details, and options, run `guidellm run --help`.
+Roundup supports a wide range of LLM benchmarking workflows. The examples below show how to run typical scenarios and highlight the parameters that matter most. For a complete list of arguments, details, and options, run `roundup run --help`.
 
 Each registry-backed option uses the form `--<option> kind=<TYPE>,<CONFIG>...`, where `CONFIG` is key=value pairs. For more complex configurations, use JSON or YAML, e.g. `--data '{"kind":"huggingface","source":"abisee/cnn_dailymail","load_kwargs":{"name":"3.0.0"}}'`.
 
@@ -124,7 +124,7 @@ Each registry-backed option uses the form `--<option> kind=<TYPE>,<CONFIG>...`, 
 Simulating different applications requires different traffic shapes. This example demonstrates rate-based load testing using a constant profile at 10 requests per second, running for 20 seconds with synthetic data of 128 prompt tokens and 256 output tokens.
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=constant,rate=10 \
   --constraint kind=max_duration,seconds=20 \
@@ -134,7 +134,7 @@ guidellm run \
 **Real dataset** — HuggingFace CNN/DailyMail with column mapping:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=huggingface,source=abisee/cnn_dailymail,load_kwargs.name=3.0.0 \
   --data-column-mapper kind=generative_column_mapper,column_mappings.text_column=article
@@ -149,14 +149,14 @@ guidellm run \
 
 ### Synthetic Visual Data
 
-GuideLLM can synthesize images and short videos on the fly so you can benchmark Vision-Language Model (VLM) serving configurations without bringing your own dataset. Two `--data` kinds — `synthetic_image` and `synthetic_video` — compose with `synthetic_text` for multimodal prompts. See [Synthetic Visual Data](docs/en/guides/multimodal/synthetic_vision.md) for example commands and the full list of configuration options.
+Roundup can synthesize images and short videos on the fly so you can benchmark Vision-Language Model (VLM) serving configurations without bringing your own dataset. Two `--data` kinds — `synthetic_image` and `synthetic_video` — compose with `synthetic_text` for multimodal prompts. See [Synthetic Visual Data](docs/en/guides/multimodal/synthetic_vision.md) for example commands and the full list of configuration options.
 
 ### Request Types and API Targets
 
-You can benchmark chat completions, text completions, or other supported request types. This example configures the benchmark to test the chat completions API using a custom dataset file, with GuideLLM automatically formatting requests to match the chat completions schema.
+You can benchmark chat completions, text completions, or other supported request types. This example configures the benchmark to test the chat completions API using a custom dataset file, with Roundup automatically formatting requests to match the chat completions schema.
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,request_format=/v1/chat/completions \
   --data kind=json_file,path=path/to/data.json
 ```
@@ -170,7 +170,7 @@ guidellm run \
 Built-in scenarios bundle schedules, dataset settings, and request formatting to standardize common testing patterns. This example uses the pre-configured chat scenario which includes appropriate defaults for chat model evaluation, with any additional CLI arguments overriding the scenario's settings.
 
 ```bash
-guidellm run \
+roundup run \
   --config chat \
   --backend kind=openai_http,target=http://localhost:8000
 ```
@@ -178,7 +178,7 @@ guidellm run \
 **Reproducible sweeps** — concurrent benchmark with warmup/cooldown and error budget:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=concurrent,streams=16,warmup=0.1,cooldown=0.1 \
   --constraint kind=max_errors,count=5 \
@@ -189,14 +189,14 @@ guidellm run \
 **Synthetic vision-language** — generate images/video on the fly, no dataset needed:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=synthetic_image --data kind=synthetic_text,prompt_tokens=64,output_tokens=32
 ```
 
 See [Synthetic Visual Data](docs/en/guides/multimodal/synthetic_vision.md) for the full option list.
 
-**Key knobs** (full reference: `guidellm run --help`)
+**Key knobs** (full reference: `roundup run --help`)
 
 | Flag | Meaning |
 | --- | --- |
@@ -211,16 +211,16 @@ See [Synthetic Visual Data](docs/en/guides/multimodal/synthetic_vision.md) for t
 
 ## Fork addition: response-quality scoring
 
-GuideLLM natively measures latency, throughput, and token distributions — it never inspects response *content*. This fork adds **pluggable deterministic response scoring**: every completed request is scored, per-request scores are persisted, and quality aggregates are reported alongside the performance numbers.
+Roundup natively measures latency, throughput, and token distributions — it never inspects response *content*. This fork adds **pluggable deterministic response scoring**: every completed request is scored, per-request scores are persisted, and quality aggregates are reported alongside the performance numbers.
 
 ### Scorers
 
 | Module | Role |
 | --- | --- |
-| `guidellm.benchmark.scoring.protocol` | `Scorer` protocol: `name`, `score(output, expected=None, context=None) -> ScorerResult(score, details)` |
-| `guidellm.benchmark.scoring.registry` | `register_scorer` / `get_scorer` — scorers referenced by name in scenario config |
-| `guidellm.benchmark.scoring.instruction` | `InstructionFollowingScorer` — deterministic sentinel scoring: exact normalized match = `2.0`, sentinel present with extra text = `1.0`, missing/empty/error = `0.0` |
-| `guidellm.benchmark.scoring.adapters` | `ThinkingBlockStripper` — strips `<think>`, `<thinking>`, `<reasoning>`, `<thought>`, `<scratchpad>`, and fenced thinking blocks (true nesting, innermost-first) before delegating; reports under `<scorer>_nothink` with `stripped: bool` |
+| `roundup.benchmark.scoring.protocol` | `Scorer` protocol: `name`, `score(output, expected=None, context=None) -> ScorerResult(score, details)` |
+| `roundup.benchmark.scoring.registry` | `register_scorer` / `get_scorer` — scorers referenced by name in scenario config |
+| `roundup.benchmark.scoring.instruction` | `InstructionFollowingScorer` — deterministic sentinel scoring: exact normalized match = `2.0`, sentinel present with extra text = `1.0`, missing/empty/error = `0.0` |
+| `roundup.benchmark.scoring.adapters` | `ThinkingBlockStripper` — strips `<think>`, `<thinking>`, `<reasoning>`, `<thought>`, `<scratchpad>`, and fenced thinking blocks (true nesting, innermost-first) before delegating; reports under `<scorer>_nothink` with `stripped: bool` |
 
 ### Wiring it in a scenario
 
@@ -243,7 +243,7 @@ metrics:
 
 ## Architecture
 
-Grounded in `src/guidellm/` — the component chain mirrors [`docs/en/guides/architecture.md`](docs/en/guides/architecture.md):
+Grounded in `src/roundup/` — the component chain mirrors [`docs/en/guides/architecture.md`](docs/en/guides/architecture.md):
 
 | Directory | Role |
 | --- | --- |
@@ -254,9 +254,9 @@ Grounded in `src/guidellm/` — the component chain mirrors [`docs/en/guides/arc
 | `schemas/` | Pydantic configs for benchmark specs, scenarios (`*.json` scenario files), and requests |
 | `cli/` | Click CLI: `run`, `export`, `preprocess`, `mock-server`, `env` |
 | `mock_server/` | OpenAI-compatible mock server for pipeline testing |
-| `settings.py` | `GUIDELLM__*` env-var configuration (e.g. `GUIDELLM__SPEC__BACKEND`, `GUIDELLM__DEFAULT_RESULTS_DIR`) |
+| `settings.py` | `ROUNDUP__*` env-var configuration (e.g. `ROUNDUP__SPEC__BACKEND`, `ROUNDUP__DEFAULT_RESULTS_DIR`) |
 
-**Backend support:** OpenAI-compatible HTTP servers (any vendor, incl. vLLM) via `openai_http`, and in-process vLLM via `vllm_python`. Endpoints covered: `/completions`, `/chat/completions`, `/embeddings`, `/audio/transcriptions`, `/audio/translations`. **Outputs:** console, JSON, CSV, HTML, plots. **Container:** multi-arch images at `ghcr.io/vllm-project/guidellm` (`linux/amd64` + `linux/arm64`):
+**Backend support:** OpenAI-compatible HTTP servers (any vendor, incl. vLLM) via `openai_http`, and in-process vLLM via `vllm_python`. Endpoints covered: `/completions`, `/chat/completions`, `/embeddings`, `/audio/transcriptions`, `/audio/translations`. **Outputs:** console, JSON, CSV, HTML, plots. **Container:** multi-arch images at `ghcr.io/toxicwind/roundup` (`linux/amd64` + `linux/arm64`):
 
 | Tag | Meaning |
 | --- | --- |
@@ -269,21 +269,21 @@ Grounded in `src/guidellm/` — the component chain mirrors [`docs/en/guides/arc
 
 | Tool | CLI | API | High Perf | Full Metrics | Data Modalities | Profiles | Backends | Output Types |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **GuideLLM** | ✅ | ✅ | ✅ | ❌ | Text, Image, Audio, Video | Synchronous, Concurrent, Throughput, Constant, Poisson, Sweep | OpenAI-compatible | console, json, csv, html |
+| **Roundup** | ✅ | ✅ | ✅ | ❌ | Text, Image, Audio, Video | Synchronous, Concurrent, Throughput, Constant, Poisson, Sweep | OpenAI-compatible | console, json, csv, html |
 | [inference-perf](https://github.com/kubernetes-sigs/inference-perf) | ✅ | ❌ | ✅ | ❌ | Text | Concurrent, Constant, Poisson, Sweep | OpenAI-compatible | json, png |
 | [genai-bench](https://github.com/sgl-project/genai-bench) | ✅ | ❌ | ❌ | ❌ | Text, Image, Embedding, ReRank | Concurrent | OpenAI-compatible, Hosted Cloud | console, xlsx, png |
 | [llm-perf](https://github.com/ray-project/llmperf) | ❌ | ❌ | ✅ | ❌ | Text | Concurrent | OpenAI-compatible, Hosted Cloud | json |
 | [vllm/benchmarks](https://github.com/vllm-project/vllm/tree/main/benchmarks) | ✅ | ❌ | ❌ | ❌ | Text | Synchronous, Throughput, Constant, Sweep | OpenAI-compatible, vLLM API | console, png |
 
-GuideLLM is the only one in the table with both a Python API and full latency distributions (TTFT/ITL), and this fork adds response-quality scoring that none of them measure.
+Roundup is the only one in the table with both a Python API and full latency distributions (TTFT/ITL), and this fork adds response-quality scoring that none of them measure.
 
 ## Configuration
 
 Three ways to configure a run, increasing in power:
 
 1. **CLI flags** — registry-backed form `--<option> kind=<TYPE>,<CONFIG>…`, where `CONFIG` is `key=value` pairs; complex values take JSON/YAML, e.g. `--data '{"kind":"huggingface","source":"abisee/cnn_dailymail","load_kwargs":{"name":"3.0.0"}}'`
-2. **Scenario files** — `--config` / `--scenario` / `-c` takes a built-in scenario name or a path to a custom YAML/JSON scenario bundling schedules, datasets, and request formatting ([`src/guidellm/schemas/benchmark/scenarios/`](src/guidellm/schemas/benchmark/scenarios/) ships the built-ins)
-3. **Environment variables** — `GUIDELLM__SPEC__BACKEND`, `GUIDELLM__SPEC__PROFILE`, `GUIDELLM__SPEC__CONSTRAINTS`, `GUIDELLM__SPEC__DATA`, `GUIDELLM__DEFAULT_RESULTS_DIR` (see the container example in Quick Start)
+2. **Scenario files** — `--config` / `--scenario` / `-c` takes a built-in scenario name or a path to a custom YAML/JSON scenario bundling schedules, datasets, and request formatting ([`src/roundup/schemas/benchmark/scenarios/`](src/roundup/schemas/benchmark/scenarios/) ships the built-ins)
+3. **Environment variables** — `ROUNDUP__SPEC__BACKEND`, `ROUNDUP__SPEC__PROFILE`, `ROUNDUP__SPEC__CONSTRAINTS`, `ROUNDUP__SPEC__DATA`, `ROUNDUP__DEFAULT_RESULTS_DIR` (see the container example in Quick Start)
 
 Scoring config lives under `metrics:` in the scenario (`scorers`, `scorer_config` — see [Wiring it in a scenario](#wiring-it-in-a-scenario)).
 
@@ -292,8 +292,8 @@ Scoring config lives under `metrics:` in the scenario (`scorers`, `scorer_config
 Prerequisites: Python 3.10+, [uv](https://docs.astral.sh/uv/getting-started/installation/) (recommended), Git, Tox.
 
 ```bash
-git clone https://github.com/toxicwind/guidellm.git
-cd guidellm
+git clone https://github.com/toxicwind/roundup.git
+cd roundup
 uv sync --frozen
 ```
 
@@ -322,28 +322,28 @@ Standards: Black formatting, Ruff linting, Mypy type checking, pytest unit tests
 **Active development:** OTEL/WEKA trace replay; standard-workflow scenario improvements; stackable scenario files; per-benchmark constraint overrides; gRPC backend for vLLM-native servers.
 
 ## Docs
-Full reference at [vllm-project.github.io/guidellm](https://vllm-project.github.io/guidellm) and in [`docs/en/`](docs/en/):
+Full reference at [toxicwind.github.io/roundup](https://toxicwind.github.io/roundup) and in [`docs/en/`](docs/en/):
 
-- [**Installation Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/getting-started/install.md) - This guide provides step-by-step instructions for installing GuideLLM, including prerequisites and setup tips.
-- [**Backends Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/backends.md) - A comprehensive overview of supported backends and how to set them up for use with GuideLLM.
-- [**Data/Datasets Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/datasets.md) - Information on supported datasets, including how to use them for benchmarking.
-- [**Metrics Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/metrics.md) - Detailed explanations of the metrics used in GuideLLM, including definitions and how to interpret them.
-- [**Outputs Guide**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/outputs.md) - Information on the different output formats supported by GuideLLM and how to use them.
-- [**Architecture Overview**](https://github.com/vllm-project/guidellm/blob/main/docs/en/guides/architecture.md) - A detailed look at GuideLLM's design, components, and how they interact.
+- [**Installation Guide**](https://github.com/toxicwind/roundup/blob/main/docs/en/getting-started/install.md) - This guide provides step-by-step instructions for installing Roundup, including prerequisites and setup tips.
+- [**Backends Guide**](https://github.com/toxicwind/roundup/blob/main/docs/en/guides/backends.md) - A comprehensive overview of supported backends and how to set them up for use with Roundup.
+- [**Data/Datasets Guide**](https://github.com/toxicwind/roundup/blob/main/docs/en/guides/datasets.md) - Information on supported datasets, including how to use them for benchmarking.
+- [**Metrics Guide**](https://github.com/toxicwind/roundup/blob/main/docs/en/guides/metrics.md) - Detailed explanations of the metrics used in Roundup, including definitions and how to interpret them.
+- [**Outputs Guide**](https://github.com/toxicwind/roundup/blob/main/docs/en/guides/outputs.md) - Information on the different output formats supported by Roundup and how to use them.
+- [**Architecture Overview**](https://github.com/toxicwind/roundup/blob/main/docs/en/guides/architecture.md) - A detailed look at Roundup's design, components, and how they interact.
 
 ## License
 
-GuideLLM is licensed under the [Apache License 2.0](LICENSE) — © Red Hat. Contributions are licensed under the same terms ([CONTRIBUTING.md](CONTRIBUTING.md#license)).
+Roundup is licensed under the [Apache License 2.0](LICENSE) — © Red Hat. Contributions are licensed under the same terms ([CONTRIBUTING.md](CONTRIBUTING.md#license)).
 
-**Security:** this repo ships no `SECURITY.md` and no documented security contact. Report suspected vulnerabilities via [GitHub Issues](https://github.com/toxicwind/guidellm/issues) (upstream: [vllm-project/guidellm/issues](https://github.com/vllm-project/guidellm/issues)).
+**Security:** this repo ships no `SECURITY.md` and no documented security contact. Report suspected vulnerabilities via [GitHub Issues](https://github.com/toxicwind/roundup/issues) (upstream: [toxicwind/roundup/issues](https://github.com/toxicwind/roundup/issues)).
 
 ## Cite
 
 ```bibtex
-@misc{guidellm2024,
-  title={GuideLLM: Scalable Inference and Optimization for Large Language Models},
+@misc{roundup2024,
+  title={Roundup: Scalable Inference and Optimization for Large Language Models},
   author={Neural Magic, Inc.},
   year={2024},
-  howpublished={\url{https://github.com/vllm-project/guidellm}},
+  howpublished={\url{https://github.com/toxicwind/roundup}},
 }
 ```

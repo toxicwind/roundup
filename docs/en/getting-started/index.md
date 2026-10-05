@@ -4,13 +4,13 @@ weight: -10
 
 # Getting Started
 
-Welcome to GuideLLM! This section will guide you through the process of installing the tool, setting up your benchmarking environment, running your first benchmark, and analyzing the results to optimize your LLM deployment for real-world inference workloads.
+Welcome to Roundup! This section will guide you through the process of installing the tool, setting up your benchmarking environment, running your first benchmark, and analyzing the results to optimize your LLM deployment for real-world inference workloads.
 
-GuideLLM makes it simple to evaluate and optimize your large language model deployments, helping you find the perfect balance between performance, resource utilization, and cost-effectiveness.
+Roundup makes it simple to evaluate and optimize your large language model deployments, helping you find the perfect balance between performance, resource utilization, and cost-effectiveness.
 
 ## Quick Start Guides
 
-Follow the guides below in sequence to get the most out of GuideLLM and optimize your LLM deployments for production use.
+Follow the guides below in sequence to get the most out of Roundup and optimize your LLM deployments for production use.
 
 <div class="grid cards" markdown>
 
@@ -18,7 +18,7 @@ Follow the guides below in sequence to get the most out of GuideLLM and optimize
 
   ______________________________________________________________________
 
-  Learn how to install GuideLLM using pip, from source, or with specific version requirements.
+  Learn how to install Roundup using pip, from source, or with specific version requirements.
 
   [:octicons-arrow-right-24: Installation Guide](install.md)
 

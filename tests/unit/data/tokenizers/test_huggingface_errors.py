@@ -1,7 +1,7 @@
 """Unit tests for classified tokenizer load errors in
-guidellm.data.tokenizers.huggingface.
+roundup.data.tokenizers.huggingface.
 
-Borrowed failure taxonomy: vllm-project/guidellm#205 (open) -- invalid
+Borrowed failure taxonomy: toxicwind/roundup#205 (open) -- invalid
 tokenizer names surface as inconsistent, non-descriptive errors. Our fork
 classifies the Hub failure modes into actionable messages.
 """
@@ -19,8 +19,8 @@ from huggingface_hub.errors import (
 from requests import Response
 from requests.exceptions import HTTPError
 
-from guidellm.data.tokenizers.huggingface import HuggingFaceTokenizer
-from guidellm.schemas.data import HuggingFaceTokenizerArgs
+from roundup.data.tokenizers.huggingface import HuggingFaceTokenizer
+from roundup.schemas.data import HuggingFaceTokenizerArgs
 
 
 def _hub_error(cls, status_code):
@@ -40,7 +40,7 @@ def _fail_with(monkeypatch: pytest.MonkeyPatch, exc: Exception):
         raise exc
 
     monkeypatch.setattr(
-        "guidellm.data.tokenizers.huggingface.AutoTokenizer.from_pretrained",
+        "roundup.data.tokenizers.huggingface.AutoTokenizer.from_pretrained",
         boom,
     )
 
@@ -134,7 +134,7 @@ def test_successful_load_unaffected(monkeypatch):
         return sentinel
 
     monkeypatch.setattr(
-        "guidellm.data.tokenizers.huggingface.AutoTokenizer.from_pretrained",
+        "roundup.data.tokenizers.huggingface.AutoTokenizer.from_pretrained",
         fake,
     )
     tok = _tokenizer("gpt2")

@@ -2,7 +2,7 @@ import pytest
 import transformers
 from transformers import PreTrainedTokenizerBase
 
-from guidellm.utils.hf_transformers import check_load_processor
+from roundup.utils.hf_transformers import check_load_processor
 
 
 class DummyTokenizer(PreTrainedTokenizerBase):

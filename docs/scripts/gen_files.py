@@ -117,7 +117,7 @@ def generate_translation_map():
     routes = route_builder(project_root)
     content = (
         "// Generated during the MkDocs build. Do not edit.\n"
-        "window.GUIDELLM_TRANSLATION_ROUTES = Object.freeze("
+        "window.ROUNDUP_TRANSLATION_ROUTES = Object.freeze("
         f"{json.dumps(routes, ensure_ascii=False, sort_keys=True)}"
         ");\n"
     )

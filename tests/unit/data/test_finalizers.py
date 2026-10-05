@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.finalizers module.
+Unit tests for roundup.data.finalizers module.
 
 ### WRITTEN BY AI ###
 """
@@ -8,18 +8,18 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.data.finalizers import (
+from roundup.data.finalizers import (
     FinalizerRegistry,
     GenerativeRequestFinalizer,
 )
-from guidellm.data.schemas.conversation_graph_data import (
+from roundup.data.schemas.conversation_graph_data import (
     ConversationGraphData,
     ConversationParentRef,
     ConversationTurnData,
 )
-from guidellm.scheduler.schemas.conversation_graph import GenerativeConversationGraph
-from guidellm.schemas import GenerationRequest, RequestSettings
-from guidellm.schemas.data import GenerativeRequestFinalizerArgs
+from roundup.scheduler.schemas.conversation_graph import GenerativeConversationGraph
+from roundup.schemas import GenerationRequest, RequestSettings
+from roundup.schemas.data import GenerativeRequestFinalizerArgs
 
 
 def _ordered_requests(

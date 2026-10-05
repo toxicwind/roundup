@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.utils.dict import deep_filter, deep_update, recursive_key_update
+from roundup.utils.dict import deep_filter, deep_update, recursive_key_update
 
 
 def update_str(string):

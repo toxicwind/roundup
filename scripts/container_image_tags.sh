@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Helpers for selecting and validating GuideLLM GHCR release tags.
+# Helpers for selecting and validating Roundup GHCR release tags.
 # Used by .github/workflows/container-maintenance.yml and local tests.
 #
 # Architecture-specific tags (e.g. v0.7.0-arm64) must never be chosen for

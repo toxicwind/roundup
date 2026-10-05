@@ -8,7 +8,7 @@ from unittest.mock import Mock, patch
 import httpx
 import pytest
 
-from guidellm.utils.text import (
+from roundup.utils.text import (
     MAX_PATH_LENGTH,
     EndlessTextCreator,
     clean_text,
@@ -315,8 +315,8 @@ class TestLoadText:
 
     @pytest.mark.xfail(reason="old and broken", run=False)
     @pytest.mark.smoke
-    @patch("guidellm.utils.text.files")
-    @patch("guidellm.utils.text.as_file")
+    @patch("roundup.utils.text.files")
+    @patch("roundup.utils.text.as_file")
     def test_package_data_loading(self, mock_as_file, mock_files):
         """Test load_text with package data."""
         mock_resource = Mock()

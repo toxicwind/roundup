@@ -57,8 +57,8 @@ def test_valid_translation_metadata(tmp_path: Path):
     """
     _create_translation_project(
         tmp_path,
-        "# Home\n\n```bash\nguidellm --help\n```\n",
-        "# 首页\n\n```bash\nguidellm --help\n```\n",
+        "# Home\n\n```bash\nroundup --help\n```\n",
+        "# 首页\n\n```bash\nroundup --help\n```\n",
     )
 
     status = validate_translations(tmp_path, MANIFEST_PATH)
@@ -97,8 +97,8 @@ def test_changed_code_example_is_an_error(tmp_path: Path):
     """
     _create_translation_project(
         tmp_path,
-        "# Home\n\n```bash\nguidellm --help\n```\n",
-        "# 首页\n\n```bash\nguidellm run\n```\n",
+        "# Home\n\n```bash\nroundup --help\n```\n",
+        "# 首页\n\n```bash\nroundup run\n```\n",
     )
 
     status = validate_translations(tmp_path, MANIFEST_PATH)

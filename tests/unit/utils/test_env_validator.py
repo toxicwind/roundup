@@ -7,9 +7,9 @@ Unit tests for environment variable validation utilities.
 import pytest
 from pydantic import BaseModel
 
-from guidellm.schemas.benchmark import BenchmarkScenario
-from guidellm.settings import Settings
-from guidellm.utils.env_validator import (
+from roundup.schemas.benchmark import BenchmarkScenario
+from roundup.settings import Settings
+from roundup.utils.env_validator import (
     _resolve_model_type,
     _walk_model_fields,
     get_valid_env_vars,
@@ -76,11 +76,11 @@ class TestWalkModelFields:
 
         ## WRITTEN BY AI ##
         """
-        env_vars, prefixes = _walk_model_fields(BenchmarkScenario, "GUIDELLM__", "__")
+        env_vars, prefixes = _walk_model_fields(BenchmarkScenario, "ROUNDUP__", "__")
 
-        assert "GUIDELLM__SPEC__" in prefixes
-        assert "GUIDELLM__SPEC__BACKEND__" in prefixes
-        assert "GUIDELLM__SPEC__PROFILE__" in prefixes
+        assert "ROUNDUP__SPEC__" in prefixes
+        assert "ROUNDUP__SPEC__BACKEND__" in prefixes
+        assert "ROUNDUP__SPEC__PROFILE__" in prefixes
 
     def test_returns_exact_names_for_leaf_fields(self):
         """
@@ -88,10 +88,10 @@ class TestWalkModelFields:
 
         ## WRITTEN BY AI ##
         """
-        env_vars, prefixes = _walk_model_fields(Settings, "GUIDELLM__", "__")
+        env_vars, prefixes = _walk_model_fields(Settings, "ROUNDUP__", "__")
 
-        assert "GUIDELLM__MAX_CONCURRENCY" in env_vars
-        assert "GUIDELLM__DEFAULT_SWEEP_NUMBER" in env_vars
+        assert "ROUNDUP__MAX_CONCURRENCY" in env_vars
+        assert "ROUNDUP__DEFAULT_SWEEP_NUMBER" in env_vars
 
     def test_settings_no_false_positives(self):
         """
@@ -99,7 +99,7 @@ class TestWalkModelFields:
 
         ## WRITTEN BY AI ##
         """
-        env_vars, _prefixes = _walk_model_fields(Settings, "GUIDELLM__", "__")
+        env_vars, _prefixes = _walk_model_fields(Settings, "ROUNDUP__", "__")
 
         for var in env_vars:
             assert not var.endswith("__"), f"Leaf var {var} looks like a prefix"
@@ -115,11 +115,11 @@ class TestValidateEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__MAX_CONCURRENCY", "64")
+        monkeypatch.setenv("ROUNDUP__MAX_CONCURRENCY", "64")
         invalid, valid = validate_env_vars(Settings)
 
-        assert "GUIDELLM__MAX_CONCURRENCY" in valid
-        assert "GUIDELLM__MAX_CONCURRENCY" not in invalid
+        assert "ROUNDUP__MAX_CONCURRENCY" in valid
+        assert "ROUNDUP__MAX_CONCURRENCY" not in invalid
 
     def test_accepts_nested_model_prefix_var(self, monkeypatch):
         """
@@ -127,11 +127,11 @@ class TestValidateEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://localhost:8000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://localhost:8000")
         invalid, valid = validate_env_vars(BenchmarkScenario)
 
-        assert "GUIDELLM__SPEC__BACKEND__TARGET" in valid
-        assert "GUIDELLM__SPEC__BACKEND__TARGET" not in invalid
+        assert "ROUNDUP__SPEC__BACKEND__TARGET" in valid
+        assert "ROUNDUP__SPEC__BACKEND__TARGET" not in invalid
 
     def test_rejects_unknown_var(self, monkeypatch):
         """
@@ -139,11 +139,11 @@ class TestValidateEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__TOTALLY_BOGUS", "value")
+        monkeypatch.setenv("ROUNDUP__TOTALLY_BOGUS", "value")
         invalid, valid = validate_env_vars(Settings, BenchmarkScenario)
 
-        assert "GUIDELLM__TOTALLY_BOGUS" in invalid
-        assert "GUIDELLM__TOTALLY_BOGUS" not in valid
+        assert "ROUNDUP__TOTALLY_BOGUS" in invalid
+        assert "ROUNDUP__TOTALLY_BOGUS" not in valid
 
     def test_accepts_discriminated_union_variant_fields(self, monkeypatch):
         """
@@ -151,17 +151,17 @@ class TestValidateEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__KIND", "openai_http")
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://localhost:8000")
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__MODEL", "gpt2")
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__API_KEY", "sk-test")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__KIND", "openai_http")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://localhost:8000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__MODEL", "gpt2")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__API_KEY", "sk-test")
 
         invalid, valid = validate_env_vars(BenchmarkScenario)
 
-        assert "GUIDELLM__SPEC__BACKEND__KIND" in valid
-        assert "GUIDELLM__SPEC__BACKEND__TARGET" in valid
-        assert "GUIDELLM__SPEC__BACKEND__MODEL" in valid
-        assert "GUIDELLM__SPEC__BACKEND__API_KEY" in valid
+        assert "ROUNDUP__SPEC__BACKEND__KIND" in valid
+        assert "ROUNDUP__SPEC__BACKEND__TARGET" in valid
+        assert "ROUNDUP__SPEC__BACKEND__MODEL" in valid
+        assert "ROUNDUP__SPEC__BACKEND__API_KEY" in valid
         assert not invalid
 
 
@@ -186,5 +186,5 @@ class TestGetValidEnvVars:
         """
         env_vars, prefixes = get_valid_env_vars(Settings, BenchmarkScenario)
 
-        assert "GUIDELLM__MAX_CONCURRENCY" in env_vars
-        assert "GUIDELLM__SPEC__BACKEND__" in prefixes
+        assert "ROUNDUP__MAX_CONCURRENCY" in env_vars
+        assert "ROUNDUP__SPEC__BACKEND__" in prefixes

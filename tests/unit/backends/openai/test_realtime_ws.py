@@ -15,10 +15,10 @@ from pydantic import ValidationError
 from websockets.asyncio.server import serve
 from websockets.exceptions import ConnectionClosed
 
-from guidellm.backends.backend import Backend
-from guidellm.backends.openai.websocket import OpenAIWebSocketBackend
-from guidellm.schemas import GenerationRequest, RequestInfo, RequestTimings
-from guidellm.schemas.backends import OpenAIWebSocketBackendArgs
+from roundup.backends.backend import Backend
+from roundup.backends.openai.websocket import OpenAIWebSocketBackend
+from roundup.schemas import GenerationRequest, RequestInfo, RequestTimings
+from roundup.schemas.backends import OpenAIWebSocketBackendArgs
 from tests.unit.testing_utils import wait_until
 
 
@@ -26,7 +26,7 @@ from tests.unit.testing_utils import wait_until
 def _patch_pcm16_chunks(monkeypatch: pytest.MonkeyPatch) -> None:
     """Avoid torchcodec decode in unit tests; handler chunks audio in format()."""
     monkeypatch.setattr(
-        "guidellm.backends.openai.request_handlers.pcm16_append_b64_chunks",
+        "roundup.backends.openai.request_handlers.pcm16_append_b64_chunks",
         lambda *a, **k: ["YWFhYQ=="],
     )
 
@@ -488,7 +488,7 @@ async def test_excessive_ignored_events_raises(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(
-        "guidellm.backends.openai.websocket._MAX_IGNORED_WS_EVENT_TYPES",
+        "roundup.backends.openai.websocket._MAX_IGNORED_WS_EVENT_TYPES",
         2,
     )
 

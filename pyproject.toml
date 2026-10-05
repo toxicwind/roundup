@@ -8,9 +8,9 @@ where = ["src"]
 include = ["*"]
 
 [tool.setuptools.package-data]
-guidellm = ["py.typed"]
-"guidellm.schemas.benchmark.scenarios" = ["*.json", "**/*.json"]
-"guidellm.benchmark.outputs.html_report" = ["*.html", "*.css", "*.js"]
+roundup = ["py.typed"]
+"roundup.schemas.benchmark.scenarios" = ["*.json", "**/*.json"]
+"roundup.benchmark.outputs.html_report" = ["*.html", "*.css", "*.js"]
 
 [tool.uv]
 required-environments = [
@@ -34,8 +34,8 @@ torchcodec = { index = "pytorch-cpu" }
 
 [project]
 dynamic = ["version"]
-name = "guidellm"
-description = "Guidance platform for deploying and managing large language models."
+name = "roundup"
+description = "Benchmark and profile LLM deployments against real inference workloads. Fork of vllm-project/guidellm."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10.0,<4.0"
 license = { text = "Apache-2.0" }
@@ -86,8 +86,8 @@ dependencies = [
 
 [project.optional-dependencies]
 # Meta Extras
-all = ["guidellm[perf,tokenizers,audio,vision,plot]"]
-recommended = ["guidellm[perf,tokenizers]"]
+all = ["roundup[perf,tokenizers,audio,vision,plot]"]
+recommended = ["roundup[perf,tokenizers]"]
 # Feature Extras
 plot = ["matplotlib>=3.10.9"]
 perf = ["orjson", "msgpack", "msgspec", "uvloop"]
@@ -133,7 +133,7 @@ quality = [
 ]
 test = [
     # Install all optional dependencies
-    "guidellm[all]",
+    "roundup[all]",
 
     "pytest~=9.1.1",
     "pytest-asyncio~=1.4.0",
@@ -159,14 +159,15 @@ dev = [
 ]
 
 [project.urls]
-homepage = "https://github.com/vllm-project/guidellm"
-source = "https://github.com/vllm-project/guidellm"
-issues = "https://github.com/vllm-project/guidellm/issues"
-docs = "https://github.com/vllm-project/guidellm/tree/main/docs"
+homepage = "https://github.com/toxicwind/roundup"
+source = "https://github.com/toxicwind/roundup"
+issues = "https://github.com/toxicwind/roundup/issues"
+docs = "https://toxicwind.github.io/roundup"
+upstream = "https://github.com/vllm-project/guidellm"
 
 
 [project.entry-points.console_scripts]
-guidellm = "guidellm.__main__:cli"
+roundup = "roundup.__main__:cli"
 
 
 # ************************************************
@@ -179,7 +180,7 @@ profile = "black"
 
 
 [tool.mypy]
-files = ["src/guidellm"]
+files = ["src/roundup"]
 python_version = '3.10'
 warn_redundant_casts = true
 warn_unused_ignores = false
@@ -307,18 +308,18 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["guidellm", "tests"]
+known-first-party = ["roundup", "tests"]
 
 
 [tool.importlinter]
-root_package = "guidellm"
+root_package = "roundup"
 exclude_type_checking_imports = true
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
 name = "Enforce import layers"
 type = "layers"
-containers = ["guidellm"]
+containers = ["roundup"]
 layers = [
   "__main__",
   "cli",
@@ -339,19 +340,19 @@ exhaustive_ignores = ["version"]
 name = "Check acyclic siblings on utility modules"
 type = "acyclic_siblings"
 ancestors = [
-    "guidellm.utils",
-    "guidellm.schemas",
-    "guidellm.extras",
+    "roundup.utils",
+    "roundup.schemas",
+    "roundup.extras",
 ]
 
 [[tool.importlinter.contracts]]
 name = "Avoid slow importing libraries in the worker hot-path"
 type = "forbidden"
 source_modules = [
-  "guidellm.scheduler",
-  "guidellm.backends",
-  "guidellm.schemas",
-  "guidellm.schemas.**",
+  "roundup.scheduler",
+  "roundup.backends",
+  "roundup.schemas",
+  "roundup.schemas.**",
 ]
 forbidden_modules = [
   "datasets",
@@ -364,11 +365,11 @@ forbidden_modules = [
 name = "Disallow importing entrypoint modules directly"
 type = "protected"
 protected_modules = [
-    "guidellm.benchmark",
-    "guidellm.mock_server",
+    "roundup.benchmark",
+    "roundup.mock_server",
 ]
 allowed_importers = [
-    "guidellm.entrypoints",
+    "roundup.entrypoints",
 ]
 
 

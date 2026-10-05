@@ -7,19 +7,19 @@ from io import StringIO
 import pytest
 from rich.console import Console
 
-from guidellm.benchmark import progress as progress_module
-from guidellm.benchmark.profiles import ProfileFactory
-from guidellm.benchmark.progress import (
+from roundup.benchmark import progress as progress_module
+from roundup.benchmark.profiles import ProfileFactory
+from roundup.benchmark.progress import (
     GenerativeConsoleBenchmarkerProgress,
     GenerativeLoggingBenchmarkerProgress,
 )
-from guidellm.benchmark.schemas import (
+from roundup.benchmark.schemas import (
     BenchmarkConfig,
     GenerativeBenchmark,
     GenerativeBenchmarkAccumulator,
 )
-from guidellm.scheduler import SchedulerState, SynchronousStrategy
-from guidellm.schemas.benchmark.profiles import SynchronousProfileArgs
+from roundup.scheduler import SchedulerState, SynchronousStrategy
+from roundup.schemas.benchmark.profiles import SynchronousProfileArgs
 
 
 @pytest.fixture

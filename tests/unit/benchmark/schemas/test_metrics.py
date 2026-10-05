@@ -7,26 +7,28 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.benchmark.schemas.accumulator import GenerativeBenchmarkAccumulator
-from guidellm.benchmark.schemas.base import BenchmarkConfig
-from guidellm.benchmark.schemas.metrics import (
+from roundup.benchmark.schemas.accumulator import GenerativeBenchmarkAccumulator
+from roundup.benchmark.schemas.base import BenchmarkConfig
+from roundup.benchmark.schemas.metrics import (
     GenerativeMetrics,
     GenerativeMetricsSummary,
     GenerativeToolCallMetricsSummary,
+    SchedulerMetrics,
 )
-from guidellm.scheduler import (
+from roundup.scheduler import (
     AsyncConstantStrategy,
+    SchedulerState,
     SchedulingStrategy,
     ThroughputStrategy,
 )
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerativeRequestStats,
     RequestInfo,
     RequestTimings,
     StatusDistributionSummary,
     UsageMetrics,
 )
-from guidellm.schemas.benchmark import GoodputSLO
+from roundup.schemas.benchmark import GoodputSLO
 
 
 def _make_errored_tool_call_stats(request_id: str) -> GenerativeRequestStats:
@@ -1090,75 +1092,8 @@ class TestGoodputConfigWiring:
         assert BenchmarkConfig.model_validate(payload).slo is None
 
 
-def _make_turn_stats(
-    request_id: str,
-    conversation_id: str,
-    turn_index: int,
-    request_start: float,
-    first_token: float,
-    request_end: float,
-    prompt_tokens: int = 8,
-    status: str = "completed",
-) -> GenerativeRequestStats:
-    """Build a streaming request placed at a given turn of a conversation.
-
-    ## WRITTEN BY AI ##
-    """
-    timings = RequestTimings(
-        resolve_start=request_start,
-        resolve_end=request_end,
-        request_start=request_start,
-        request_end=request_end,
-        first_token_iteration=first_token,
-        last_token_iteration=request_end,
-        token_iterations=9,
-    )
-    return GenerativeRequestStats(
-        request_id=request_id,
-        info=RequestInfo(
-            request_id=request_id,
-            conversation_id=conversation_id,
-            turn_index=turn_index,
-            status=status,
-            timings=timings,
-        ),
-        input_metrics=UsageMetrics(text_tokens=prompt_tokens),
-        output_metrics=UsageMetrics(text_tokens=9),
-    )
-
-
-def _make_conversations(
-    n_conversations: int, n_turns: int
-) -> list[GenerativeRequestStats]:
-    """Build conversations whose first-token latency and prompt grow per turn.
-
-    Turn ``t`` of every conversation has a first-token latency of
-    ``100 * (t + 1)`` ms and a prompt of ``8 * (t + 1)`` tokens, so each
-    turn position has a distinct, known mean.
-
-    ## WRITTEN BY AI ##
-    """
-    stats: list[GenerativeRequestStats] = []
-    for conv in range(n_conversations):
-        for turn in range(n_turns):
-            start = SCHEDULE_BASE_TIME + conv * 10.0 + turn * 2.0
-            stats.append(
-                _make_turn_stats(
-                    request_id=f"c{conv}-t{turn}",
-                    conversation_id=f"c{conv}",
-                    turn_index=turn,
-                    request_start=start,
-                    first_token=start + 0.1 * (turn + 1),
-                    request_end=start + 1.0,
-                    prompt_tokens=8 * (turn + 1),
-                )
-            )
-    return stats
-
-
-class TestTurnMetrics:
-    """
-    Verify per-turn-position distributions for multi-turn workloads.
+class TestSchedulerMetricsGenerationDelayCompile:
+    """Compile generation delay samples into a distribution summary.
 
     ## WRITTEN BY AI ##
     """
@@ -1317,3 +1252,285 @@ class TestTurnMetrics:
         last = metrics.turns[2]
         assert last.request_totals.errored == 1
         assert last.request_totals.successful == 0
+
+
+def _make_streamed_request(  # noqa: PLR0913
+    request_id: str,
+    start: float,
+    ttft: float,
+    duration: float,
+    prompt_tokens: int,
+    output_tokens: int,
+) -> GenerativeRequestStats:
+    """Build a completed streaming request with token timings populated.
+
+    Values vary between requests so that the compiled distributions have
+    non-zero spread, which is what an interval has to be read against.
+
+    ## WRITTEN BY AI ##
+    """
+    timings = RequestTimings(
+        resolve_start=start,
+        resolve_end=start + duration,
+        request_start=start,
+        request_end=start + duration,
+        first_token_iteration=start + ttft,
+        first_output_token_iteration=start + ttft,
+        last_token_iteration=start + duration,
+        token_iterations=output_tokens,
+        request_iterations=output_tokens + 1,
+    )
+    return GenerativeRequestStats(
+        request_id=request_id,
+        info=RequestInfo(request_id=request_id, status="completed", timings=timings),
+        input_metrics=UsageMetrics(text_tokens=prompt_tokens),
+        output_metrics=UsageMetrics(text_tokens=output_tokens),
+    )
+
+
+def _compile_with_confidence(
+    confidence: float | None, count: int = 400
+) -> GenerativeMetrics:
+    """Compile metrics over a run of streaming requests at the given confidence.
+
+    ## WRITTEN BY AI ##
+    """
+    requests = [
+        _make_streamed_request(
+            f"request-{index}",
+            SCHEDULE_BASE_TIME + index * 0.01,
+            0.05 + (index % 17) * 0.002,
+            0.8 + (index % 13) * 0.02,
+            12 + index % 7,
+            100 + index % 23,
+        )
+        for index in range(count)
+    ]
+    accumulator = _make_accumulator(
+        requests, SCHEDULE_BASE_TIME, SCHEDULE_BASE_TIME + count * 0.01 + 2.0
+    )
+    accumulator.config.confidence = confidence
+
+    return GenerativeMetrics.compile(accumulator)
+
+
+class TestReportedUncertainty:
+    """Verify which compiled metrics carry confidence intervals."""
+
+    # Recorded once per request, so each value is one observation.
+    PER_REQUEST_METRICS = (
+        "request_latency",
+        "request_streaming_iterations_count",
+        "prompt_token_count",
+        "output_token_count",
+        "total_token_count",
+        "time_to_first_token_ms",
+        "time_to_first_output_token_ms",
+    )
+    # Weighted by output tokens, or derived from event timings, so an interval
+    # assuming interchangeable observations would not apply.
+    EXCLUDED_METRICS = (
+        "time_per_output_token_ms",
+        "inter_token_latency_ms",
+        "output_tokens_per_iteration",
+        "requests_per_second",
+        "request_concurrency",
+        "output_tokens_per_second",
+        "tokens_per_second",
+    )
+
+    @pytest.mark.smoke
+    @pytest.mark.parametrize("metric_name", PER_REQUEST_METRICS)
+    def test_per_request_metrics_report_intervals(self, metric_name: str):
+        """
+        Metrics recorded once per request carry mean and percentile intervals.
+
+        ## WRITTEN BY AI ##
+        """
+        metrics = _compile_with_confidence(0.95)
+
+        distribution = getattr(metrics, metric_name).successful
+        assert distribution.mean_ci is not None
+        assert (
+            distribution.mean_ci.lower < distribution.mean < distribution.mean_ci.upper
+        )
+        assert distribution.percentile_cis is not None
+        assert distribution.percentile_cis.p50 is not None
+
+    @pytest.mark.sanity
+    @pytest.mark.parametrize("metric_name", EXCLUDED_METRICS)
+    def test_weighted_and_rate_metrics_report_no_intervals(self, metric_name: str):
+        """
+        Token-weighted and rate metrics are reported without intervals.
+
+        Their reported mean is a ratio of totals rather than a mean over
+        interchangeable per-request observations.
+
+        ## WRITTEN BY AI ##
+        """
+        metrics = _compile_with_confidence(0.95)
+
+        distribution = getattr(metrics, metric_name).successful
+        assert distribution.mean_ci is None
+        assert distribution.percentile_cis is None
+
+    @pytest.mark.sanity
+    def test_no_intervals_when_confidence_is_disabled(self):
+        """
+        Setting the confidence level to None reports every metric as before.
+
+        ## WRITTEN BY AI ##
+        """
+        metrics = _compile_with_confidence(None)
+
+        for metric_name in self.PER_REQUEST_METRICS:
+            distribution = getattr(metrics, metric_name).successful
+            assert distribution.mean_ci is None
+            assert distribution.percentile_cis is None
+
+    @pytest.mark.regression
+    def test_confidence_level_widens_the_interval(self):
+        """
+        A higher confidence level produces a wider interval.
+
+        ## WRITTEN BY AI ##
+        """
+        narrow = _compile_with_confidence(0.90).time_to_first_token_ms.successful
+        wide = _compile_with_confidence(0.99).time_to_first_token_ms.successful
+
+        assert narrow.mean_ci is not None
+        assert wide.mean_ci is not None
+        assert (wide.mean_ci.upper - wide.mean_ci.lower) > (
+            narrow.mean_ci.upper - narrow.mean_ci.lower
+        )
+
+    @pytest.mark.regression
+    def test_short_runs_report_no_upper_percentile_interval(self):
+        """
+        A run too short to bound p99 reports None rather than a false bound.
+
+        With fewer than 368 requests the reported p99 is the slowest request in
+        the run, which is the case this feature exists to make visible.
+
+        ## WRITTEN BY AI ##
+        """
+        short = _compile_with_confidence(0.95, count=80).time_to_first_token_ms
+        long_run = _compile_with_confidence(0.95, count=400).time_to_first_token_ms
+
+        assert short.successful.percentile_cis is not None
+        assert short.successful.percentile_cis.p50 is not None
+        assert short.successful.percentile_cis.p99 is None
+        assert long_run.successful.percentile_cis is not None
+        assert long_run.successful.percentile_cis.p99 is not None
+
+
+def _make_turn_stats(
+    request_id: str,
+    conversation_id: str,
+    turn_index: int,
+    request_start: float,
+    first_token: float,
+    request_end: float,
+    prompt_tokens: int = 8,
+    status: str = "completed",
+) -> GenerativeRequestStats:
+    """Build a streaming request placed at a given turn of a conversation.
+
+    ## WRITTEN BY AI ##
+    """
+    timings = RequestTimings(
+        resolve_start=request_start,
+        resolve_end=request_end,
+        request_start=request_start,
+        request_end=request_end,
+        first_token_iteration=first_token,
+        last_token_iteration=request_end,
+        token_iterations=9,
+    )
+    return GenerativeRequestStats(
+        request_id=request_id,
+        info=RequestInfo(
+            request_id=request_id,
+            conversation_id=conversation_id,
+            turn_index=turn_index,
+            status=status,
+            timings=timings,
+        ),
+        input_metrics=UsageMetrics(text_tokens=prompt_tokens),
+        output_metrics=UsageMetrics(text_tokens=9),
+    )
+
+
+def _make_conversations(
+    n_conversations: int, n_turns: int
+) -> list[GenerativeRequestStats]:
+    """Build conversations whose first-token latency and prompt grow per turn.
+
+    Turn ``t`` of every conversation has a first-token latency of
+    ``100 * (t + 1)`` ms and a prompt of ``8 * (t + 1)`` tokens, so each
+    turn position has a distinct, known mean.
+
+    ## WRITTEN BY AI ##
+    """
+    stats: list[GenerativeRequestStats] = []
+    for conv in range(n_conversations):
+        for turn in range(n_turns):
+            start = SCHEDULE_BASE_TIME + conv * 10.0 + turn * 2.0
+            stats.append(
+                _make_turn_stats(
+                    request_id=f"c{conv}-t{turn}",
+                    conversation_id=f"c{conv}",
+                    turn_index=turn,
+                    request_start=start,
+                    first_token=start + 0.1 * (turn + 1),
+                    request_end=start + 1.0,
+                    prompt_tokens=8 * (turn + 1),
+                )
+            )
+    return stats
+
+
+class TestTurnMetrics:
+    """
+    Verify per-turn-position distributions for multi-turn workloads.
+
+    ## WRITTEN BY AI ##
+    """
+
+    @pytest.mark.smoke
+    def test_compile_builds_distribution_from_samples(self):
+        """
+        SchedulerMetrics.compile summarizes recorded generation delays.
+
+        ## WRITTEN BY AI ##
+        """
+        accumulator = _make_accumulator([], SCHEDULE_BASE_TIME, SCHEDULE_BASE_TIME + 10)
+
+        metrics = SchedulerMetrics.compile(
+            accumulator,
+            SchedulerState(
+                start_time=SCHEDULE_BASE_TIME,
+                generation_delay_samples=[0.1, 0.2, 0.3],
+            ),
+        )
+
+        assert metrics.generation_delay.count == 3
+        assert metrics.generation_delay.mean == pytest.approx(0.2)
+        assert metrics.generation_delay.min == pytest.approx(0.1)
+        assert metrics.generation_delay.max == pytest.approx(0.3)
+
+    @pytest.mark.smoke
+    def test_compile_empty_samples_has_zero_count(self):
+        """
+        Missing generation delay samples compile to an empty distribution.
+
+        ## WRITTEN BY AI ##
+        """
+        accumulator = _make_accumulator([], SCHEDULE_BASE_TIME, SCHEDULE_BASE_TIME + 10)
+
+        metrics = SchedulerMetrics.compile(
+            accumulator, SchedulerState(start_time=SCHEDULE_BASE_TIME)
+        )
+
+        assert metrics.generation_delay.count == 0
+        assert metrics.generation_delay.mean == 0.0

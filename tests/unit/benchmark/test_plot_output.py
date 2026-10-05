@@ -5,12 +5,12 @@ from types import SimpleNamespace
 import pytest
 from pydantic import ValidationError
 
-from guidellm.benchmark.entrypoints import reimport_benchmarks_report
-from guidellm.benchmark.outputs.plot import (
+from roundup.benchmark.entrypoints import reimport_benchmarks_report
+from roundup.benchmark.outputs.plot import (
     GenerativeBenchmarkerPlot,
 )
-from guidellm.benchmark.schemas import GenerativeBenchmarksReport
-from guidellm.schemas.benchmark import (
+from roundup.benchmark.schemas import GenerativeBenchmarksReport
+from roundup.schemas.benchmark import (
     BenchmarkOutputArgs,
     BenchmarkScenario,
     PlotBenchmarkOutputArgs,

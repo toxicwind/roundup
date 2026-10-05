@@ -1,10 +1,10 @@
-# Contributing to GuideLLM
+# Contributing to Roundup
 
-Thank you for considering contributing to GuideLLM! We welcome contributions from the community to help improve and grow this project. This document outlines the process and guidelines for contributing.
+Thank you for considering contributing to Roundup! We welcome contributions from the community to help improve and grow this project. This document outlines the process and guidelines for contributing.
 
 ## How Can You Contribute?
 
-There are many ways to contribute to GuideLLM:
+There are many ways to contribute to Roundup:
 
 - **Reporting Bugs**: If you encounter a bug, please let us know by creating an issue.
 - **Suggesting Features**: Have an idea for a new feature? Open an issue to discuss it.
@@ -32,8 +32,8 @@ You can either clone the repository directly or fork it if you plan to contribut
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/vllm-project/guidellm.git
-   cd guidellm
+   git clone https://github.com/toxicwind/roundup.git
+   cd roundup
    ```
 
 #### Option 2: Forking the Repository
@@ -43,11 +43,11 @@ You can either clone the repository directly or fork it if you plan to contribut
 2. Clone your forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/<your-username>/guidellm.git
-   cd guidellm
+   git clone https://github.com/<your-username>/roundup.git
+   cd roundup
    ```
 
-For detailed instructions on setting up your development environment, please refer to the [DEVELOPING.md](https://github.com/vllm-project/guidellm/blob/main/DEVELOPING.md) file. It includes step-by-step guidance on:
+For detailed instructions on setting up your development environment, please refer to the [DEVELOPING.md](https://github.com/toxicwind/roundup/blob/main/DEVELOPING.md) file. It includes step-by-step guidance on:
 
 - Installing dependencies
 - Running tests
@@ -114,8 +114,8 @@ If you encounter a bug or have a feature request, please open an issue on GitHub
 
 ## Community Standards
 
-We are committed to fostering a welcoming and inclusive community. Please read and adhere to our [Code of Conduct](https://github.com/vllm-project/guidellm/blob/main/CODE_OF_CONDUCT.md).
+We are committed to fostering a welcoming and inclusive community. Please read and adhere to our [Code of Conduct](https://github.com/toxicwind/roundup/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
-By contributing to GuideLLM, you agree that your contributions will be licensed under the [Apache License 2.0](https://github.com/vllm-project/guidellm/blob/main/LICENSE).
+By contributing to Roundup, you agree that your contributions will be licensed under the [Apache License 2.0](https://github.com/toxicwind/roundup/blob/main/LICENSE).

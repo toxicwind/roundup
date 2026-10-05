@@ -8,9 +8,9 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.data.preprocessors import TurnPivot
-from guidellm.data.preprocessors.preprocessor import PreprocessorRegistry
-from guidellm.schemas.data import TurnPivotArgs
+from roundup.data.preprocessors import TurnPivot
+from roundup.data.preprocessors.preprocessor import PreprocessorRegistry
+from roundup.schemas.data import TurnPivotArgs
 
 
 class TestTurnPivot:

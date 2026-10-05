@@ -16,15 +16,15 @@ from types import SimpleNamespace
 
 import pytest
 
-from guidellm.benchmark.profiles import (
+from roundup.benchmark.profiles import (
     AsyncProfile,
     ConcurrentProfile,
     Profile,
     ProfileFactory,
     SweepProfile,
 )
-from guidellm.benchmark.schemas import GenerativeBenchmarksReport
-from guidellm.scheduler import (
+from roundup.benchmark.schemas import GenerativeBenchmarksReport
+from roundup.scheduler import (
     AsyncConstantStrategy,
     AsyncPoissonStrategy,
     ConcurrentStrategy,
@@ -32,7 +32,7 @@ from guidellm.scheduler import (
     SchedulerUpdateAction,
     SynchronousStrategy,
 )
-from guidellm.schemas.benchmark import (
+from roundup.schemas.benchmark import (
     AsyncProfileArgs,
     BenchmarkScenario,
     ConcurrentProfileArgs,

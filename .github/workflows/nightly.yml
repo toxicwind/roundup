@@ -40,7 +40,7 @@ jobs:
           python-version: "3.13"
       - name: Install mkdocs dependencies
         run: |
-          # Sync GuideLLM install
+          # Sync Roundup install
           uv sync --frozen
           # Install mkdocs
           uv pip install "mkdocs<2.0.0" mkdocs-material mike \

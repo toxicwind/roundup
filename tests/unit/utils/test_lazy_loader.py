@@ -44,7 +44,7 @@ from unittest import mock
 
 import pytest
 
-import guidellm.utils.lazy_loader as lazy
+import roundup.utils.lazy_loader as lazy
 
 
 @pytest.fixture

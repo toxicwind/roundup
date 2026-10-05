@@ -6,12 +6,12 @@ from typing import Any, Literal
 
 import pytest
 
-from guidellm.schemas.benchmark import (
+from roundup.schemas.benchmark import (
     BenchmarkArgs,
     BenchmarkScenario,
     GenerativeMetricsArgs,
 )
-from guidellm.schemas.benchmark.profiles import ProfileArgs
+from roundup.schemas.benchmark.profiles import ProfileArgs
 
 VALID_BASE = {
     "backend": {"kind": "openai_http", "target": "http://localhost:8000"},

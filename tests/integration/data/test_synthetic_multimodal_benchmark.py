@@ -1,8 +1,8 @@
 """Integration test: benchmark synthetic_image / synthetic_video against the
-guidellm mock server.
+roundup mock server.
 
 Spins up the in-tree mock server (Sanic) in a subprocess, runs a short
-`guidellm benchmark run` against it for both image and video synthetic data,
+`roundup benchmark run` against it for both image and video synthetic data,
 and asserts the benchmark process exits cleanly with at least one successful
 request recorded.
 
@@ -25,8 +25,8 @@ from pathlib import Path
 import httpx
 import pytest
 
-from guidellm.mock_server.server import MockServer
-from guidellm.schemas.mock_server.config import MockServerConfig
+from roundup.mock_server.server import MockServer
+from roundup.schemas.mock_server.config import MockServerConfig
 from tests.fixtures.tokenizers import MINIMAL_TOKENIZER_DIR
 
 pytestmark = [pytest.mark.smoke]
@@ -100,7 +100,7 @@ def _run_benchmark(
     cmd = [
         sys.executable,
         "-m",
-        "guidellm",
+        "roundup",
         "run",
         "--backend",
         f"kind=openai_http,target={base_url}",

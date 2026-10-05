@@ -12,11 +12,11 @@ from typing import Any
 import pytest
 from datasets import Dataset
 
-from guidellm.data.finalizers import GenerativeRequestFinalizer
-from guidellm.data.preprocessors.mappers import GenerativeColumnMapper
-from guidellm.scheduler.schemas.conversation_graph import GenerativeConversationGraph
-from guidellm.schemas import GenerationRequest
-from guidellm.schemas.data import (
+from roundup.data.finalizers import GenerativeRequestFinalizer
+from roundup.data.preprocessors.mappers import GenerativeColumnMapper
+from roundup.scheduler.schemas.conversation_graph import GenerativeConversationGraph
+from roundup.schemas import GenerationRequest
+from roundup.schemas.data import (
     GenerativeColumnMapperArgs,
     GenerativeRequestFinalizerArgs,
 )

@@ -1,11 +1,11 @@
-"""Tests for ``guidellm run`` CLI error translation."""
+"""Tests for ``roundup run`` CLI error translation."""
 
 from unittest.mock import AsyncMock
 
 import pytest
 from click.testing import CliRunner
 
-from guidellm.__main__ import cli
+from roundup.__main__ import cli
 
 
 @pytest.mark.regression
@@ -203,7 +203,7 @@ def test_console_progress_selection(monkeypatch, options):
     ## WRITTEN BY AI ##
     """
     benchmark = AsyncMock()
-    monkeypatch.setattr("guidellm.entrypoints.benchmark_generative_text", benchmark)
+    monkeypatch.setattr("roundup.entrypoints.benchmark_generative_text", benchmark)
     result = CliRunner().invoke(
         cli,
         [

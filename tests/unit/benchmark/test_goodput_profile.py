@@ -5,25 +5,25 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from guidellm.benchmark.profiles import GoodputProfile, ProfileFactory
-from guidellm.benchmark.profiles.goodput import wilson_interval
-from guidellm.benchmark.schemas import (
+from roundup.benchmark.profiles import GoodputProfile, ProfileFactory
+from roundup.benchmark.profiles.goodput import wilson_interval
+from roundup.benchmark.schemas import (
     BenchmarkConfig,
     GenerativeBenchmark,
     GenerativeBenchmarkAccumulator,
 )
-from guidellm.scheduler import (
+from roundup.scheduler import (
     ConcurrentStrategy,
     SchedulerState,
     SchedulerUpdateAction,
 )
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerativeRequestStats,
     RequestInfo,
     RequestTimings,
     UsageMetrics,
 )
-from guidellm.schemas.benchmark import GoodputProfileArgs, GoodputSLO
+from roundup.schemas.benchmark import GoodputProfileArgs, GoodputSLO
 
 TARGET = 0.95
 # Non-zero epoch base; a measurement window starting at 0.0 reads as unset.

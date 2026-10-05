@@ -1,13 +1,13 @@
 # Backends
 
-GuideLLM is designed to work with OpenAI-compatible HTTP servers, enabling seamless integration with a variety of generative AI backends. This compatibility ensures that users can evaluate and optimize their large language model (LLM) deployments efficiently. While the current focus is on OpenAI-compatible servers, we welcome contributions to expand support for other backends, including additional server implementations and Python interfaces.
+Roundup is designed to work with OpenAI-compatible HTTP servers, enabling seamless integration with a variety of generative AI backends. This compatibility ensures that users can evaluate and optimize their large language model (LLM) deployments efficiently. While the current focus is on OpenAI-compatible servers, we welcome contributions to expand support for other backends, including additional server implementations and Python interfaces.
 
 ## CLI Backend Configuration
 
 Backends are configured using the `--backend` option. You can only specify one backend per command. Select a registered backend type with `kind=<TYPE>` and configure parameters with key=value pairs:
 
 ```bash
-guidellm run --backend kind=<TYPE>,key=value,...
+roundup run --backend kind=<TYPE>,key=value,...
 ```
 
 For HTTP servers, pass `kind=openai_http` with the target URL and other connection settings:
@@ -26,11 +26,11 @@ Flat settings can be specified using comma-separated key=value pairs; for nested
 
 ### OpenAI-Compatible HTTP Servers
 
-GuideLLM supports OpenAI-compatible HTTP servers, which provide a standardized API for interacting with LLMs. This includes popular implementations such as [vLLM](https://github.com/vllm-project/vllm) and [Text Generation Inference (TGI)](https://github.com/huggingface/text-generation-inference). These servers allow GuideLLM to perform evaluations, benchmarks, and optimizations with minimal setup.
+Roundup supports OpenAI-compatible HTTP servers, which provide a standardized API for interacting with LLMs. This includes popular implementations such as [vLLM](https://github.com/vllm-project/vllm) and [Text Generation Inference (TGI)](https://github.com/huggingface/text-generation-inference). These servers allow Roundup to perform evaluations, benchmarks, and optimizations with minimal setup.
 
 ### vLLM Python Backend
 
-GuideLLM supports running inference in the same process using the **vLLM Python backend** (`vllm_python_async`). This backend runs inference in the same process as GuideLLM's using vLLM's python API (AsyncLLMEngine), without an HTTP server. For setup, installation options (container, existing vLLM, pip), and examples, see [vLLM Python backend](vllm-python-backend.md).
+Roundup supports running inference in the same process using the **vLLM Python backend** (`vllm_python_async`). This backend runs inference in the same process as Roundup's using vLLM's python API (AsyncLLMEngine), without an HTTP server. For setup, installation options (container, existing vLLM, pip), and examples, see [vLLM Python backend](vllm-python-backend.md).
 
 ### vLLM Python Batch Backend
 
@@ -78,13 +78,13 @@ To start a llama.cpp server with the gpt-oss-20b model, you can use the followin
 llama-server -hf ggml-org/gpt-oss-20b-GGUF --alias gpt-oss-20b --ctx-size 0 --jinja -ub 2048 -b 2048
 ```
 
-Note that we are providing an alias `gpt-oss-20b` for the model name because GuideLLM is using it to retrieve model metadata in JSON format and such metadata is not included in GGUF model repositories. A simple workaround is to download the metadata files from the safetensors repository and place them in a local directory named after the alias:
+Note that we are providing an alias `gpt-oss-20b` for the model name because Roundup is using it to retrieve model metadata in JSON format and such metadata is not included in GGUF model repositories. A simple workaround is to download the metadata files from the safetensors repository and place them in a local directory named after the alias:
 
 ```bash
 huggingface-cli download openai/gpt-oss-20b --include "*.json" --local-dir gpt-oss-20b/
 ```
 
-Now you can run `guidellm` as usual and it will be able to fetch the model metadata from the local directory.
+Now you can run `roundup` as usual and it will be able to fetch the model metadata from the local directory.
 
 ## API Key Configuration
 
@@ -101,7 +101,7 @@ Local servers like vLLM typically don't require an API key unless you've explici
 To provide an API key when running benchmarks, pass it in the backend configuration:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=https://api.openai.com/v1,api_key=sk-...,model=gpt-3.5-turbo \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128
 ```
@@ -119,14 +119,14 @@ The API key is used to set the `Authorization: Bearer {api_key}` header in HTTP 
 
 ## Passing Sampling Parameters
 
-By default, GuideLLM does not set sampling parameters such as `temperature`, `top_p`, or `top_k` in its requests to the backend server. If you need to control these parameters during benchmarking, pass them through the backend `extras` field.
+By default, Roundup does not set sampling parameters such as `temperature`, `top_p`, or `top_k` in its requests to the backend server. If you need to control these parameters during benchmarking, pass them through the backend `extras` field.
 
 The `extras` field accepts a `body` key whose values are merged directly into the API request body sent to the backend server. This means any parameter supported by the OpenAI completions or chat completions API (or your backend's extensions) can be passed through.
 
 ### Example: Setting temperature, top_p, and top_k
 
 ```bash
-guidellm run \
+roundup run \
   --backend '{"kind":"openai_http","target":"http://localhost:8000/v1","model":"meta-llama/Meta-Llama-3.1-8B-Instruct","extras":{"body":{"temperature":0.6,"top_p":0.95,"top_k":20}}}' \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128
 ```
@@ -135,34 +135,34 @@ This will include `temperature`, `top_p`, and `top_k` in every request body sent
 
 ## Controlling End-of-Sequence Behavior
 
-To measure throughput and latency for an exact output length, GuideLLM asks the server to generate precisely the requested number of tokens. For the `openai_http` backend, when you request a specific output token count each request sets `ignore_eos: true` (alongside `max_tokens`/`max_completion_tokens` and `stop: null`) so the server keeps generating instead of stopping when the model emits an end-of-sequence token.
+To measure throughput and latency for an exact output length, Roundup asks the server to generate precisely the requested number of tokens. For the `openai_http` backend, when you request a specific output token count each request sets `ignore_eos: true` (alongside `max_tokens`/`max_completion_tokens` and `stop: null`) so the server keeps generating instead of stopping when the model emits an end-of-sequence token.
 
 Some models should not have their end-of-sequence token suppressed. Formats such as Harmony / `gpt-oss` expect the model to stop on its own end-of-turn token; forcing generation past it makes the server reject the trailing tokens and fail the request. For these (or similar) models, disable `ignore_eos` by passing `false` through the backend `extras.body` field:
 
 ```bash
-guidellm run \
+roundup run \
   --backend '{"kind":"openai_http","target":"http://localhost:8000/v1","model":"openai/gpt-oss-20b","extras":{"body":{"ignore_eos":false}}}' \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128
 ```
 
-Or using GuideLLM's compact `key=value` parser:
+Or using Roundup's compact `key=value` parser:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000/v1,model=openai/gpt-oss-20b,extras.body.ignore_eos=false \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128
 ```
 
-Values in `extras.body` are merged into the request body and take precedence over the defaults, so `ignore_eos: false` overrides the built-in `true`. Leave `ignore_eos` unset (the default) for models where suppressing the end-of-sequence token is safe, which lets GuideLLM control the exact output length.
+Values in `extras.body` are merged into the request body and take precedence over the defaults, so `ignore_eos: false` overrides the built-in `true`. Leave `ignore_eos` unset (the default) for models where suppressing the end-of-sequence token is safe, which lets Roundup control the exact output length.
 
 > [!NOTE] Removing `ignore_eos: true` allows the model to stop generating at its discretion which can result in significantly shorter sequence lengths than desired.
 
 ## Structured Chat Content Payloads
 
-Some chat templates require metadata alongside the text in each structured content object. Pass these fields through `extras.content` in the `openai_http` backend configuration. GuideLLM adds them to every generated text content object for Chat Completions and Responses API requests.
+Some chat templates require metadata alongside the text in each structured content object. Pass these fields through `extras.content` in the `openai_http` backend configuration. Roundup adds them to every generated text content object for Chat Completions and Responses API requests.
 
 ```bash
-guidellm run \
+roundup run \
   --backend '{
     "kind": "openai_http",
     "target": "http://localhost:8000",
@@ -191,11 +191,11 @@ The `--backend` config is parsed into keyword arguments for the backend construc
 ### Example: Combining Sampling Parameters with Other Backend Options
 
 ```bash
-guidellm run \
+roundup run \
   --backend '{"kind":"openai_http","target":"http://localhost:8000/v1","model":"meta-llama/Meta-Llama-3.1-8B-Instruct","api_key":"sk-...","extras":{"body":{"temperature":0.8,"top_p":0.9}}}' \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128
 ```
 
 ## Expanding Backend Support
 
-GuideLLM is an open platform, and we encourage contributions to extend its backend support. Whether it's adding new server implementations, integrating with Python-based backends, or enhancing existing capabilities, your contributions are welcome. For more details on how to contribute, see the [CONTRIBUTING.md](https://github.com/vllm-project/guidellm/blob/main/CONTRIBUTING.md) file.
+Roundup is an open platform, and we encourage contributions to extend its backend support. Whether it's adding new server implementations, integrating with Python-based backends, or enhancing existing capabilities, your contributions are welcome. For more details on how to contribute, see the [CONTRIBUTING.md](https://github.com/toxicwind/roundup/blob/main/CONTRIBUTING.md) file.

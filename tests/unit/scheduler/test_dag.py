@@ -8,13 +8,13 @@ import time
 
 import pytest
 
-from guidellm.scheduler.dag import DAGExecutionState
-from guidellm.scheduler.schemas import (
+from roundup.scheduler.dag import DAGExecutionState
+from roundup.scheduler.schemas import (
     ConversationEdge,
     ConversationGraph,
     ConversationNode,
 )
-from guidellm.schemas import RequestInfo, RequestSettings
+from roundup.schemas import RequestInfo, RequestSettings
 
 
 def _make_node(
@@ -780,7 +780,7 @@ class TestDAGExecutionStatePredecessorCompleted:
         ## WRITTEN BY AI ##
         """
         clock = {"t": 10.0}
-        monkeypatch.setattr("guidellm.scheduler.dag.time.time", lambda: clock["t"])
+        monkeypatch.setattr("roundup.scheduler.dag.time.time", lambda: clock["t"])
 
         nodes = {
             "A": _make_node("A"),
@@ -839,7 +839,7 @@ class TestDAGExecutionStateRequeueDelay:
         ## WRITTEN BY AI ##
         """
         now = 1000.0
-        monkeypatch.setattr("guidellm.scheduler.dag.time.time", lambda: now)
+        monkeypatch.setattr("roundup.scheduler.dag.time.time", lambda: now)
 
         nodes = {
             "n0": _make_node("n0", settings=RequestSettings(requeue_delay=0.5)),
@@ -863,7 +863,7 @@ class TestDAGExecutionStateRequeueDelay:
         assert nxt[1] == pytest.approx(1000.5)
 
         now = 1000.5
-        monkeypatch.setattr("guidellm.scheduler.dag.time.time", lambda: now)
+        monkeypatch.setattr("roundup.scheduler.dag.time.time", lambda: now)
         nxt = state.next_node_ready_at()
         assert nxt is not None
         assert nxt[0] == "n1"
@@ -876,7 +876,7 @@ class TestDAGExecutionStateRequeueDelay:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setattr("guidellm.scheduler.dag.time.time", lambda: 50.0)
+        monkeypatch.setattr("roundup.scheduler.dag.time.time", lambda: 50.0)
 
         state = DAGExecutionState(_linear_graph(2))
         state.mark_completed("n0", "r0", "resp0")
@@ -894,7 +894,7 @@ class TestDAGExecutionStateRequeueDelay:
         ## WRITTEN BY AI ##
         """
         clock = {"t": 0.0}
-        monkeypatch.setattr("guidellm.scheduler.dag.time.time", lambda: clock["t"])
+        monkeypatch.setattr("roundup.scheduler.dag.time.time", lambda: clock["t"])
 
         nodes = {
             "A": _make_node("A", settings=RequestSettings(requeue_delay=10.0)),
@@ -945,7 +945,7 @@ class TestDAGExecutionStateRequeueDelay:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setattr("guidellm.scheduler.dag.time.time", lambda: 0.0)
+        monkeypatch.setattr("roundup.scheduler.dag.time.time", lambda: 0.0)
 
         state = DAGExecutionState(_linear_graph(2))
         nxt = state.next_node_ready_at()

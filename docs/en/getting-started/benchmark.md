@@ -4,12 +4,12 @@ weight: -6
 
 # Run a Benchmark
 
-1. [Install GuideLLM](install.md)
-2. You can run GuideLLM two ways:
+1. [Install Roundup](install.md)
+2. You can run Roundup two ways:
    1. Targeting a running OpenAI-compatible LLM server
       - The most common setup.
    2. Using the vLLM Python backend, with vLLM running in the same process
-      - Requires knowledge on how to setup vLLM in addition to the knowledge on how to run GuideLLM.
+      - Requires knowledge on how to setup vLLM in addition to the knowledge on how to run Roundup.
       - Simplifies orchestration due to the lack of need for a separate server.
 
 > [!NOTE]\
@@ -21,10 +21,10 @@ After [starting a server](server.md), you're ready to run benchmarks to evaluate
 
 ## CLI option format
 
-The GuideLLM CLI provides options using a common registry-backed format. The registered implementation is selected with `kind=<type>` and parametrs are configured with key=value pairs:
+The Roundup CLI provides options using a common registry-backed format. The registered implementation is selected with `kind=<type>` and parameters are configured with key=value pairs:
 
 ```bash
-guidellm run --<option> kind=<TYPE>,key=value,...
+roundup run --<option> kind=<TYPE>,key=value,...
 ```
 
 Use comma-separated key=value pairs for flat settings (for example, `--data kind=synthetic_text,prompt_tokens=256,output_tokens=128`). Use serialized JSON or YAML when any value is nested (for example, `--data '{"kind":"huggingface","source":"org/dataset","loader_kwargs":{"split":"test"}}'`). Do not mix inline key=value and JSON/YAML in the same option. Some options can be repeated to supply multiple values (for example, multiple `--data` or `--constraint` entries).
@@ -36,7 +36,7 @@ You can load a saved scenario (YAML or JSON file) with `--config` (alias `--scen
 To run a benchmark against your local vLLM server with default settings:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
   --constraint kind=max_duration,seconds=60
@@ -58,7 +58,7 @@ Learn more about dataset options in the [Datasets documentation](../guides/datas
 
 ## Understanding Benchmark Options
 
-GuideLLM offers a wide range of configuration options to customize your benchmarks. Here are the most important parameters you should know:
+Roundup offers a wide range of configuration options to customize your benchmarks. Here are the most important parameters you should know:
 
 ### Key Parameters
 
@@ -75,7 +75,7 @@ GuideLLM offers a wide range of configuration options to customize your benchmar
 
 ### Random seed (`--seed`)
 
-The random seed is used for any operation in GuideLLM that involves randomness, such as synthetic data generation or Poisson strategy scheduling. By default it is a fixed value, so rerunning GuideLLM with the same arguments should produce the same results:
+The random seed is used for any operation in Roundup that involves randomness, such as synthetic data generation or Poisson strategy scheduling. By default it is a fixed value, so rerunning Roundup with the same arguments should produce the same results:
 
 ```bash
 --seed kind=static,value=42
@@ -85,15 +85,15 @@ The random seed is used for any operation in GuideLLM that involves randomness, 
 
 Constraints control when each strategy in a profile stops. Add one or more `--constraint` options. Constraints apply individually to each strategy in a profile. Profiles with multiple strategies include `sweep` and any profile whose primary parameter is a list (for example, `{"streams":[10,20]}` on `concurrent`).
 
-| Constraint type         | Config parameter         | Example                                                         |
-| ----------------------- | ------------------------ | --------------------------------------------------------------- |
-| `max_duration`          | `max_duration` (seconds) | `--constraint kind=max_duration,seconds=30`                     |
-| `max_requests`          | `max_num`                | `--constraint kind=max_requests,count=1000`                     |
-| `min_requests`          | `count`                  | `--constraint kind=min_requests,count=1000`                     |
-| `max_errors`            | `max_errors`             | `--constraint kind=max_errors,count=10`                         |
-| `max_error_rate`        | `max_error_rate`         | `--constraint kind=max_error_rate,rate=0.05`                    |
-| `max_global_error_rate` | `max_global_error_rate`  | `--constraint kind=max_global_error_rate,rate=0.05`             |
-| `over_saturation`       | detection parameters     | `--constraint kind=over_saturation,min_seconds=30,mode=enforce` |
+| Constraint type         | Config parameters    | Example                                                          |
+| ----------------------- | -------------------- | ---------------------------------------------------------------- |
+| `max_duration`          | `seconds`            | `--constraint kind=max_duration,seconds=30`                      |
+| `max_requests`          | `count`              | `--constraint kind=max_requests,count=1000`                      |
+| `min_requests`          | `count`              | `--constraint kind=min_requests,count=1000`                      |
+| `max_errors`            | `count`              | `--constraint kind=max_errors,count=10`                          |
+| `max_error_rate`        | `rate`, `window`     | `--constraint kind=max_error_rate,rate=0.05,window=10`           |
+| `max_global_error_rate` | `rate`, `minimum`    | `--constraint kind=max_global_error_rate,rate=0.05,minimum=1000` |
+| `over_saturation`       | detection parameters | `--constraint kind=over_saturation,min_seconds=30,mode=enforce`  |
 
 For example, `--constraint kind=max_requests,count=1000` with `--profile kind=sweep` runs up to 1000 requests for each strategy in the sweep (synchronous, throughput, and each interpolated rate). `--constraint kind=min_requests,count=1000` is like `max_requests`, but keeps queuing until 1000 requests have been processed, which avoids throughput tail-off at the end of rate-based benchmarks. `--constraint kind=max_duration,seconds=30` with `--profile '{"kind":"concurrent","streams":[10,20]}'` runs 10 concurrent streams for 30 seconds, then 20 concurrent streams for 30 seconds.
 
@@ -101,18 +101,18 @@ See [Over-Saturation Stopping](../guides/over_saturation_stopping.md) for over-s
 
 ### Sub-benchmark (per-strategy) Constraints
 
-When you use the `sweep` profile, or specify multiple `rate` values in the `async`/`constant`/`poisson` profiles, or multiple `streams` values in the `concurrent` profile, you are running multiple "benchmark strategies" within the profile. GuideLLM allows you to specify distinct control parameters for your constraints using the `--override` option. For example, `--profile kind=sweep,sweep_size=5 --constraint kind=max_duration,seconds=30` runs 5 strategies (synchronous, throughput, and three interpolated constant rates) for 30 seconds each. You can use `--override constraint[0].seconds 10,20,10,15,20` to run the synchronous strategy for 10 seconds, the throughput strategy for 20 seconds, and the three interpolated constant rates for 10 seconds, 15 seconds, and 20 seconds. Note that specifying fewer values, e.g. `--override constraint[0].seconds 10,20,10`, will reuse the final value of 10 seconds for all three constant strategies.
+When you use the `sweep` profile, or specify multiple `rate` values in the `async`/`constant`/`poisson` profiles, or multiple `streams` values in the `concurrent` profile, you are running multiple "benchmark strategies" within the profile. Roundup allows you to specify distinct control parameters for your constraints using the `--override` option. For example, `--profile kind=sweep,sweep_size=5 --constraint kind=max_duration,seconds=30` runs 5 strategies (synchronous, throughput, and three interpolated constant rates) for 30 seconds each. You can use `--override constraint[0].seconds 10,20,10,15,20` to run the synchronous strategy for 10 seconds, the throughput strategy for 20 seconds, and the three interpolated constant rates for 10 seconds, 15 seconds, and 20 seconds. Note that specifying fewer values, e.g. `--override constraint[0].seconds 10,20,10`, will reuse the final value of 10 seconds for all three constant strategies.
 
 ### Benchmark Profiles (`--profile`)
 
-GuideLLM supports several benchmark profiles, which are described in detail below. Profile-specific parameters go in the same configuration string after `kind=<type>`.
+Roundup supports several benchmark profiles, which are described in detail below. Profile-specific parameters go in the same configuration string after `kind=<type>`.
 
 #### Synchronous Profile
 
 Runs requests one at a time (sequential).
 
 ```bash
-guidellm run --profile kind=synchronous
+roundup run --profile kind=synchronous
 ```
 
 | Profile parameter | Description       | Example |
@@ -124,7 +124,7 @@ guidellm run --profile kind=synchronous
 Attempts to discover the server's maximum throughput by continually making requests in parallel.
 
 ```bash
-guidellm run --profile kind=throughput,max_concurrency=10
+roundup run --profile kind=throughput,max_concurrency=10
 ```
 
 | Profile parameter | Description                              | Example                                                           |
@@ -137,7 +137,7 @@ guidellm run --profile kind=throughput,max_concurrency=10
 Runs a fixed number of parallel request streams.
 
 ```bash
-guidellm run --profile kind=concurrent,streams=10
+roundup run --profile kind=concurrent,streams=10
 ```
 
 | Profile parameter | Description                                   | Example                                                                                         |
@@ -155,7 +155,7 @@ Sends asynchronous requests at a fixed rate per second.
 (The profile names `async` and `constant` are aliases.)
 
 ```bash
-guidellm run --profile '{"kind":"constant","rate":[16,32]}'
+roundup run --profile '{"kind":"constant","rate":[16,32]}'
 ```
 
 | Profile parameter | Description                                    | Example                                                                               |
@@ -171,7 +171,7 @@ You can use the `--override` option to specify a list of rate values, to run a s
 Sends asynchronous requests at varying rates using a Poisson distribution around the specified target rate(s). This probabilistic pattern is useful for simulating more realistic real-world traffic patterns.
 
 ```bash
-guidellm run --profile kind=poisson,rate=16 --seed kind=static,value=42
+roundup run --profile kind=poisson,rate=16 --seed kind=static,value=42
 ```
 
 | Profile parameter | Description                             | Example                                                                             |
@@ -196,7 +196,7 @@ The sweep profile applies a sequence of benchmark strategies to find the optimal
 For example, to run a sweep with 10 strategies, 10 seconds of rampup, and a strategy type of `poisson`:
 
 ```bash
-guidellm run --profile kind=sweep,sweep_size=10,rampup_duration=10,strategy_type=poisson
+roundup run --profile kind=sweep,sweep_size=10,rampup_duration=10,strategy_type=poisson
 ```
 
 | Profile parameter | Description                                                                | Example                                                 |
@@ -211,7 +211,7 @@ guidellm run --profile kind=sweep,sweep_size=10,rampup_duration=10,strategy_type
 Replays trace events using timestamps from a trace file dataset. See [Trace Replay Benchmarking](#trace-replay-benchmarking) below for data setup.
 
 ```bash
-guidellm run --profile kind=replay,time_scale=1.0
+roundup run --profile kind=replay,time_scale=1.0
 ```
 
 | Profile parameter | Description                                                                                                            | Example                                         |
@@ -235,7 +235,7 @@ For synthetic data, use the `synthetic_text` data type with the desired paramete
 For example, to benchmark with a prompt length of 100 tokens and an output length of 50 tokens:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=synthetic_text,prompt_tokens=100,output_tokens=50 \
   --profile kind=constant,rate=5
@@ -245,7 +245,7 @@ You can customize synthetic data generation with additional parameters such as s
 
 ### Trace Replay Benchmarking
 
-For realistic load testing, replay trace events using each row's timestamp and token lengths. Trace data is loaded from a local file or HuggingFace dataset via a nested `source` config on `--data`, using a supported [trace file format](../guides/trace_replay.md#supported-formats). Timestamps may be absolute or monotonic values; GuideLLM sorts them and converts them to offsets from the first event before scheduling:
+For realistic load testing, replay trace events using each row's timestamp and token lengths. Trace data is loaded from a local file or HuggingFace dataset via a nested `source` config on `--data`, using a supported [trace file format](../guides/trace_replay.md#supported-formats). Timestamps may be absolute or monotonic values; Roundup sorts them and converts them to offsets from the first event before scheduling:
 
 ```json
 {"timestamp": 1234500.0, "input_length": 256, "output_length": 128}
@@ -257,7 +257,7 @@ In this example, the second request is scheduled 0.5 seconds after the first req
 Run with the `replay` profile:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=trace_synthetic,source.kind=json_file,source.path=path/to/trace.jsonl,time_scale=1.0 \
   --profile kind=replay,time_scale=0.5
@@ -271,12 +271,12 @@ Strategically choose between increasing parallelism and affecting request timing
 
 `--constraint kind=max_duration,seconds=<n>` stops in-flight waits as well as new request starts. Workers sleeping until a future replay timestamp are cancelled when the duration elapses.
 
-GuideLLM schedules trace rows in timestamp order. Use `--data-loader kind=pytorch,samples=1000` to limit how many trace rows are loaded and replayed. `--constraint kind=max_requests,count=1000` remains a runtime completion constraint; it does not truncate the trace dataset.
+Roundup schedules trace rows in timestamp order. Use `--data-loader kind=pytorch,samples=1000` to limit how many trace rows are loaded and replayed. `--constraint kind=max_requests,count=1000` remains a runtime completion constraint; it does not truncate the trace dataset.
 
 Every format by default looks for the columns "timestamp", "input_length", and "output_length". If your trace uses different column names, include `timestamp_column`, `prompt_tokens_column`, and `output_tokens_column` in the data config:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=trace_synthetic,source.kind=json_file,source.path=replay.jsonl,timestamp_column=timestamp,prompt_tokens_column=input_length,output_tokens_column=output_length \
   --profile kind=replay
@@ -289,7 +289,7 @@ This functionality extends to columns required by specific formats. These additi
 While synthetic data is convenient for quick tests, you can benchmark with real-world data:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=json_file,path=/path/to/your/dataset.json \
   --profile kind=constant,rate=5
@@ -298,7 +298,7 @@ guidellm run \
 You can also use datasets from HuggingFace:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=huggingface,source=garage-bAInd/Open-Platypus \
   --profile kind=constant,rate=5
@@ -312,7 +312,7 @@ By default, benchmark results are saved to `benchmarks.json` and `benchmarks.csv
 
 Benchmark progress is logged automatically at INFO, including in non-interactive shells. No extra progress options are needed. Each strategy logs its start, periodic statistics (at most once every ten seconds during updates), and completion. Records include elapsed time, successful/errored/incomplete request counts, and request/output-token throughput. Updates depend on scheduler callbacks and are not an independent heartbeat during a stall.
 
-Rich progress continues to work alongside logging. `--disable-console` and `--disable-console-interactive` control displays, not logging. Existing logger levels control which records are emitted. To redirect only logs, use `2>progress.log`; to retain structured file logs, configure `GUIDELLM__LOGGING__LOG_FILE_LEVEL=INFO` and `GUIDELLM__LOGGING__LOG_FILE=progress.jsonl`.
+Rich progress continues to work alongside logging. `--disable-console` and `--disable-console-interactive` control displays, not logging. Existing logger levels control which records are emitted. To redirect only logs, use `2>progress.log`; to retain structured file logs, configure `ROUNDUP__LOGGING__LOG_FILE_LEVEL=INFO` and `ROUNDUP__LOGGING__LOG_FILE=progress.jsonl`.
 
 ## Authentication
 

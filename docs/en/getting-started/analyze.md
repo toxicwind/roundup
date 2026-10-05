@@ -4,11 +4,11 @@ weight: -4
 
 # Analyze Results
 
-After [running a benchmark](benchmark.md), GuideLLM provides comprehensive results that help you understand your LLM deployment's performance. This guide explains how to interpret both console output and file-based results.
+After [running a benchmark](benchmark.md), Roundup provides comprehensive results that help you understand your LLM deployment's performance. This guide explains how to interpret both console output and file-based results.
 
 ## Understanding Console Output
 
-Upon benchmark completion, GuideLLM automatically displays results in the console, divided into three main sections:
+Upon benchmark completion, Roundup automatically displays results in the console, divided into three main sections:
 
 ### 1. Benchmarks Metadata
 
@@ -64,12 +64,12 @@ The p99 (99th percentile) values are particularly important for SLO analysis, as
 
 ## Analyzing Saved Results
 
-For deeper analysis, GuideLLM saves detailed results to these files by default:
+For deeper analysis, Roundup saves detailed results to these files by default:
 
 - `benchmarks.json`: Complete benchmark data in JSON format
 - `benchmarks.csv`: Summary of key metrics in CSV format
 
-The files are written to the directory configured by `GUIDELLM__DEFAULT_RESULTS_DIR`, or to the current directory when the variable is not set. See [configuring file outputs](../guides/outputs.md#configuring-file-outputs) to choose filenames and destinations.
+The files are written to the directory configured by `ROUNDUP__DEFAULT_RESULTS_DIR`, or to the current directory when the variable is not set. See [configuring file outputs](../guides/outputs.md#configuring-file-outputs) to choose filenames and destinations.
 
 ### File Formats
 
@@ -80,7 +80,7 @@ See [supported file formats](../guides/outputs.md#supported-file-formats) for th
 For custom analysis, you can reload the results into Python:
 
 ```python
-from guidellm.benchmark import GenerativeBenchmarksReport
+from roundup.benchmark import GenerativeBenchmarksReport
 
 # Load results from file
 report = GenerativeBenchmarksReport.load_file("benchmarks.json")
@@ -125,12 +125,12 @@ When analyzing your results, focus on these key indicators:
 Run benchmarks with different models or hardware configurations, then compare:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://server1:8000 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
   --output kind=json,path=model1/benchmarks.json
 
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://server2:8000 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
   --output kind=json,path=model2/benchmarks.json

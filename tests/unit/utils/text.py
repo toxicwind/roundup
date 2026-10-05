@@ -1,6 +1,6 @@
 import pytest
 
-from guidellm.utils.text import camelize_str
+from roundup.utils.text import camelize_str
 
 
 @pytest.mark.smoke

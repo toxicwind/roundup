@@ -7,7 +7,7 @@ from typing import Protocol
 import pytest
 from pydantic import ValidationError
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     Constraint,
     ConstraintInitializer,
     ConstraintsInitializerFactory,
@@ -24,8 +24,8 @@ from guidellm.scheduler import (
     SerializableConstraintInitializer,
     UnserializableConstraintInitializer,
 )
-from guidellm.schemas import RequestInfo, StandardBaseModel
-from guidellm.schemas.scheduler import (
+from roundup.schemas import RequestInfo, StandardBaseModel
+from roundup.schemas.scheduler import (
     ConstraintArgs,
     MaxDurationConstraintArgs,
     MaxErrorRateConstraintArgs,
@@ -34,7 +34,7 @@ from guidellm.schemas.scheduler import (
     MaxRequestsConstraintArgs,
     MinRequestsConstraintArgs,
 )
-from guidellm.utils.mixins import InfoMixin
+from roundup.utils.mixins import InfoMixin
 
 
 class TestConstraint:

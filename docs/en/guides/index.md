@@ -4,7 +4,7 @@ weight: -5
 
 # Guides
 
-Welcome to the GuideLLM guides section! Here you'll find comprehensive documentation covering key components and concepts of the GuideLLM platform. These guides will help you understand the inner workings of GuideLLM, how to configure its various components, and how to interpret benchmark results to optimize your LLM deployments.
+Welcome to the Roundup guides section! Here you'll find comprehensive documentation covering key components and concepts of the Roundup platform. These guides will help you understand the inner workings of Roundup, how to configure its various components, and how to interpret benchmark results to optimize your LLM deployments.
 
 Whether you're interested in understanding the system architecture, exploring supported backends, configuring datasets, analyzing metrics, or setting service level objectives, these guides provide the detailed information you need to make informed decisions about your LLM deployments.
 
@@ -16,7 +16,7 @@ Whether you're interested in understanding the system architecture, exploring su
 
   ______________________________________________________________________
 
-  Understanding the modular design of GuideLLM and how core components interact to evaluate LLM deployments.
+  Understanding the modular design of Roundup and how core components interact to evaluate LLM deployments.
 
   [:octicons-arrow-right-24: Architecture Overview](architecture.md)
 
@@ -40,7 +40,7 @@ Whether you're interested in understanding the system architecture, exploring su
 
   ______________________________________________________________________
 
-  Explore the comprehensive metrics provided by GuideLLM to evaluate performance, including latency, throughput, and token-level analysis.
+  Explore the comprehensive metrics provided by Roundup to evaluate performance, including latency, throughput, and token-level analysis.
 
   [:octicons-arrow-right-24: Metrics Guide](metrics.md)
 
@@ -96,7 +96,7 @@ Whether you're interested in understanding the system architecture, exploring su
 
   ______________________________________________________________________
 
-  How to migrate GuideLLM CLI commandsfrom v0.6.0 to v0.7.0.
+  How to migrate Roundup CLI commandsfrom v0.6.0 to v0.7.0.
 
   [:octicons-arrow-right-24: v0.7.0 Migration Guide](v0.7.0_migration_guide.md)
 

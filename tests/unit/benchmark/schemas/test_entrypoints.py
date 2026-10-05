@@ -14,22 +14,25 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from guidellm.schemas.backends import (
+from roundup.benchmark.schemas.base import BenchmarkConfig
+from roundup.scheduler import ThroughputStrategy
+from roundup.schemas.backends import (
     BackendArgs,
     OpenAIHTTPBackendArgs,
     OpenAIWebSocketBackendArgs,
 )
-from guidellm.schemas.benchmark import (
+from roundup.schemas.benchmark import (
     BenchmarkArgs,
     BenchmarkScenario,
     GenerativeMetricsArgs,
     MetricsArgs,
 )
-from guidellm.utils.typing import BLANK
+from roundup.utils.arg_string import ArgStringParser
+from roundup.utils.typing import BLANK
 
 # Conditionally import VLLM backend args if available
 try:
-    from guidellm.schemas.backends import VLLMPythonAsyncBackendArgs
+    from roundup.schemas.backends import VLLMPythonAsyncBackendArgs
 
     HAS_VLLM = True
 except ImportError:
@@ -551,11 +554,11 @@ class TestBenchmarkScenarioEnvVars:
 
     def test_backend_target_from_env(self, monkeypatch):
         """
-        GUIDELLM__SPEC__BACKEND__TARGET sets the backend target.
+        ROUNDUP__SPEC__BACKEND__TARGET sets the backend target.
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://env-server:9000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://env-server:9000")
 
         scenario = BenchmarkScenario.model_validate(
             {"spec": {**_PIPELINE_DEFAULTS, "backend": {"kind": "openai_http"}}}
@@ -570,9 +573,9 @@ class TestBenchmarkScenarioEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__KIND", "openai_http")
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://env-server:9000")
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__MODEL", "env-model")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__KIND", "openai_http")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://env-server:9000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__MODEL", "env-model")
 
         scenario = BenchmarkScenario.model_validate({"spec": _PIPELINE_DEFAULTS})
 
@@ -582,11 +585,11 @@ class TestBenchmarkScenarioEnvVars:
 
     def test_sweep_size_string_coercion_from_env(self, monkeypatch):
         """
-        GUIDELLM__SPEC__PROFILE__SWEEP_SIZE with string value is coerced to int.
+        ROUNDUP__SPEC__PROFILE__SWEEP_SIZE with string value is coerced to int.
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__PROFILE__SWEEP_SIZE", "5")
+        monkeypatch.setenv("ROUNDUP__SPEC__PROFILE__SWEEP_SIZE", "5")
 
         scenario = BenchmarkScenario.model_validate(
             {
@@ -609,7 +612,7 @@ class TestBenchmarkScenarioEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://from-env:9000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://from-env:9000")
 
         scenario = BenchmarkScenario.model_validate(
             {
@@ -780,3 +783,121 @@ class TestMetricsArgsValidation:
 
         assert isinstance(scenario.spec.metrics, GenerativeMetricsArgs)
         assert scenario.spec.metrics.sample_size == 200
+
+
+class TestGenerativeMetricsConfidence:
+    """
+    Tests for the confidence level accepted through ``--metrics``.
+
+    ## WRITTEN BY AI ##
+    """
+
+    @pytest.mark.smoke
+    def test_defaults_to_a_two_sided_95_percent_level(self):
+        """
+        Omitting the argument reports intervals at 0.95.
+
+        ## WRITTEN BY AI ##
+        """
+        args = GenerativeMetricsArgs.model_validate(
+            ArgStringParser().decode("kind=generative")
+        )
+
+        assert args.confidence == 0.95
+
+    @pytest.mark.sanity
+    def test_accepts_an_explicit_level(self):
+        """
+        A level given on the command line reaches the parsed arguments.
+
+        ## WRITTEN BY AI ##
+        """
+        args = GenerativeMetricsArgs.model_validate(
+            ArgStringParser().decode("kind=generative,confidence=0.99")
+        )
+
+        assert args.confidence == 0.99
+
+    @pytest.mark.sanity
+    def test_null_disables_intervals(self):
+        """
+        Passing null reports the metrics without intervals.
+
+        ## WRITTEN BY AI ##
+        """
+        args = GenerativeMetricsArgs.model_validate(
+            ArgStringParser().decode("kind=generative,confidence=null")
+        )
+
+        assert args.confidence is None
+
+    @pytest.mark.sanity
+    @pytest.mark.parametrize("confidence", [0.0, 1.0, 1.5, -0.2])
+    def test_rejects_a_level_outside_the_open_unit_interval(self, confidence: float):
+        """
+        A level that is not a probability is rejected at validation.
+
+        ## WRITTEN BY AI ##
+        """
+        with pytest.raises(ValidationError):
+            GenerativeMetricsArgs.model_validate(
+                ArgStringParser().decode(f"kind=generative,confidence={confidence}")
+            )
+
+
+class TestBenchmarkConfigConfidence:
+    """
+    Tests for the confidence level carried on the internal benchmark config.
+
+    ## WRITTEN BY AI ##
+    """
+
+    @staticmethod
+    def _config(**overrides):
+        """Build a minimal benchmark config.
+
+        ## WRITTEN BY AI ##
+        """
+        return BenchmarkConfig(
+            run_id="confidence",
+            run_index=0,
+            strategy=ThroughputStrategy(),
+            constraints={},
+            profile={},
+            requests={},
+            backend={},
+            environment={},
+            **overrides,
+        )
+
+    @pytest.mark.smoke
+    def test_defaults_to_a_two_sided_95_percent_level(self):
+        """
+        A config built without the field reports intervals at 0.95.
+
+        ## WRITTEN BY AI ##
+        """
+        assert self._config().confidence == 0.95
+
+    @pytest.mark.sanity
+    def test_accepts_none_to_disable_intervals(self):
+        """
+        None is a valid value and disables interval reporting.
+
+        ## WRITTEN BY AI ##
+        """
+        assert self._config(confidence=None).confidence is None
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("confidence", [0.0, 1.0, 1.5, -0.2])
+    def test_rejects_a_level_outside_the_open_unit_interval(self, confidence: float):
+        """
+        The internal config holds the same invariant as the CLI argument.
+
+        A programmatic caller that builds a config directly would otherwise
+        reach the estimators with a value that is not a probability.
+
+        ## WRITTEN BY AI ##
+        """
+        with pytest.raises(ValidationError):
+            self._config(confidence=confidence)

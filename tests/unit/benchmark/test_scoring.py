@@ -2,7 +2,7 @@
 
 import pytest
 
-from guidellm.benchmark.scoring import (
+from roundup.benchmark.scoring import (
     InstructionFollowingScorer,
     ScorerResult,
     ThinkingBlockStripper,
@@ -290,7 +290,7 @@ def test_resolve_scorers_without_strip_thinking_flag():
 def _make_accumulator(scorers):
     from types import SimpleNamespace
 
-    from guidellm.benchmark.schemas.accumulator import GenerativeBenchmarkAccumulator
+    from roundup.benchmark.schemas.accumulator import GenerativeBenchmarkAccumulator
 
     # model_construct runs model_post_init, which needs these config attrs.
     config = SimpleNamespace(sample_size=None, scorers=[], scorer_config={})
@@ -302,7 +302,7 @@ def _make_accumulator(scorers):
 
 
 def _make_stats(output):
-    from guidellm.schemas.base.request_stats import GenerativeRequestStats
+    from roundup.schemas.base.request_stats import GenerativeRequestStats
 
     return GenerativeRequestStats.model_construct(
         output=output, scores={}, score_details={}
@@ -436,7 +436,7 @@ def test_no_scorer_request_shape_empty():
 
 
 def test_compile_quality_aggregates():
-    from guidellm.benchmark.schemas.benchmark import GenerativeBenchmark
+    from roundup.benchmark.schemas.benchmark import GenerativeBenchmark
 
     acc = _make_accumulator([])
     acc.quality_totals = {
@@ -453,7 +453,7 @@ def test_compile_quality_aggregates():
 
 
 def test_compile_quality_empty_when_no_scorers():
-    from guidellm.benchmark.schemas.benchmark import GenerativeBenchmark
+    from roundup.benchmark.schemas.benchmark import GenerativeBenchmark
 
     acc = _make_accumulator([])
     acc.quality_totals = {}
@@ -468,7 +468,7 @@ def test_compile_quality_empty_when_no_scorers():
 
 
 def test_benchmark_config_scorer_fields():
-    from guidellm.benchmark.schemas.base import BenchmarkConfig
+    from roundup.benchmark.schemas.base import BenchmarkConfig
 
     config = BenchmarkConfig.model_construct()
     assert config.scorers == []
@@ -476,7 +476,7 @@ def test_benchmark_config_scorer_fields():
 
 
 def test_metrics_args_scorer_fields():
-    from guidellm.schemas.benchmark.entrypoints import GenerativeMetricsArgs
+    from roundup.schemas.benchmark.entrypoints import GenerativeMetricsArgs
 
     args = GenerativeMetricsArgs.model_construct(
         scorers=["instruction_following"],
@@ -487,7 +487,7 @@ def test_metrics_args_scorer_fields():
 
 
 def test_metrics_args_scorer_defaults_empty():
-    from guidellm.schemas.benchmark.entrypoints import GenerativeMetricsArgs
+    from roundup.schemas.benchmark.entrypoints import GenerativeMetricsArgs
 
     args = GenerativeMetricsArgs.model_construct()
     assert args.scorers == []
@@ -498,24 +498,24 @@ def test_metrics_args_scorer_defaults_empty():
 # No-scorer report shape regression
 #
 # A benchmark compiled with NO scorers configured must serialize to the same
-# JSON shape as the pre-scoring schema (commit 74ec8623^ of toxicwind/guidellm).
+# JSON shape as the pre-scoring schema (commit 74ec8623^ of toxicwind/roundup).
 # The scoring feature is additive-only: nothing may be removed or retyped, and
 # the new scoring fields must serialize empty on a no-scorer run.
 #
 # Pre-scoring field lists below were read from
 # `git show 74ec8623^:<path>`:
-#   - src/guidellm/benchmark/schemas/benchmark.py  (GenerativeBenchmark)
-#   - src/guidellm/schemas/base/request_stats.py   (GenerativeRequestStats)
-#   - src/guidellm/benchmark/schemas/base.py       (BenchmarkConfig)
+#   - src/roundup/benchmark/schemas/benchmark.py  (GenerativeBenchmark)
+#   - src/roundup/schemas/base/request_stats.py   (GenerativeRequestStats)
+#   - src/roundup/benchmark/schemas/base.py       (BenchmarkConfig)
 # ---------------------------------------------------------------------------
 
-from guidellm.benchmark.schemas import (
+from roundup.benchmark.schemas import (
     BenchmarkConfig,
     GenerativeBenchmark,
     GenerativeBenchmarkAccumulator,
 )
-from guidellm.scheduler import ConcurrentStrategy, SchedulerState
-from guidellm.schemas import (
+from roundup.scheduler import ConcurrentStrategy, SchedulerState
+from roundup.schemas import (
     GenerativeRequestStats,
     RequestInfo,
     RequestTimings,

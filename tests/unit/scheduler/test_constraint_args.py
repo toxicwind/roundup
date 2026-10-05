@@ -5,23 +5,23 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from guidellm.benchmark.entrypoints import resolve_constraints
-from guidellm.scheduler.constraints import ConstraintsInitializerFactory
-from guidellm.scheduler.constraints.error import (
+from roundup.benchmark.entrypoints import resolve_constraints
+from roundup.scheduler.constraints import ConstraintsInitializerFactory
+from roundup.scheduler.constraints.error import (
     MaxErrorRateConstraint,
     MaxErrorsConstraint,
     MaxGlobalErrorRateConstraint,
 )
-from guidellm.scheduler.constraints.request import (
+from roundup.scheduler.constraints.request import (
     MaxDurationConstraint,
     MaxNumberConstraint,
     MinNumberConstraint,
 )
-from guidellm.scheduler.constraints.saturation import (
+from roundup.scheduler.constraints.saturation import (
     OverSaturationConstraintInitializer,
 )
-from guidellm.schemas.benchmark import BenchmarkArgs
-from guidellm.schemas.scheduler import (
+from roundup.schemas.benchmark import BenchmarkArgs
+from roundup.schemas.scheduler import (
     ConstraintArgs,
     MaxDurationConstraintArgs,
     MaxErrorRateConstraintArgs,

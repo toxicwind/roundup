@@ -4,11 +4,11 @@ weight: -8
 
 # Start a Server
 
-Before running GuideLLM benchmarks, you need an OpenAI-compatible server to test against. This guide will help you set up a server quickly.
+Before running Roundup benchmarks, you need an OpenAI-compatible server to test against. This guide will help you set up a server quickly.
 
 ## **Recommended Option: vLLM**
 
-vLLM is the recommended backend for running GuideLLM benchmarks due to its performance and compatibility.
+vLLM is the recommended backend for running Roundup benchmarks due to its performance and compatibility.
 
 ### Installing vLLM
 
@@ -30,7 +30,7 @@ For more configuration options, refer to the [vLLM documentation](https://docs.
 
 ## **Alternative Servers**
 
-GuideLLM supports any OpenAI-compatible server, such as TGI, SG Lang, and more. For detailed information on all supported backends, see the [Backends documentation](../guides/backends.md).
+Roundup supports any OpenAI-compatible server, such as TGI, SG Lang, and more. For detailed information on all supported backends, see the [Backends documentation](../guides/backends.md).
 
 ## **Verifying Your Server**
 

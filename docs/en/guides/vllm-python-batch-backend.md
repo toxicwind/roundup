@@ -1,6 +1,6 @@
 # vLLM Python Batch Backend
 
-The **vLLM Python batch backend** (`vllm_python_batch`) runs batch inference in the same process as GuideLLM using vLLM's synchronous [LLM](https://docs.vllm.ai/) engine. Requests are queued and dispatched in configurable batches via `LLM.generate()`, removing per-request scheduling overhead. This is ideal for throughput benchmarking where latency per individual request is less important than aggregate throughput.
+The **vLLM Python batch backend** (`vllm_python_batch`) runs batch inference in the same process as Roundup using vLLM's synchronous [LLM](https://docs.vllm.ai/) engine. Requests are queued and dispatched in configurable batches via `LLM.generate()`, removing per-request scheduling overhead. This is ideal for throughput benchmarking where latency per individual request is less important than aggregate throughput.
 
 Like the `vllm_python_async` backend, no HTTP server is involved. You do **not** pass a `target`; you **must** pass `model` in the backend configuration.
 
@@ -15,7 +15,7 @@ Installation is the same as for the [vLLM Python backend](vllm-python-backend.md
 Run a benchmark with the vLLM Python batch backend:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=vllm_python_batch,model=Qwen/Qwen3-0.6B,batch_size=8 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
   --profile kind=throughput,max_concurrency=20 \
@@ -63,7 +63,7 @@ guidellm run \
 The vLLM `LLM` engine is never loaded during `process_startup()`. Engine creation is controlled by a worker-process check that distinguishes the main (preflight) process from scheduler workers:
 
 - **Main preflight** (`resolve_backend`): `validate()` runs in the main process (`multiprocessing.parent_process()` is `None`) and performs a cheap readiness check only — no model weights are loaded.
-- **Worker process**: when `multiprocessing.parent_process()` is set (true for both `fork` and `spawn` workers; see `GUIDELLM__MP_CONTEXT_TYPE`), `validate()` calls `_ensure_engine()` to **preload** the engine so the cold-start time is excluded from the timed benchmark phase.
+- **Worker process**: when `multiprocessing.parent_process()` is set (true for both `fork` and `spawn` workers; see `ROUNDUP__MP_CONTEXT_TYPE`), `validate()` calls `_ensure_engine()` to **preload** the engine so the cold-start time is excluded from the timed benchmark phase.
 - **Inference-time safety net**: as requests are generated from the dataset, `_ensure_engine()` is called as an idempotent fallback, so inference works correctly even if `validate()` was skipped.
 
 ## See also

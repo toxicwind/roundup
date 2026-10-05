@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.loaders.torch module.
+Unit tests for roundup.data.loaders.torch module.
 
 ### WRITTEN BY AI ###
 """
@@ -8,9 +8,9 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.data.loaders.loader import DataLoaderRegistry
-from guidellm.data.loaders.torch import TorchDataLoader
-from guidellm.schemas.data import TorchDataLoaderArgs
+from roundup.data.loaders.loader import DataLoaderRegistry
+from roundup.data.loaders.torch import TorchDataLoader
+from roundup.schemas.data import TorchDataLoaderArgs
 
 
 class TestTorchDataLoaderArgs:

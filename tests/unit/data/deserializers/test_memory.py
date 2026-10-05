@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.deserializers.memory module.
+Unit tests for roundup.data.deserializers.memory module.
 
 ### WRITTEN BY AI ###
 """
@@ -7,15 +7,15 @@ Unit tests for guidellm.data.deserializers.memory module.
 import pytest
 from datasets import Dataset
 
-from guidellm.data.deserializers.deserializer import (
+from roundup.data.deserializers.deserializer import (
     DataNotSupportedError,
 )
-from guidellm.data.deserializers.memory import (
+from roundup.data.deserializers.memory import (
     InMemoryDictDatasetDeserializer,
     InMemoryDictListDatasetDeserializer,
     InMemoryItemListDatasetDeserializer,
 )
-from guidellm.schemas.data import (
+from roundup.schemas.data import (
     InMemoryDictDataArgs,
     InMemoryDictListDataArgs,
     InMemoryItemListDataArgs,
@@ -93,7 +93,7 @@ def test_in_memory_dict_list_deserializer_success(processor_factory):
     data = [
         {"id": 1, "text": "hello"},
         {"id": 2, "text": "world"},
-        {"id": 3, "text": "guidellm"},
+        {"id": 3, "text": "roundup"},
     ]
     config = InMemoryDictListDataArgs(data=data)
     deserializer = InMemoryDictListDatasetDeserializer()
@@ -104,7 +104,7 @@ def test_in_memory_dict_list_deserializer_success(processor_factory):
 
     assert isinstance(dataset, Dataset)
     assert dataset["id"] == [1, 2, 3]
-    assert dataset["text"] == ["hello", "world", "guidellm"]
+    assert dataset["text"] == ["hello", "world", "roundup"]
     assert len(dataset) == 3
 
 

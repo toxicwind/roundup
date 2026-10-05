@@ -1,6 +1,6 @@
 /**
  * DOM smoke test for the self-contained HTML report.
- * Expects GUIDELLM_HTML_FIXTURE to point at a multi-run benchmarks.html file.
+ * Expects ROUNDUP_HTML_FIXTURE to point at a multi-run benchmarks.html file.
  */
 
 import assert from "node:assert/strict";
@@ -8,8 +8,8 @@ import fs from "node:fs";
 import test from "node:test";
 import { JSDOM } from "jsdom";
 
-const fixturePath = process.env.GUIDELLM_HTML_FIXTURE;
-assert.ok(fixturePath, "GUIDELLM_HTML_FIXTURE must be set");
+const fixturePath = process.env.ROUNDUP_HTML_FIXTURE;
+assert.ok(fixturePath, "ROUNDUP_HTML_FIXTURE must be set");
 assert.ok(fs.existsSync(fixturePath), `fixture missing: ${fixturePath}`);
 
 const html = fs.readFileSync(fixturePath, "utf8");
@@ -47,14 +47,14 @@ test("multi-run HTML populates KPIs, comparison rows, and Performance SVGs", asy
   assert.ok(staticSummary);
   assert.equal(staticSummary.hidden, true);
 
-  assert.ok(window.GUIDELLM_REPORT);
-  assert.equal(window.GUIDELLM_REPORT.header.multi_run, true);
-  assert.ok((window.GUIDELLM_REPORT.runs || []).length >= 2);
+  assert.ok(window.ROUNDUP_REPORT);
+  assert.equal(window.ROUNDUP_REPORT.header.multi_run, true);
+  assert.ok((window.ROUNDUP_REPORT.runs || []).length >= 2);
 
   const compare = document.getElementById("table-compare");
   assert.ok(compare);
   const rows = compare.querySelectorAll("tbody tr");
-  assert.equal(rows.length, window.GUIDELLM_REPORT.runs.length);
+  assert.equal(rows.length, window.ROUNDUP_REPORT.runs.length);
 
   const perfTab = document.querySelector('.tab-btn[data-tab="performance"]');
   assert.ok(perfTab);

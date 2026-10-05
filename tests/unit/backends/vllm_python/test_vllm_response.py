@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.backends.vllm_python.vllm_response import VLLMResponseHandler
-from guidellm.schemas import GenerationRequest, GenerationResponse
+from roundup.backends.vllm_python.vllm_response import VLLMResponseHandler
+from roundup.schemas import GenerationRequest, GenerationResponse
 
 
 @pytest.fixture

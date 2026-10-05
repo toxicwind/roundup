@@ -18,14 +18,14 @@ from unittest.mock import MagicMock
 import pytest
 import pytest_asyncio
 
-from guidellm.scheduler import SynchronousStrategy, WorkerProcess
-from guidellm.scheduler.schemas import ConversationEdge
-from guidellm.scheduler.schemas.conversation_graph import (
+from roundup.scheduler import SynchronousStrategy, WorkerProcess
+from roundup.scheduler.schemas import ConversationEdge
+from roundup.scheduler.schemas.conversation_graph import (
     GenerativeConversationGraph,
     GenerativeConversationNode,
 )
-from guidellm.schemas import GenerationRequest, RequestInfo, RequestSettings
-from guidellm.utils.messaging import InterProcessMessagingQueue
+from roundup.schemas import GenerationRequest, RequestInfo, RequestSettings
+from roundup.utils.messaging import InterProcessMessagingQueue
 
 
 def async_timeout(delay: float):

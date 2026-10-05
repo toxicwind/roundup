@@ -6,11 +6,11 @@ import pytest
 import yaml
 from trio import Path
 
-from guidellm.benchmark import reimport_benchmarks_report
-from guidellm.benchmark.schemas import (
+from roundup.benchmark import reimport_benchmarks_report
+from roundup.benchmark.schemas import (
     GenerativeBenchmarksReport,
 )
-from guidellm.schemas.benchmark import (
+from roundup.schemas.benchmark import (
     BenchmarkScenario,
     JSONBenchmarkOutputArgs,
     YAMLBenchmarkOutputArgs,

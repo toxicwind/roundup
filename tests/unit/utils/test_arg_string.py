@@ -4,7 +4,7 @@ Tests for arg string parsing utilities.
 
 import pytest
 
-from guidellm.utils import arg_string
+from roundup.utils import arg_string
 
 
 class TestArgStringParser:

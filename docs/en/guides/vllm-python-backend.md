@@ -1,6 +1,6 @@
 # vLLM Python Backend
 
-The **vLLM Python backend** (`vllm_python_async`) runs inference in the same process as GuideLLM using vLLM's [AsyncLLMEngine](https://docs.vllm.ai/). No HTTP server is involved, eliminating network overhead. This is useful for isolating performance bottlenecks or simplifying your benchmark setup. You do **not** pass a `target`; you **must** pass `model` in the backend configuration, which will then be downloaded and hosted in vLLM.
+The **vLLM Python backend** (`vllm_python_async`) runs inference in the same process as Roundup using vLLM's [AsyncLLMEngine](https://docs.vllm.ai/). No HTTP server is involved, eliminating network overhead. This is useful for isolating performance bottlenecks or simplifying your benchmark setup. You do **not** pass a `target`; you **must** pass `model` in the backend configuration, which will then be downloaded and hosted in vLLM.
 
 For all engine options and supported models, see vLLM's [Engine Arguments](https://docs.vllm.ai/en/stable/configuration/engine_args/) and the [vLLM documentation](https://docs.vllm.ai/).
 
@@ -8,13 +8,13 @@ For all engine options and supported models, see vLLM's [Engine Arguments](https
 
 ### Recommended methods
 
-- **Official GuideLLM + vLLM image**\
-  Build and run the image that uses the vLLM base image (e.g. [Containerfile.vllm](https://github.com/vllm-project/guidellm/blob/main/Containerfile.vllm)). It is based on `vllm/vllm-openai` and installs GuideLLM on top, giving a known-good vLLM + GuideLLM stack with hardware support as provided by the base image.
+- **Official Roundup + vLLM image**\
+  Build and run the image that uses the vLLM base image (e.g. [Containerfile.vllm](https://github.com/toxicwind/roundup/blob/main/Containerfile.vllm)). It is based on `vllm/vllm-openai` and installs Roundup on top, giving a known-good vLLM + Roundup stack with hardware support as provided by the base image.
 
-  **Note:** This method will result in the preference for vllm's requirements as opposed to GuideLLM's requirements. Since vLLM is the more complex project, this is the recommended configuration, but this may result in an older Python or dependency version, resulting in sub-optimal GuideLLM performance and behavior in some scenarios.
+  **Note:** This method will result in the preference for vllm's requirements as opposed to Roundup's requirements. Since vLLM is the more complex project, this is the recommended configuration, but this may result in an older Python or dependency version, resulting in sub-optimal Roundup performance and behavior in some scenarios.
 
 - **Existing vLLM installation**\
-  Install vLLM first for your environment (GPU/CPU, CUDA, etc.), then install GuideLLM in the same environment (e.g. `pip install guidellm` or with extras). You avoid a duplicate vLLM install and reuse your existing acceleration setup.
+  Install vLLM first for your environment (GPU/CPU, CUDA, etc.), then install Roundup in the same environment (e.g. `pip install roundup` or with extras). You avoid a duplicate vLLM install and reuse your existing acceleration setup.
 
   **Note:** Installing from the lockfile for the vLLM Python backend may not install the correct dependencies for hardware acceleration.
 
@@ -23,14 +23,14 @@ For all engine options and supported models, see vLLM's [Engine Arguments](https
 Run a benchmark with the vLLM Python backend:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=vllm_python_async,model=Qwen/Qwen3-0.6B \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
   --profile kind=constant,rate=3 \
   --constraint kind=max_duration,seconds=20
 ```
 
-Engine behavior (device, memory, etc.) follows vLLM defaults unless you override it via `vllm_config` in the backend configuration. When running without a GPU (e.g. the GuideLLM + vLLM container without GPU access), the backend automatically uses the CPU device unless you set `device` in `vllm_config`. For engine configuration options, see vLLM's [Engine Arguments](https://docs.vllm.ai/en/stable/configuration/engine_args/).
+Engine behavior (device, memory, etc.) follows vLLM defaults unless you override it via `vllm_config` in the backend configuration. When running without a GPU (e.g. the Roundup + vLLM container without GPU access), the backend automatically uses the CPU device unless you set `device` in `vllm_config`. For engine configuration options, see vLLM's [Engine Arguments](https://docs.vllm.ai/en/stable/configuration/engine_args/).
 
 ## Request format and backend options
 

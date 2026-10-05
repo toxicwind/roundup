@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 from click.testing import CliRunner
 
-from guidellm.__main__ import cli
+from roundup.__main__ import cli
 
 
 @pytest.mark.smoke
@@ -40,7 +40,7 @@ def test_benchmark_run_with_backend_args():
 
 
 @pytest.mark.xfail(reason="old and broken", run=False)
-@patch("guidellm.__main__.benchmark_generative_text")
+@patch("roundup.__main__.benchmark_generative_text")
 def test_cli_backend_args_header_removal(mock_benchmark_func, tmp_path: Path):
     """
     Tests that --backend-args from the CLI correctly overrides scenario

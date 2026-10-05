@@ -1,18 +1,18 @@
 name: Feature Request
-description: Suggest a new feature or enhancement for GuideLLM
+description: Suggest a new feature or enhancement for Roundup
 type: Feature
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for your interest in improving GuideLLM! Please provide details about your feature request below.
+        Thanks for your interest in improving Roundup! Please provide details about your feature request below.
 
   - type: textarea
     id: problem
     attributes:
       label: Problem Statement
       description: What problem does this feature solve? What use case does it address?
-      placeholder: I'm trying to do X, but currently GuideLLM doesn't support Y...
+      placeholder: I'm trying to do X, but currently Roundup doesn't support Y...
     validations:
       required: true
 
@@ -21,7 +21,7 @@ body:
     attributes:
       label: Proposed Solution
       description: Describe the feature or enhancement you'd like to see.
-      placeholder: I would like GuideLLM to...
+      placeholder: I would like Roundup to...
     validations:
       required: true
 
@@ -39,7 +39,7 @@ body:
       description: If applicable, provide examples of how this feature would be used.
       placeholder: |
         ```bash
-        guidellm benchmark run --new-feature ...
+        roundup benchmark run --new-feature ...
         ```
       render: markdown
 

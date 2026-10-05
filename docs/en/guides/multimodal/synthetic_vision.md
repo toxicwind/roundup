@@ -4,16 +4,16 @@ weight: 40
 
 # Synthetic Visual Data
 
-GuideLLM can synthesize images and short videos on the fly so you can benchmark Vision-Language Model (VLM) serving configurations without bringing your own dataset. Two `--data` kinds — `synthetic_image` and `synthetic_video` — compose with `synthetic_text` so a single command can produce a fully-shaped multimodal request.
+Roundup can synthesize images and short videos on the fly so you can benchmark Vision-Language Model (VLM) serving configurations without bringing your own dataset. Two `--data` kinds — `synthetic_image` and `synthetic_video` — compose with `synthetic_text` so a single command can produce a fully-shaped multimodal request.
 
 Synthetic visual data is useful when you want to control payload shape precisely (image dimensions, frame count, frames-per-second) or stress-test serving paths that the preprocessor cache would otherwise hide. Defaults are tuned so every generated payload is byte-different from the next, which defeats vLLM's multimodal preprocessor cache while still compressing like real media on the wire.
 
 ## Prerequisites
 
-Install GuideLLM with the `vision` extra to enable image and video synthesis:
+Install Roundup with the `vision` extra to enable image and video synthesis:
 
 ```bash
-pip install guidellm[vision]
+pip install roundup[vision]
 ```
 
 ## Synthetic image
@@ -25,7 +25,7 @@ Use `--data "kind=synthetic_image"` to generate a single image per request. Add 
 A single 720p image alongside 200 text tokens and 64 output tokens:
 
 ```bash
-guidellm run \
+roundup run \
   --backend "kind=openai_http,target=http://localhost:8000" \
   --data "kind=synthetic_text,prompt_tokens=200" \
   --data "kind=synthetic_image,resolution=720p,output_tokens=64"
@@ -34,7 +34,7 @@ guidellm run \
 A 1280×720 JPEG with two images per request:
 
 ```bash
-guidellm run \
+roundup run \
   --backend "kind=openai_http,target=http://localhost:8000" \
   --data "kind=synthetic_text,prompt_tokens=200" \
   --data "kind=synthetic_image,width=1280,height=720,format=jpeg,images_per_request=2,output_tokens=64"
@@ -62,7 +62,7 @@ Use `--data "kind=synthetic_video"` to generate a short clip per request. Add a 
 A six-frame 480p clip at 1 fps with modest prompt and output budgets:
 
 ```bash
-guidellm run \
+roundup run \
   --backend "kind=openai_http,target=http://localhost:8000" \
   --data "kind=synthetic_text,prompt_tokens=64" \
   --data "kind=synthetic_video,width=854,height=480,frames=6,fps=1,output_tokens=128"
@@ -71,7 +71,7 @@ guidellm run \
 A twelve-frame 720p clip at 3 fps with an explicit h264 target bitrate:
 
 ```bash
-guidellm run \
+roundup run \
   --backend "kind=openai_http,target=http://localhost:8000" \
   --data "kind=synthetic_text,prompt_tokens=64" \
   --data "kind=synthetic_video,width=1280,height=720,frames=12,fps=3,video_bitrate=2M,output_tokens=128"

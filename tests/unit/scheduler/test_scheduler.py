@@ -9,7 +9,7 @@ from typing import Any, Generic
 import pytest
 from pydantic import BaseModel, Field
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     BackendInterface,
     MaxDurationConstraint,
     MaxNumberConstraint,
@@ -18,13 +18,13 @@ from guidellm.scheduler import (
     SchedulerState,
     SynchronousStrategy,
 )
-from guidellm.scheduler.schemas import ConversationGraph, ConversationNode
-from guidellm.schemas import RequestInfo, RequestSettings
-from guidellm.schemas.scheduler import (
+from roundup.scheduler.schemas import ConversationGraph, ConversationNode
+from roundup.schemas import RequestInfo, RequestSettings
+from roundup.schemas.scheduler import (
     MaxDurationConstraintArgs,
     MaxRequestsConstraintArgs,
 )
-from guidellm.utils.singleton import ThreadSafeSingletonMixin
+from roundup.utils.singleton import ThreadSafeSingletonMixin
 from tests.unit.testing_utils import async_timeout
 
 

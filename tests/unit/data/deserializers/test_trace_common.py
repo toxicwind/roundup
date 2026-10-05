@@ -10,28 +10,28 @@ from datasets import Dataset, IterableDataset
 from faker import Faker
 from pydantic import ValidationError
 
-from guidellm.data.deserializers import (
+from roundup.data.deserializers import (
     DataNotSupportedError,
     DatasetDeserializerFactory,
 )
-from guidellm.data.deserializers.trace_common import (
+from roundup.data.deserializers.trace_common import (
     TraceDatasetDeserializer,
     TraceFormatBase,
     TraceFormatRegistry,
     decode_prompt,
     generate_token_ids,
 )
-from guidellm.data.deserializers.trace_minimal import MinimalTraceFormat
-from guidellm.data.deserializers.trace_session_timing import TraceSessionTiming
-from guidellm.data.finalizers.generative import GenerativeRequestFinalizer
-from guidellm.data.schemas import InvalidRowError
-from guidellm.data.schemas.conversation_graph_data import (
+from roundup.data.deserializers.trace_minimal import MinimalTraceFormat
+from roundup.data.deserializers.trace_session_timing import TraceSessionTiming
+from roundup.data.finalizers.generative import GenerativeRequestFinalizer
+from roundup.data.schemas import InvalidRowError
+from roundup.data.schemas.conversation_graph_data import (
     ConversationGraphData,
     ConversationTurnData,
 )
-from guidellm.scheduler.schemas.conversation_graph import GenerativeConversationGraph
-from guidellm.schemas.data import FileDataArgs, MinimalTraceFormatArgs, TraceDataArgs
-from guidellm.schemas.data.finalizers import GenerativeRequestFinalizerArgs
+from roundup.scheduler.schemas.conversation_graph import GenerativeConversationGraph
+from roundup.schemas.data import FileDataArgs, MinimalTraceFormatArgs, TraceDataArgs
+from roundup.schemas.data.finalizers import GenerativeRequestFinalizerArgs
 from tests.unit.data.deserializers.trace_test_utils import trace_file_source
 
 
@@ -813,7 +813,7 @@ class TestTraceDatasetDeserializer:
             tmp_path,
             '{"timestamp": 1, "input_length": 10, "output_length": 1}\n',
         )
-        with patch("guidellm.data.deserializers.trace_common.logger") as mock_logger:
+        with patch("roundup.data.deserializers.trace_common.logger") as mock_logger:
             self.deserialize(deserializer, trace)
 
         assert mock_logger.warning.call_count == 1
@@ -830,7 +830,7 @@ class TestTraceDatasetDeserializer:
             '{"timestamp": 1, "input_length": 10, "output_length": 1, '
             '"duration": 0.5}\n',
         )
-        with patch("guidellm.data.deserializers.trace_common.logger") as mock_logger:
+        with patch("roundup.data.deserializers.trace_common.logger") as mock_logger:
             self.deserialize(deserializer, trace)
 
         mock_logger.warning.assert_not_called()

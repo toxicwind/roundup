@@ -1,25 +1,25 @@
 # Multiturn Conversation Benchmarking
 
-This guide demonstrates how to utilize GuideLLM to orchestrate multi-turn benchmarks for simulating user conversations in a multi-request/response pattern.
+This guide demonstrates how to utilize Roundup to orchestrate multi-turn benchmarks for simulating user conversations in a multi-request/response pattern.
 
 ## Setup
 
-First, ensure you have a running inference server and compatible model. GuideLLM supports any OpenAI-compatible server that can handle conversational interactions. For the benchmarking examples below, we'll use vLLM serving a conversational model.
+First, ensure you have a running inference server and compatible model. Roundup supports any OpenAI-compatible server that can handle conversational interactions. For the benchmarking examples below, we'll use vLLM serving a conversational model.
 
 ```bash
 # Example: vLLM with a conversational model
 vllm serve meta-llama/Llama-3.1-8B-Instruct
 ```
 
-Next, either on the same instance or another machine that can reach your server, install GuideLLM:
+Next, either on the same instance or another machine that can reach your server, install Roundup:
 
 ```bash
-pip install guidellm[recommended]
+pip install roundup[recommended]
 ```
 
 ## Understanding Multiturn Data Structure
 
-Multiturn benchmarking in GuideLLM uses indexed columns to represent conversational exchanges. Each turn in a conversation is represented by a set of columns with a numeric suffix indicating the turn index. Turn indexes can be any numerical value but we recommend ascending from 0 for simplicity.
+Multiturn benchmarking in Roundup uses indexed columns to represent conversational exchanges. Each turn in a conversation is represented by a set of columns with a numeric suffix indicating the turn index. Turn indexes can be any numerical value but we recommend ascending from 0 for simplicity.
 
 ### Turn-indexed Column Format
 
@@ -38,7 +38,7 @@ Synthetic multiturn data (including single-turn and branched sub-agent configs) 
 
 ### How Multiturn Orchestration Works
 
-When executing a multiturn benchmark, GuideLLM:
+When executing a multiturn benchmark, Roundup:
 
 1. **Sends a turn** (prefix + prompt_0) to the model and captures the response
 2. **Return the request** Store the request/response in the aggregator as a single request
@@ -66,7 +66,7 @@ All standard benchmarking arguments apply to multiturn tasks, such as `--profile
 
 ### Synthetic Data Configuration
 
-GuideLLM can automatically generate multiturn synthetic data using the `turns` parameter in the synthetic data configuration.
+Roundup can automatically generate multiturn synthetic data using the `turns` parameter in the synthetic data configuration.
 
 #### Basic Synthetic Multiturn
 
@@ -132,7 +132,7 @@ For this configuration:
 
 #### Sub-Agent Branches
 
-GuideLLM supports simulating multi-agent workloads where an orchestrator spawns parallel sub-agents during a conversation. Use the `branches` parameter to specify sub-agent branches that fork from the main conversation at a specific turn and merge back later.
+Roundup supports simulating multi-agent workloads where an orchestrator spawns parallel sub-agents during a conversation. Use the `branches` parameter to specify sub-agent branches that fork from the main conversation at a specific turn and merge back later.
 
 Each branch:
 
@@ -198,7 +198,7 @@ Multiturn conversations are formatted differently depending on the request forma
 
 #### Chat Completions (`/v1/chat/completions`)
 
-For chat completions, GuideLLM creates a `messages` array with the conversation history:
+For chat completions, Roundup creates a `messages` array with the conversation history:
 
 ```json
 {
@@ -215,7 +215,7 @@ For chat completions, GuideLLM creates a `messages` array with the conversation 
 
 #### Responses API (`/v1/responses`)
 
-For the Responses API with `server_history` disabled, GuideLLM creates an `input` array with the conversation history and sets the prefix as `instructions`:
+For the Responses API with `server_history` disabled, Roundup creates an `input` array with the conversation history and sets the prefix as `instructions`:
 
 ```json
 {
@@ -240,17 +240,17 @@ prefix content prompt_0 content response to prompt_0 prompt_1 content response t
 
 ### Server-Side Conversation History (`/v1/responses` only)
 
-By default, GuideLLM replays the full conversation history in each request (client-side history). For the Responses API, you can instead use **server-side history** via the `previous_response_id` field, where the server stores and manages conversation context.
+By default, Roundup replays the full conversation history in each request (client-side history). For the Responses API, you can instead use **server-side history** via the `previous_response_id` field, where the server stores and manages conversation context.
 
 Enable server-side history in the backend configuration:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,request_format=/v1/responses,server_history=true \
   --data kind=synthetic_text,prompt_tokens=200,output_tokens=100,turns=3
 ```
 
-When enabled, GuideLLM sends only the current turn's input and references the previous response by ID. The server reconstructs the full conversation context internally.
+When enabled, Roundup sends only the current turn's input and references the previous response by ID. The server reconstructs the full conversation context internally.
 
 **Requirements:**
 
@@ -264,7 +264,7 @@ Multi-turn tool calling is supported as part of multi-turn benchmarks. See the d
 
 ## The TurnPivot Preprocessor
 
-GuideLLM supports passing multiple `--data` options, each pointing to a separate dataset. If there are matches for the same column type across multiple datasets, they are treated as separate batches. Normally this is useful for layering columns from different datasets within the same request. For example adding a text column from one dataset to another with images or combining multiple normally-distributed synthetic datasets into a multimodal distribution. We can use the **TurnPivot** preprocessor to transpose turn columns and dataset batches.
+Roundup supports passing multiple `--data` options, each pointing to a separate dataset. If there are matches for the same column type across multiple datasets, they are treated as separate batches. Normally this is useful for layering columns from different datasets within the same request. For example adding a text column from one dataset to another with images or combining multiple normally-distributed synthetic datasets into a multimodal distribution. We can use the **TurnPivot** preprocessor to transpose turn columns and dataset batches.
 
 For instance, given the following datasets:
 
@@ -351,7 +351,7 @@ This example demonstrates a simple 3-turn conversation benchmark using synthetic
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=meta-llama/Llama-3.1-8B-Instruct,request_format=/v1/chat/completions \
   --profile kind=concurrent,streams=6 \
   --constraint kind=max_requests,count=30 \
@@ -374,7 +374,7 @@ This example shows how to include system prompts in multiturn conversations, use
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=meta-llama/Llama-3.1-8B-Instruct,request_format=/v1/chat/completions \
   --profile kind=constant,rate=2.0 \
   --constraint kind=max_requests,count=100 \
@@ -399,7 +399,7 @@ This example demonstrates using multiple prefix configurations with weighted dis
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=meta-llama/Llama-3.1-8B-Instruct,request_format=/v1/chat/completions \
   --profile kind=constant,rate=1.5 \
   --constraint kind=max_duration,seconds=60 \
@@ -445,7 +445,7 @@ This example shows how to use an existing dataset file with multiturn structure.
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=meta-llama/Llama-3.1-8B-Instruct,request_format=/v1/chat/completions \
   --profile kind=concurrent,streams=10 \
   --constraint kind=max_requests,count=200 \
@@ -465,7 +465,7 @@ This example demonstrates using the TurnPivot preprocessor to build a synthetic 
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=meta-llama/Llama-3.1-8B-Instruct,request_format=/v1/chat/completions \
   --profile kind=concurrent,streams=10 \
   --constraint kind=max_requests,count=150 \
@@ -527,7 +527,7 @@ Results in the following being sent for the turn in the conversation history:
 
 ### Other Notes Regarding Reasoning:
 
-Reasoning is only recognized if "reasoning" chunks are sent to the client. This is typically only done if a reasoning parser is included. Otherwise, GuideLLM will interpret them as non-reasoning tokens. Regarding KVCache, reasoning parsers reformat the reasoning, which has a side effect of making it so that despite sending back reasoning tokens, kvcache likely won't match exactly, causing a partial cache miss. Settings to evict reasoning from vLLM's cache are in review as of the time of this writing.
+Reasoning is only recognized if "reasoning" chunks are sent to the client. This is typically only done if a reasoning parser is included. Otherwise, Roundup will interpret them as non-reasoning tokens. Regarding KVCache, reasoning parsers reformat the reasoning, which has a side effect of making it so that despite sending back reasoning tokens, kvcache likely won't match exactly, causing a partial cache miss. Settings to evict reasoning from vLLM's cache are in review as of the time of this writing.
 
 It is recommended that you research the design of the model you're using and the model server to ensure reasoning history is set up correctly.
 

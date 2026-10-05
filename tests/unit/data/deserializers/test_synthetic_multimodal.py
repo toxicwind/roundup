@@ -15,21 +15,21 @@ import pytest
 from PIL import Image
 from pydantic import ValidationError
 
-from guidellm.data.deserializers import (
+from roundup.data.deserializers import (
     DatasetDeserializerFactory,
     SyntheticImageDataset,
     SyntheticImageDatasetDeserializer,
     SyntheticVideoDataset,
     SyntheticVideoDatasetDeserializer,
 )
-from guidellm.data.preprocessors.encoders import MediaEncoder
-from guidellm.schemas.data import (
+from roundup.data.preprocessors.encoders import MediaEncoder
+from roundup.schemas.data import (
     DataArgs,
     MediaEncoderArgs,
     SyntheticImageDataArgs,
     SyntheticVideoDataArgs,
 )
-from guidellm.utils.vision import synthesize_image, synthesize_video
+from roundup.utils.vision import synthesize_image, synthesize_video
 
 
 def _mock_tokenizer() -> Mock:

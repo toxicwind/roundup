@@ -5,7 +5,7 @@ import pytest
 
 from tests.e2e.conftest import E2EServer, free_port, start_mock_server
 from tests.e2e.utils import (
-    GuidellmClient,
+    RoundupClient,
     assert_constraint_triggered,
     assert_no_python_exceptions,
     load_benchmark_report,
@@ -64,8 +64,8 @@ def test_over_saturated_benchmark(server: E2EServer, tmp_path: Path):
     report_path = tmp_path / report_name
     rate = 10
 
-    # Create and configure the guidellm client
-    client = GuidellmClient(
+    # Create and configure the roundup client
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,
@@ -112,8 +112,8 @@ def test_over_saturated_benchmark_with_dict_config(server: E2EServer, tmp_path: 
     report_path = tmp_path / report_name
     rate = 10
 
-    # Create and configure the guidellm client
-    client = GuidellmClient(
+    # Create and configure the roundup client
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,

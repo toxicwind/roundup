@@ -2,8 +2,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/vllm-project/guidellm/main/docs/assets/guidellm-logo-light.png">
-    <img alt="GuideLLM Logo" src="https://raw.githubusercontent.com/vllm-project/guidellm/main/docs/assets/guidellm-logo-dark.png" width=55%>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/toxicwind/roundup/main/docs/assets/roundup-logo-light.png">
+    <img alt="Roundup Logo" src="https://raw.githubusercontent.com/toxicwind/roundup/main/docs/assets/roundup-logo-dark.png" width=55%>
   </picture>
 </p>
 
@@ -11,7 +11,7 @@
 SLO-Aware Benchmarking and Evaluation Platform for Optimizing Real-World LLM Inference
 </h3>
 
-**GuideLLM** is a platform for evaluating how language models perform under real workloads and configurations. It simulates end-to-end interactions with OpenAI-compatible and vLLM-native servers, generates workload patterns that reflect production usage, and produces detailed reports that help teams understand system behavior, resource needs, and operational limits. GuideLLM supports real and synthetic datasets, multimodal inputs, and flexible execution profiles, giving engineering and ML teams a consistent framework for assessing model behavior, tuning deployments, and planning capacity as their systems evolve.
+**Roundup** is a platform for evaluating how language models perform under real workloads and configurations. It simulates end-to-end interactions with OpenAI-compatible and vLLM-native servers, generates workload patterns that reflect production usage, and produces detailed reports that help teams understand system behavior, resource needs, and operational limits. Roundup supports real and synthetic datasets, multimodal inputs, and flexible execution profiles, giving engineering and ML teams a consistent framework for assessing model behavior, tuning deployments, and planning capacity as their systems evolve.
 
 ## Key Features
 
@@ -29,7 +29,7 @@ SLO-Aware Benchmarking and Evaluation Platform for Optimizing Real-World LLM Inf
 
   ______________________________________________________________________
 
-  Install GuideLLM, set up your first benchmark, and analyze the results to optimize your LLM deployment.
+  Install Roundup, set up your first benchmark, and analyze the results to optimize your LLM deployment.
 
   [:octicons-arrow-right-24: Getting started](./getting-started/)
 
@@ -53,7 +53,7 @@ SLO-Aware Benchmarking and Evaluation Platform for Optimizing Real-World LLM Inf
 
   ______________________________________________________________________
 
-  Complete reference documentation for the GuideLLM API to integrate benchmarking into your workflow.
+  Complete reference documentation for the Roundup API to integrate benchmarking into your workflow.
 
   [:octicons-arrow-right-24: API Reference](./api/)
 

@@ -1,14 +1,14 @@
 # Upstream Merge Workflow — roundup
 
 **Fork:** `toxicwind/roundup`
-**Upstream:** `vllm-project/guidellm`
-**Renamed:** 2026-09-30 (guidellm → roundup, ranch western theme)
+**Upstream:** `toxicwind/roundup`
+**Renamed:** 2026-09-30 (roundup → roundup, ranch western theme)
 
-This document describes how to merge upstream guidellm changes without losing our patches.
+This document describes how to merge upstream roundup changes without losing our patches.
 
 ## Our Patches (what to protect)
 
-1. **Rename:** `guidellm` → `roundup` throughout (package names, imports, docs)
+1. **Rename:** `roundup` → `roundup` throughout (package names, imports, docs)
 2. **Ranch integration:** moved into `ranch/roundup/` via git mv (history preserved)
 3. **Upstream sync:** 20 commits merged from upstream 2026-09-30 (metrics, tracing, OTel, backend per-request passthrough) — see commit `f7c3cdbb`
 
@@ -16,7 +16,7 @@ This document describes how to merge upstream guidellm changes without losing ou
 
 ```sh
 # 1. Add upstream remote (once)
-git remote add upstream https://github.com/vllm-project/guidellm.git
+git remote add upstream https://github.com/toxicwind/roundup.git
 
 # 2. Fetch and check divergence
 git fetch upstream

@@ -26,3 +26,7 @@ target/
 dist/
 .cache/
 .bun/
+
+# Build artifacts
+build/
+*.egg-info/

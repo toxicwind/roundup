@@ -15,22 +15,22 @@ from typing import Any, Generic, Literal
 import pytest
 import pytest_asyncio
 
-from guidellm import configure_logger, logger
-from guidellm.scheduler import (
+from roundup import configure_logger, logger
+from roundup.scheduler import (
     BackendInterface,
     SynchronousStrategy,
     WorkerProcess,
 )
-from guidellm.scheduler.dag import DAGExecutionState
-from guidellm.scheduler.schemas import (
+from roundup.scheduler.dag import DAGExecutionState
+from roundup.scheduler.schemas import (
     ConversationEdge,
     ConversationGraph,
     ConversationNode,
 )
-from guidellm.schemas import RequestInfo, RequestSettings, RequestTimings
-from guidellm.settings import LoggingSettings
-from guidellm.utils.messaging import InterProcessMessagingQueue
-from guidellm.utils.pipe_stdout import PipeReaderThread
+from roundup.schemas import RequestInfo, RequestSettings, RequestTimings
+from roundup.settings import LoggingSettings
+from roundup.utils.messaging import InterProcessMessagingQueue
+from roundup.utils.pipe_stdout import PipeReaderThread
 from tests.unit.testing_utils import async_timeout, wait_until
 
 STANDARD_NUM_REQUESTS: int = 200
@@ -1275,7 +1275,7 @@ class TestWorkerProcessRun:
             coro.close()
 
         return mocker.patch(
-            "guidellm.scheduler.worker.asyncio.run",
+            "roundup.scheduler.worker.asyncio.run",
             side_effect=_consume_coro,
         )
 
@@ -1310,7 +1310,7 @@ class TestWorkerProcessRun:
 
         ## WRITTEN BY AI ##
         """
-        mock_dup2 = mocker.patch("guidellm.scheduler.worker.os.dup2")
+        mock_dup2 = mocker.patch("roundup.scheduler.worker.os.dup2")
         self._mock_asyncio_run(mocker)
         self._build_worker().run()
         mock_dup2.assert_not_called()
@@ -1322,7 +1322,7 @@ class TestWorkerProcessRun:
 
         ## WRITTEN BY AI ##
         """
-        mock_dup2 = mocker.patch("guidellm.scheduler.worker.os.dup2")
+        mock_dup2 = mocker.patch("roundup.scheduler.worker.os.dup2")
         self._mock_asyncio_run(mocker)
         stdout_conn = mocker.MagicMock()
         stderr_conn = mocker.MagicMock()
@@ -1342,7 +1342,7 @@ class TestWorkerProcessRun:
         ## WRITTEN BY AI ##
         """
         mock_reinstall = mocker.patch(
-            "guidellm.scheduler.worker.reinstall_inherited_logger"
+            "roundup.scheduler.worker.reinstall_inherited_logger"
         )
         self._mock_asyncio_run(mocker)
         parent = mocker.MagicMock()
@@ -1357,7 +1357,7 @@ class TestWorkerProcessRun:
         ## WRITTEN BY AI ##
         """
         mock_reinstall = mocker.patch(
-            "guidellm.scheduler.worker.reinstall_inherited_logger"
+            "roundup.scheduler.worker.reinstall_inherited_logger"
         )
         self._mock_asyncio_run(mocker)
         self._build_worker().run()
@@ -1370,7 +1370,7 @@ class TestWorkerProcessRun:
 
         ## WRITTEN BY AI ##
         """
-        mock_complete = mocker.patch("guidellm.scheduler.worker.logger.complete")
+        mock_complete = mocker.patch("roundup.scheduler.worker.logger.complete")
         self._mock_asyncio_run(mocker)
         self._build_worker().run()
         mock_complete.assert_called_once()

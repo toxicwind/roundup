@@ -10,14 +10,14 @@ from unittest.mock import Mock
 
 import pytest
 
-from guidellm.data.deserializers import DatasetDeserializerFactory
-from guidellm.data.deserializers.trace_common import TraceDatasetDeserializer
-from guidellm.data.schemas import InvalidRowError
-from guidellm.data.schemas.conversation_graph_data import (
+from roundup.data.deserializers import DatasetDeserializerFactory
+from roundup.data.deserializers.trace_common import TraceDatasetDeserializer
+from roundup.data.schemas import InvalidRowError
+from roundup.data.schemas.conversation_graph_data import (
     ConversationGraphData,
     ConversationTurnData,
 )
-from guidellm.schemas.data import MooncakeTraceFormatArgs
+from roundup.schemas.data import MooncakeTraceFormatArgs
 from tests.unit.data.deserializers.trace_test_utils import trace_file_source
 
 

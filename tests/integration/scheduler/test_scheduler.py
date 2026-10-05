@@ -10,7 +10,7 @@ from typing import Any
 import pytest
 from pydantic import BaseModel, Field
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     BackendInterface,
     ConstraintInitializer,
     Environment,
@@ -21,9 +21,9 @@ from guidellm.scheduler import (
     SchedulingStrategy,
     SynchronousStrategy,
 )
-from guidellm.scheduler.schemas import ConversationGraph, ConversationNode
-from guidellm.schemas import RequestInfo, RequestSettings
-from guidellm.schemas.scheduler import MaxRequestsConstraintArgs
+from roundup.scheduler.schemas import ConversationGraph, ConversationNode
+from roundup.schemas import RequestInfo, RequestSettings
+from roundup.schemas.scheduler import MaxRequestsConstraintArgs
 
 
 def async_timeout(delay: float):

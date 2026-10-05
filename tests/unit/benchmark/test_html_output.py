@@ -11,19 +11,19 @@ from pathlib import Path
 
 import pytest
 
-from guidellm.benchmark.outputs.html import (
+from roundup.benchmark.outputs.html import (
     GenerativeBenchmarkerHTML,
     HTMLBenchmarkOutputArgs,
     build_report_view,
     render_html_report,
 )
-from guidellm.scheduler import (
+from roundup.scheduler import (
     AsyncConstantStrategy,
     ConcurrentStrategy,
     ThroughputStrategy,
 )
-from guidellm.schemas import DistributionSummary
-from guidellm.schemas.benchmark import BenchmarkOutputArgs
+from roundup.schemas import DistributionSummary
+from roundup.schemas.benchmark import BenchmarkOutputArgs
 from tests.unit.benchmark.html_report_fixtures import (
     make_benchmark as _make_benchmark,
 )
@@ -441,14 +441,14 @@ async def test_finalize_writes_self_contained_html(tmp_path: Path):
     assert path.exists()
     content = path.read_text(encoding="utf-8")
 
-    assert "GuideLLM" in content
-    assert "window.GUIDELLM_REPORT" in content
+    assert "Roundup" in content
+    assert "window.ROUNDUP_REPORT" in content
     assert "ttft_p95_ms" in content
     assert "ttft_p99_ms" in content
     assert "total_tps" in content
     assert re.search(r'<link[^>]+href=["\']https?://', content) is None
     assert re.search(r'<script[^>]+src=["\']https?://', content) is None
-    assert "vllm-project.github.io" not in content
+    assert "toxicwind.github.io" not in content
 
 
 @pytest.mark.sanity
@@ -468,11 +468,11 @@ def test_render_html_includes_embedded_assets():
     html = render_html_report(build_report_view(report))
     assert "<style>" in html
     assert "function" in html
-    assert "__GUIDELLM_REPORT_CSS__" not in html
-    assert "__GUIDELLM_REPORT_JS__" not in html
-    assert "__GUIDELLM_REPORT_JSON__" not in html
-    assert "__GUIDELLM_STATIC_TABLE__" not in html
-    assert "__GUIDELLM_KPI_RPS__" not in html
+    assert "__ROUNDUP_REPORT_CSS__" not in html
+    assert "__ROUNDUP_REPORT_JS__" not in html
+    assert "__ROUNDUP_REPORT_JSON__" not in html
+    assert "__ROUNDUP_STATIC_TABLE__" not in html
+    assert "__ROUNDUP_KPI_RPS__" not in html
     assert "static-summary" in html
     assert "<noscript>" not in html
     assert "require JavaScript" in html

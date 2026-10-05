@@ -12,26 +12,26 @@ from loguru import logger
 from tests.fixtures.tokenizers import MINIMAL_TOKENIZER_DIR
 
 
-def get_guidellm_executable() -> str:
-    """Get the path to the guidellm executable in the current environment."""
+def get_roundup_executable() -> str:
+    """Get the path to the roundup executable in the current environment."""
     # Get the directory where the current Python executable is located
     python_bin_dir = Path(sys.executable).parent
-    guidellm_path = python_bin_dir / "guidellm"
-    if guidellm_path.exists():
-        return str(guidellm_path)
+    roundup_path = python_bin_dir / "roundup"
+    if roundup_path.exists():
+        return str(roundup_path)
     else:
-        # Fallback to just "guidellm" if not found
-        return "guidellm"
+        # Fallback to just "roundup" if not found
+        return "roundup"
 
 
-class GuidellmClient:
-    """Wrapper class for running guidellm benchmark commands."""
+class RoundupClient:
+    """Wrapper class for running roundup benchmark commands."""
 
     def __init__(
         self, target: str, output_dir: Path, outputs: str = "benchmarks.json"
     ) -> None:
         """
-        Initialize the guidellm client.
+        Initialize the roundup client.
 
         :param target: The target URL for the benchmark
         :param output_path: Path where the benchmark report will be saved
@@ -77,7 +77,7 @@ class GuidellmClient:
         extra_env: dict[str, str] | None = None,
     ) -> None:
         """
-        Start a guidellm benchmark command.
+        Start a roundup benchmark command.
 
         :param profile: Type of rate control (constant, etc.)
         :param rate: Request rate
@@ -94,7 +94,7 @@ class GuidellmClient:
         :param additional_args: Additional command line arguments
         :param extra_env: Additional environment variables to set
         """
-        guidellm_exe = get_guidellm_executable()
+        roundup_exe = get_roundup_executable()
         output_path = self.output_dir / self.outputs
         # Default to the vendored tokenizer so E2E never contacts HuggingFace Hub.
         if processor is not None:
@@ -117,7 +117,7 @@ class GuidellmClient:
 
         cmd_parts = [
             *([f"{k}={v}" for k, v in offline_env.items()]),
-            f"{guidellm_exe} run",
+            f"{roundup_exe} run",
             f'--backend "{backend_config}"',
             f'--profile "{profile_config}"',
         ]

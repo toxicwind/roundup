@@ -4,7 +4,7 @@ This guide demonstrates how to benchmark audio models for tasks like Automatic S
 
 ## Setup
 
-First, ensure you have a running inference server and model compatible with the desired audio APIs. GuideLLM supports any OpenAI-compatible server that can handle audio inputs through chat/completions, audio/transcriptions, or audio/translations endpoints. For the benchmarking examples below, we’ll use vLLM serving a Whisper model for transcription and translation tasks and Ultravox for chat. Here are sample commands to start each of these servers:
+First, ensure you have a running inference server and model compatible with the desired audio APIs. Roundup supports any OpenAI-compatible server that can handle audio inputs through chat/completions, audio/transcriptions, or audio/translations endpoints. For the benchmarking examples below, we’ll use vLLM serving a Whisper model for transcription and translation tasks and Ultravox for chat. Here are sample commands to start each of these servers:
 
 ```bash
 # Whisper ASR/Translation
@@ -14,13 +14,13 @@ vllm serve openai/whisper-small
 vllm serve fixie-ai/ultravox-v0_5-llama-3_2-1b
 ```
 
-Next, either on the same instance or another machine that can reach your server (recommended), install GuideLLM with audio support:
+Next, either on the same instance or another machine that can reach your server (recommended), install Roundup with audio support:
 
 ```bash
-pip install guidellm[audio,recommended]
+pip install roundup[audio,recommended]
 ```
 
-Finally, ensure you have a dataset with supported audio files for benchmarking. GuideLLM can handle audio data from Hugging Face datasets, local files, URLs, etc. For the examples below, we’ll use the `openslr/librispeech_asr` dataset.
+Finally, ensure you have a dataset with supported audio files for benchmarking. Roundup can handle audio data from Hugging Face datasets, local files, URLs, etc. For the examples below, we’ll use the `openslr/librispeech_asr` dataset.
 
 ## Processing Options
 
@@ -28,9 +28,9 @@ All of the standard arguments for benchmarking apply to audio tasks as well, suc
 
 ### Data Loading
 
-GuideLLM supports multiple methods for loading audio data. First, the overall data source must be deserializable by GuideLLM into a Hugging Face dataset. This includes local files, Hugging Face datasets, JSON files, etc.
+Roundup supports multiple methods for loading audio data. First, the overall data source must be deserializable by Roundup into a Hugging Face dataset. This includes local files, Hugging Face datasets, JSON files, etc.
 
-Next, the desired audio column within the deserializable data source must be supported by GuideLLM’s audio data decoder/encoder. Supported formats include:
+Next, the desired audio column within the deserializable data source must be supported by Roundup’s audio data decoder/encoder. Supported formats include:
 
 - Hugging Face Audio feature (preferred)
 - Local file paths (e.g., .wav, .mp3, .flac)
@@ -40,7 +40,7 @@ Next, the desired audio column within the deserializable data source must be sup
 
 ### Data Column Mapping
 
-When specifying the dataset, generally, you will want to map the specific audio column to GuideLLM’s expected audio_column so it knows which data to process as audio. If nothing is specified, GuideLLM will attempt to auto-detect an audio column based on commonly used names such as audio, speech, wav, etc.
+When specifying the dataset, generally, you will want to map the specific audio column to Roundup’s expected audio_column so it knows which data to process as audio. If nothing is specified, Roundup will attempt to auto-detect an audio column based on commonly used names such as audio, speech, wav, etc.
 
 To specify the mapping, use the `--data-column-mapper` argument with a JSON string that specifies an existing column name for audio_column. For example, if your dataset has an audio column named speech_data, you would use:
 
@@ -114,7 +114,7 @@ Turn streaming responses on or off (if supported by the backend) using a boolean
 
 ## Expected Results
 
-GuideLLM captures comprehensive metrics across the entire request lifecycle, stored in `GenerativeRequestStats` and aggregated into `GenerativeMetrics`. Results are displayed in the console and saved to local files for further analysis.
+Roundup captures comprehensive metrics across the entire request lifecycle, stored in `GenerativeRequestStats` and aggregated into `GenerativeMetrics`. Results are displayed in the console and saved to local files for further analysis.
 
 ### Output Files
 
@@ -134,7 +134,7 @@ In addition to standard performance metrics like Latency, Time to First Token (T
 
 ### Statistical Analysis
 
-For each metric above, GuideLLM calculates statistical distributions including:
+For each metric above, Roundup calculates statistical distributions including:
 
 - **Values**: Mean, Median, P95, P99, Min, Max.
 - **Rates**: Throughput per second (e.g., `audio_seconds/sec`).
@@ -151,7 +151,7 @@ This benchmark tests Automatic Speech Recognition (ASR) models, such as Whisper,
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,request_format=/v1/audio/transcriptions \
   --profile kind=synchronous \
   --constraint kind=max_requests,count=20 \
@@ -165,7 +165,7 @@ guidellm run \
 - `--profile kind=synchronous`: Run requests sequentially
 - `--constraint kind=max_requests,count=20`: Limits the benchmark to 20 total requests
 - `--data`: HuggingFace dataset with `load_kwargs` selecting the "clean" config and "test" split
-- `--data-column-mapper`: Maps the dataset's audio column to GuideLLM's `audio_column`
+- `--data-column-mapper`: Maps the dataset's audio column to Roundup's `audio_column`
 
 The above command benchmarks the audio/transcriptions endpoint on the target server using audio from the LibriSpeech dataset for ASR. It will result in an output similar to the following:
 
@@ -192,9 +192,9 @@ The above command benchmarks the audio/transcriptions endpoint on the target ser
 ......
 
 ✔ Benchmarking complete, generated 1 benchmark(s)
-…   json    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.json
-…   csv     : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.csv
-…   html    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.html
+…   json    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.json
+…   csv     : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.csv
+…   html    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.html
 ```
 
 ### 2. Audio Translation
@@ -204,7 +204,7 @@ This benchmark tests audio translation models like Whisper at converting audio i
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend '{"kind":"openai_http","target":"http://localhost:8000","request_format":"/v1/audio/translations","extras":{"body":{"language":"fr"}}}' \
   --profile kind=synchronous \
   --constraint kind=max_requests,count=20 \
@@ -245,9 +245,9 @@ The above command benchmarks the audio/translations endpoint on the target serve
 ......
 
 ✔ Benchmarking complete, generated 1 benchmark(s)
-…   json    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.json
-…   csv     : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.csv
-…   html    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.html
+…   json    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.json
+…   csv     : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.csv
+…   html    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.html
 
 ```
 
@@ -258,7 +258,7 @@ This benchmark tests models that can handle audio inputs in a conversational for
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,request_format=/v1/chat/completions \
   --profile kind=synchronous \
   --constraint kind=max_requests,count=20 \
@@ -296,7 +296,7 @@ The above command benchmarks the chat/completions endpoint on the target server 
 | synchronous | 642.0 | 1688.0 | 7565.1 | 7329.1 | 16000.0 | 16000.0 | 129722.1 | 141848.5 | 6.4  | 16.8  | 75.3 | 72.9 | 52172.0 | 135692.0 | 610195.0 | 592749.4 |
 |=============|=======|========|========|========|=========|=========|==========|==========|======|=======|======|======|=========|==========|==========|==========|
 
-ℹ GuideLLM Request Metrics Statistics (Completed Requests)
+ℹ Roundup Request Metrics Statistics (Completed Requests)
 |=============|=======|=======|=======|=======|======|=====|=======|=======|=======|=======|======|=====|=======|=======|=======|=======|======|=====|
 | Benchmark   | Request Latency (ms)          ||||| Output Tokens / Sec          ||||| Time to First Token (ms)      ||||| Time per Output Token (ms)    |||||
 | Strategy    | Mdn   | Mean  | p50   | p90   | p95  | p99 | Mdn   | Mean  | p50   | p90   | p95  | p99 | Mdn   | Mean  | p50   | p90   | p95  | p99 | Mdn   | Mean  | p50   | p90   | p95  | p99 |
@@ -305,7 +305,7 @@ The above command benchmarks the chat/completions endpoint on the target server 
 |=============|=======|=======|=======|=======|======|=====|=======|=======|=======|=======|======|=====|=======|=======|=======|=======|======|=====|
 
 ✔ Benchmarking complete, generated 1 benchmark(s)
-…   json    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.json
-…   csv     : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.csv
-…   html    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.html
+…   json    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.json
+…   csv     : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.csv
+…   html    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.html
 ```

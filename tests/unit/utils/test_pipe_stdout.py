@@ -8,7 +8,7 @@ import time
 import pytest
 from rich.live import Live
 
-from guidellm.utils.pipe_stdout import PipeReaderThread
+from roundup.utils.pipe_stdout import PipeReaderThread
 from tests.unit.testing_utils import drain_logger, rich_console, rich_console_output
 
 

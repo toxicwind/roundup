@@ -6,7 +6,7 @@ Shared builders for HTML report unit tests and the Node/jsdom fixture generator.
 
 from __future__ import annotations
 
-from guidellm.benchmark.schemas import (
+from roundup.benchmark.schemas import (
     BenchmarkConfig,
     GenerativeAudioMetricsSummary,
     GenerativeBenchmark,
@@ -19,14 +19,14 @@ from guidellm.benchmark.schemas import (
     GenerativeVideoMetricsSummary,
     SchedulerMetrics,
 )
-from guidellm.benchmark.schemas.metrics import GenerativeToolCallMetricsSummary
-from guidellm.scheduler import (
+from roundup.benchmark.schemas.metrics import GenerativeToolCallMetricsSummary
+from roundup.scheduler import (
     AsyncConstantStrategy,
     ConcurrentStrategy,
     SchedulerState,
     ThroughputStrategy,
 )
-from guidellm.schemas import (
+from roundup.schemas import (
     DistributionSummary,
     GenerativeRequestStats,
     Percentiles,
@@ -36,7 +36,7 @@ from guidellm.schemas import (
     StatusDistributionSummary,
     UsageMetrics,
 )
-from guidellm.schemas.benchmark import BenchmarkScenario
+from roundup.schemas.benchmark import BenchmarkScenario
 
 
 def distribution(
@@ -229,6 +229,7 @@ def make_scheduler_metrics(
         resolve_time_avg=0.0,
         finalized_delay_avg=0.0,
         processed_delay_avg=0.0,
+        generation_delay=distribution(0.0),
     )
 
 
@@ -307,7 +308,7 @@ def report(
     """
     return GenerativeBenchmarksReport(
         config=scenario or make_scenario(),
-        metadata=GenerativeBenchmarkMetadata(guidellm_version="0.0.0-test"),
+        metadata=GenerativeBenchmarkMetadata(roundup_version="0.0.0-test"),
         benchmarks=list(benchmarks),
     )
 

@@ -1,10 +1,10 @@
 # Geospatial Model Benchmarking
 
-GuideLLM supports benchmarking geospatial models that process satellite and remote sensing imagery. This guide focuses on benchmarking [TerraTorch](<>) Geospatial models like IBM-NASA's Prithvi using vLLM's `/pooling` endpoint.
+Roundup supports benchmarking geospatial models that process satellite and remote sensing imagery. This guide focuses on benchmarking [TerraTorch](<>) Geospatial models like IBM-NASA's Prithvi using vLLM's `/pooling` endpoint.
 
 ## Overview
 
-Geospatial models in GuideLLM:
+Geospatial models in Roundup:
 
 - Process satellite imagery (via URLs or base64)
 - Return embeddings or pooled representations for downstream tasks
@@ -24,7 +24,7 @@ This guide has been tested with the following geospatial models:
 To benchmark a geospatial model, set `request_format=/pooling` in the backend configuration:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=ibm-nasa-geospatial/Prithvi-EO-2.0-300M-TL-Sen1Floods11,request_format=/pooling \
   --data kind=huggingface,source=flood_detection_dataset.jsonl \
   --data-column-mapper kind=pooling_column_mapper \
@@ -97,7 +97,7 @@ To know more about serving TerraTorch models in vLLM follow the available [docum
 ### 3. Run Benchmark
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=ibm-nasa-geospatial/Prithvi-EO-2.0-300M-TL-Sen1Floods11,request_format=/pooling \
   --data kind=huggingface,source=flood_detection_dataset.jsonl \
   --data-column-mapper kind=pooling_column_mapper \
@@ -107,7 +107,7 @@ guidellm run \
 
 ## Comparison with vLLM Bench
 
-GuideLLM's geospatial model support is compatible with vLLM's benchmark tool:
+Roundup's geospatial model support is compatible with vLLM's benchmark tool:
 
 ### vLLM Bench Command
 
@@ -125,10 +125,10 @@ vllm bench serve \
   --dataset-path flood_detection_dataset.jsonl
 ```
 
-### Equivalent GuideLLM Command
+### Equivalent Roundup Command
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=ibm-nasa-geospatial/Prithvi-EO-2.0-300M-TL-Sen1Floods11,request_format=/pooling \
   --data kind=huggingface,source=flood_detection_dataset.jsonl \
   --data-column-mapper kind=pooling_column_mapper \
