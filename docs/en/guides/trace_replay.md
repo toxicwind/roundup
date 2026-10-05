@@ -1,6 +1,6 @@
 # Trace File Formats
 
-Many trace files are formatted in ways that need to be specially handled to create an accurate replay. This guide covers all trace file formats currently supported by GuideLLM, along with the format-agnostic and format-specific data arguments.
+Many trace files are formatted in ways that need to be specially handled to create an accurate replay. This guide covers all trace file formats currently supported by Roundup, along with the format-agnostic and format-specific data arguments.
 
 Detailed use of the replay profile and file-based datasets as a whole is explained in [Trace Replay Benchmarking](../getting-started/benchmark.md#trace-replay-benchmarking).
 
@@ -11,7 +11,7 @@ These are passed to the `--data` argument as `kind=format`:
 - `trace_synthetic`: A trace format that does the bare minimum needed to complete a fully functioning trace replay benchmark with synthetic prompt generation
 - `mooncake`: The trace format used by the serving platform *Mooncake*, as defined in [https://doi.org/10.48550/arXiv.2407.00079](https://doi.org/10.48550/arXiv.2407.00079)
 - `weka`: The trace format used by WEKA's *Augmented Memory Grid*, as specified [in the original research repository](https://github.com/callanjfox/agentic-coding-analysis/blob/master/docs/TRACE_FORMAT.md)
-- `otel` (alias `opentelemetry`): OpenTelemetry GenAI spans. GuideLLM keeps successful LLM spans and replays each `trace_id` as one conversation. It sends recorded `gen_ai.input.messages` with each span's full input (`history=trace`) unless `history=runtime` is set.
+- `otel` (alias `opentelemetry`): OpenTelemetry GenAI spans. Roundup keeps successful LLM spans and replays each `trace_id` as one conversation. It sends recorded `gen_ai.input.messages` with each span's full input (`history=trace`) unless `history=runtime` is set.
 
 ## Loading Trace Data
 
@@ -20,7 +20,7 @@ Trace replay always uses `--profile kind=replay`. Choose a **format** (`trace_sy
 **`trace_synthetic` with local `json_file`:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=replay \
   --data kind=trace_synthetic,source.kind=json_file,source.path=replay.jsonl,time_scale=2.0 \
@@ -30,7 +30,7 @@ guidellm run \
 **WEKA dataset from `huggingface`:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=replay \
   --data kind=weka,source.kind=huggingface,source.source=semianalysisai/cc-traces-weka-no-subagents-051226 \
@@ -40,7 +40,7 @@ guidellm run \
 **Mooncake dataset from `huggingface`**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=replay \
   --data kind=mooncake,source.kind=huggingface,source.source=valeriol29/mooncake-traces,load_kwargs.name=mooncake \
@@ -50,7 +50,7 @@ guidellm run \
 **OTEL dataset from `huggingface`:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=replay \
   --data kind=otel,source.kind=huggingface,source.source=ibm-research/synthetic-conversations-traces \
@@ -77,13 +77,13 @@ All trace formats can accept the following optional data arguments:
 These are passed through the `--data` argument like below:
 
 ```bash
-guidellm run \
+roundup run \
     --backend kind=openai_http,target=http://localhost:8000 \
     --profile kind=replay \
     --data "kind=trace_synthetic,source.kind=json_file,source.path=replay.jsonl,timestamp_column=ts,prompt_tokens_column=input_tokens,output_tokens_column=generated_tokens,time_scale=1.0,max_session_wait=30"
 ```
 
-`trace_synthetic` can be thought of as the format-agnostic option, only looking for the timestamp, prompt token count and output token count columns and ignoring all other features contained in a dataset. While primarily used for testing, `trace_synthetic` may be used as a fallback for trace formats not currently supported by GuideLLM.
+`trace_synthetic` can be thought of as the format-agnostic option, only looking for the timestamp, prompt token count and output token count columns and ignoring all other features contained in a dataset. While primarily used for testing, `trace_synthetic` may be used as a fallback for trace formats not currently supported by Roundup.
 
 The replay profile's `schedule_turn` argument selects how those timestamps are applied. `idle_gap` (the default) keeps the idle gap after `duration_column`: a request recorded as 1 second with the next timestamp 5 seconds later starts that next request 4 seconds after this one actually finishes. `idle_gap` is more forgiving for when the server gets overloaded, since late requests all get sent as soon as the prior turns end. If `duration_column` is missing, the loader logs one warning, and each request is treated as instantaneous. This results in the actual gap being marginally longer. `timestamp` starts each request at its trace time, waiting only if the prior turn is still running.
 
@@ -108,9 +108,9 @@ The Mooncake format expects an additional column for prefix-based cache hash IDs
 
 The WEKA format expects a column with conversation UUIDs that is not wrapped within another column. The timestamp, input token length, output token length and hash IDs columns must all be wrapped inside one JSON column (ex. "requests"), in the form of a list of JSON objects.
 
-Similar to Mooncake, WEKA uses prefix-based cache hash IDs. The original [specification](https://github.com/callanjfox/agentic-coding-analysis/blob/master/docs/TRACE_FORMAT.md) for the trace requires hash IDs to be 1 or greater, and for trailing hash IDs to be dropped if there are not enough input tokens to fill the hash ID block size. To accommodate for datasets which may not follow the specification exactly (ex. [semianalysisai/cc-traces-weka-no-subagents-051226](https://huggingface.co/datasets/semianalysisai/cc-traces-weka-no-subagents-051226)), GuideLLM will accept any non-negative integer as a valid hash ID, and will drop partially filled hash IDs if they exist.
+Similar to Mooncake, WEKA uses prefix-based cache hash IDs. The original [specification](https://github.com/callanjfox/agentic-coding-analysis/blob/master/docs/TRACE_FORMAT.md) for the trace requires hash IDs to be 1 or greater, and for trailing hash IDs to be dropped if there are not enough input tokens to fill the hash ID block size. To accommodate for datasets which may not follow the specification exactly (ex. [semianalysisai/cc-traces-weka-no-subagents-051226](https://huggingface.co/datasets/semianalysisai/cc-traces-weka-no-subagents-051226)), Roundup will accept any non-negative integer as a valid hash ID, and will drop partially filled hash IDs if they exist.
 
-GuideLLM will generate prompts starting from the first conversation. When the conversation ends, the next conversation will be used. Relative timestamps are offsets from the earliest request in the dataset, so later conversations can start later than the first.
+Roundup will generate prompts starting from the first conversation. When the conversation ends, the next conversation will be used. Relative timestamps are offsets from the earliest request in the dataset, so later conversations can start later than the first.
 
 Hash IDs follow the per-row `hash_id_scope` field:
 
@@ -121,9 +121,9 @@ Declared `type: "subagent"` entries become isolated child chains. Each child spa
 
 Inner request timestamps follow the spec when they are relative to spawn, and published Hugging Face corpora when they are already absolute: if the first inner `t` is less than the subagent entry's spawn `t`, inner times are treated as `spawn_t + inner_t`; otherwise they are left as-is. Conversation timestamps are then `absolute_t` minus the earliest API request time in the dataset.
 
-A single agent's consecutive turns are still serialized. If those turns overlap in time (`t[i] + api_time[i] > t[i+1]`, or `t[i+1] <= t[i]` when `api_time` is absent), GuideLLM logs a debug message. Overlap between different subagents is intended parallelism and is not warned.
+A single agent's consecutive turns are still serialized. If those turns overlap in time (`t[i] + api_time[i] > t[i+1]`, or `t[i+1] <= t[i]` when `api_time` is absent), Roundup logs a debug message. Overlap between different subagents is intended parallelism and is not warned.
 
-Tool-call events map onto GuideLLM's existing client tool-call pipeline. A request with `stop: "tool_use"` and user text input becomes a `client_tool_call` turn. The following request with `input_types: ["tool_result"]` (or, if `input_types` is absent, the next request after `stop: "tool_use"` on the same agent chain) becomes a `tool_response_injection`. When that injection row also has `stop: "tool_use"`, it still sends tool results and keeps `tools` so the model may emit further tool calls. Traces do not contain real tool schemas or results. Pass `tools` and optionally `tool_response_tokens` the same way as [synthetic data](tool_calling.md#providing-tool-definitions); otherwise GuideLLM uses the default synthetic tool definition and placeholder tool response. Chat handlers do not send the hash-id prompt as a user message on injection turns.
+Tool-call events map onto Roundup's existing client tool-call pipeline. A request with `stop: "tool_use"` and user text input becomes a `client_tool_call` turn. The following request with `input_types: ["tool_result"]` (or, if `input_types` is absent, the next request after `stop: "tool_use"` on the same agent chain) becomes a `tool_response_injection`. When that injection row also has `stop: "tool_use"`, it still sends tool results and keeps `tools` so the model may emit further tool calls. Traces do not contain real tool schemas or results. Pass `tools` and optionally `tool_response_tokens` the same way as [synthetic data](tool_calling.md#providing-tool-definitions); otherwise Roundup uses the default synthetic tool definition and placeholder tool response. Chat handlers do not send the hash-id prompt as a user message on injection turns.
 
 | Argument                     | Default    | Description                                                                                           |
 | ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------------- |
@@ -165,7 +165,7 @@ Spans without `gen_ai.input.messages` cannot be replayed as OTEL. Flatten token-
 
 Replay against `/v1/chat/completions` (the backend default). OTEL stores chat-completions message dicts in `raw_messages_column`. That handler sends them as a `messages` array. `/v1/completions` and `/v1/responses` do not read that column; they abort with a missing `prompt` or `input` error rather than posting an empty body.
 
-Recorded tool loops are pre-split onto GuideLLM's client tool-call pipeline. An LLM span whose output messages contain `tool_calls` (or `gen_ai.response.finish_reasons` of `tool_calls` / `tool_call` / `tool_use` / `function_call`) becomes `client_tool_call`. The next span is consumed as `tool_response_injection` when its new messages after `input[i] + output[i]` are only `role=tool` results. Recorded result strings are rebound to **live** `tool_call_id`s by the chat handler. `gen_ai.tool.definitions` supplies `tools_column` on those turns (otherwise the default synthetic tool is used); definitions alone do not classify a turn. Injection parents always use `history_context=full`, including `history=trace`. Missing-tool policy stays `--backend tool_call_missing_behavior=...`.
+Recorded tool loops are pre-split onto Roundup's client tool-call pipeline. An LLM span whose output messages contain `tool_calls` (or `gen_ai.response.finish_reasons` of `tool_calls` / `tool_call` / `tool_use` / `function_call`) becomes `client_tool_call`. The next span is consumed as `tool_response_injection` when its new messages after `input[i] + output[i]` are only `role=tool` results. Recorded result strings are rebound to **live** `tool_call_id`s by the chat handler. `gen_ai.tool.definitions` supplies `tools_column` on those turns (otherwise the default synthetic tool is used); definitions alone do not classify a turn. Injection parents always use `history_context=full`, including `history=trace`. Missing-tool policy stays `--backend tool_call_missing_behavior=...`.
 
 If the next span cannot be parsed as tool results, a placeholder injection is synthesized and that next span is still replayed. A following `execute_tool` span supplies the injection text and pacing when it is a descendant of the tool-call LLM span, or a sibling sharing a non-null `parent_span_id` until the next LLM with that parent. Otherwise the synthetic placeholder is used at the call timestamp.
 
@@ -188,7 +188,7 @@ Start from Hugging Face. IBM traces have 30–50 LLM calls each, so `--constrain
 **Default (`history=trace`):** send each span's recorded messages in full. Later turns wait on the DAG but use `history_context=new`, so live completions are not spliced into the next prompt.
 
 ```bash
-guidellm run \
+roundup run \
     --backend kind=openai_http,target=http://localhost:8000 \
     --profile kind=replay \
     --data kind=otel,source.kind=huggingface,source.source=ibm-research/synthetic-conversations-traces \
@@ -198,7 +198,7 @@ guidellm run \
 **Recorded messages with DAG history (`history=runtime`):** send only the new messages; prior turns come from live completions (`history_context=full`). Requires each span's input to continue the previous span's input plus output.
 
 ```bash
-guidellm run \
+roundup run \
     --backend kind=openai_http,target=http://localhost:8000 \
     --profile kind=replay \
     --data kind=otel,source.kind=huggingface,source.source=ibm-research/synthetic-conversations-traces,history=runtime \

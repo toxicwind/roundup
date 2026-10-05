@@ -15,7 +15,7 @@ from unittest.mock import Mock, patch
 import pytest
 from pydantic import Field
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     AsyncConstantStrategy,
     BackendInterface,
     ConcurrentStrategy,
@@ -26,14 +26,14 @@ from guidellm.scheduler import (
     ThroughputStrategy,
     WorkerProcessGroup,
 )
-from guidellm.scheduler.schemas import ConversationGraph, ConversationNode
-from guidellm.scheduler.worker_group import WorkerGroupState
-from guidellm.schemas import RequestInfo, RequestTimings
-from guidellm.schemas.scheduler import (
+from roundup.scheduler.schemas import ConversationGraph, ConversationNode
+from roundup.scheduler.worker_group import WorkerGroupState
+from roundup.schemas import RequestInfo, RequestTimings
+from roundup.schemas.scheduler import (
     MaxDurationConstraintArgs,
     MaxRequestsConstraintArgs,
 )
-from guidellm.utils.messaging import InterProcessMessaging
+from roundup.utils.messaging import InterProcessMessaging
 from tests.unit.testing_utils import async_timeout
 
 

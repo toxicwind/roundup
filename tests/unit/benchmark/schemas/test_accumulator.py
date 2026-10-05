@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.benchmark.schemas.accumulator import GenerativeRequestsAccumulator
-from guidellm.schemas import (
+from roundup.benchmark.schemas.accumulator import GenerativeRequestsAccumulator
+from roundup.schemas import (
     GenerativeRequestStats,
     RequestInfo,
     UsageMetrics,

@@ -9,7 +9,7 @@ from typing import get_args
 
 import pytest
 
-from guidellm.utils.synchronous import (
+from roundup.utils.synchronous import (
     SyncObjectTypesAlias,
     wait_for_sync_barrier,
     wait_for_sync_event,

@@ -17,10 +17,10 @@ Find your symptom below, then follow the linked fix. For CLI syntax, see [Run a 
 Enable debug output to inspect request handling and worker startup:
 
 ```bash
-GUIDELLM__LOGGING__CONSOLE_LOG_LEVEL=DEBUG guidellm run ... --disable-progress
+ROUNDUP__LOGGING__CONSOLE_LOG_LEVEL=DEBUG roundup run ... --disable-progress
 ```
 
-Run `guidellm env` to confirm the settings are being applied. The `--disable-progress` call is optional, but the interactive progress console can overwrite console log messages. Alternatively, you can use a file log as mentioned in the [logging guide](../developer/developing.md#logging) .
+Run `roundup env` to confirm the settings are being applied. The `--disable-progress` call is optional, but the interactive progress console can overwrite console log messages. Alternatively, you can use a file log as mentioned in the [logging guide](../developer/developing.md#logging) .
 
 For all logging options (file output, log levels), see [Logging](../developer/developing.md#logging) in the development guide.
 
@@ -66,8 +66,8 @@ Worker process <pid> died unexpectedly (signal 11)
 
 ### Fix
 
-GuideLLM defaults to `fork` multiprocessing, which can segfault on macOS. Use `spawn` instead:
+Roundup defaults to `fork` multiprocessing, which can segfault on macOS. Use `spawn` instead:
 
 ```bash
-GUIDELLM__MP_CONTEXT_TYPE=spawn guidellm run ...
+ROUNDUP__MP_CONTEXT_TYPE=spawn roundup run ...
 ```

@@ -1,1 +1,1 @@
-"""Unit tests for the GuideLLM mock server package."""
+"""Unit tests for the Roundup mock server package."""

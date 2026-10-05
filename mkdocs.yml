@@ -1,8 +1,8 @@
-site_name: GuideLLM Docs
-site_description: Documentation for GuideLLM focused on evaluating the deployability of an LLM for real-world inference
-site_url: https://vllm-project.github.io/guidellm
-repo_url: https://github.com/vllm-project/guidellm
-edit_uri: https://github.com/vllm-project/guidellm/tree/main/docs
+site_name: Roundup Docs
+site_description: Documentation for Roundup focused on evaluating the deployability of an LLM for real-world inference
+site_url: https://toxicwind.github.io/roundup
+repo_url: https://github.com/toxicwind/roundup
+edit_uri: https://github.com/toxicwind/roundup/tree/main/docs
 exclude_docs: |
   en/**/*.md
 
@@ -12,8 +12,8 @@ theme:
     text: Roboto
     code: Roboto Mono
   language: en
-  logo: assets/guidellm-icon-light.png
-  favicon: assets/guidellm-icon-blue.png
+  logo: assets/roundup-icon-light.png
+  favicon: assets/roundup-icon-blue.png
   features:
     - content.action.edit
     - content.code.annotate
@@ -86,7 +86,7 @@ markdown_extensions:
 
 plugins:
   - api-autonav:
-      modules: ['src/guidellm']
+      modules: ['src/roundup']
   - gen-files:
       scripts:
         - docs/scripts/gen_files.py
@@ -109,10 +109,10 @@ extra:
   generator: false
   alternate:
     - name: English
-      link: /guidellm/
+      link: /roundup/
       lang: en
     - name: 简体中文
-      link: /guidellm/zh/
+      link: /roundup/zh/
       lang: zh
   version:
     provider: mike

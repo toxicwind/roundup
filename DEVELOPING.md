@@ -1,6 +1,6 @@
-# Developing for GuideLLM
+# Developing for Roundup
 
-Thank you for your interest in contributing to GuideLLM! This document provides detailed instructions for setting up your development environment, implementing changes, and adhering to the project's best practices. Your contributions help us grow and improve this project.
+Thank you for your interest in contributing to Roundup! This document provides detailed instructions for setting up your development environment, implementing changes, and adhering to the project's best practices. Your contributions help us grow and improve this project.
 
 ## Setting Up Your Development Environment
 
@@ -17,15 +17,15 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository to your local machine:
 
    ```sh
-   git clone https://github.com/vllm-project/guidellm.git
-   cd guidellm
+   git clone https://github.com/toxicwind/roundup.git
+   cd roundup
    ```
 
 2. (Optional) If you plan to contribute changes back, fork the repository and clone your fork instead:
 
    ```sh
-   git clone https://github.com/<your-username>/guidellm.git
-   cd guidellm
+   git clone https://github.com/<your-username>/roundup.git
+   cd roundup
    ```
 
 ### Installing Dependencies
@@ -76,7 +76,7 @@ The `-e` flag installs the package in editable mode, allowing you to make change
 
 ## Tag use of AI coding assistants
 
-When AI coding assistants are used to generate or substantially modify code, the GuideLLM project requires that you add one of the following trailers to the git commit message:
+When AI coding assistants are used to generate or substantially modify code, the Roundup project requires that you add one of the following trailers to the git commit message:
 
 - `Generated-by: <name of the AI coding assistant>`: when the code in the commit was generated primarily by an AI coding assistant.
 - `Assisted-by: <name of the AI coding assistant>`: when the commit includes substantial code created or modified by the AI coding assistant.
@@ -107,9 +107,9 @@ Shared [Agent Skills](https://agentskills.io/specification) live under `.agents/
 
 | Skill                                                                        | Purpose                                                                                                                                                         |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`guidellm-weekly-summary`](.agents/skills/guidellm-weekly-summary/SKILL.md) | Generate an externally shareable nested-list summary of GuideLLM GitHub activity for the past week (`scripts/fetch_activity.sh` gathers PR/issue JSON via `gh`) |
+| [`roundup-weekly-summary`](.agents/skills/roundup-weekly-summary/SKILL.md) | Generate an externally shareable nested-list summary of Roundup GitHub activity for the past week (`scripts/fetch_activity.sh` gathers PR/issue JSON via `gh`) |
 
-Ask for a weekly summary, team activity update, or status digest of GuideLLM to invoke it. Requires the `gh` CLI authenticated for `vllm-project/guidellm`.
+Ask for a weekly summary, team activity update, or status digest of Roundup to invoke it. Requires the `gh` CLI authenticated for `toxicwind/roundup`.
 
 ## Running Quality, Style, and Type Checks
 
@@ -200,7 +200,7 @@ tox
 To ensure your changes are covered by tests, run:
 
 ```bash
-tox -e test-unit -- --cov=guidellm --cov-report=html
+tox -e test-unit -- --cov=roundup --cov-report=html
 ```
 
 Review the coverage report to confirm that your new code is adequately tested.
@@ -239,34 +239,34 @@ Review the coverage report to confirm that your new code is adequately tested.
 
 ## Logging
 
-Logging is useful for learning how GuideLLM works and finding problems.
+Logging is useful for learning how Roundup works and finding problems.
 
-The primary configuration API is :func:`~guidellm.logger.configure_logger`. Environment variables below populate fallback defaults at import time only:
+The primary configuration API is :func:`~roundup.logger.configure_logger`. Environment variables below populate fallback defaults at import time only:
 
-- `GUIDELLM__LOGGING__CONSOLE_LOG_LEVEL`: Log level for console logging (default: INFO; set empty to disable).
-- `GUIDELLM__LOGGING__CONSOLE_COLORIZE`: Console ANSI colorization (default: auto; options: auto, true, false).
-- `GUIDELLM__LOGGING__LOG_FILE`: Path to the log file for file logging (default: guidellm.log if log file level set else none)
-- `GUIDELLM__LOGGING__LOG_FILE_LEVEL`: Log level for file logging (default: INFO if log file set else none).
+- `ROUNDUP__LOGGING__CONSOLE_LOG_LEVEL`: Log level for console logging (default: INFO; set empty to disable).
+- `ROUNDUP__LOGGING__CONSOLE_COLORIZE`: Console ANSI colorization (default: auto; options: auto, true, false).
+- `ROUNDUP__LOGGING__LOG_FILE`: Path to the log file for file logging (default: roundup.log if log file level set else none)
+- `ROUNDUP__LOGGING__LOG_FILE_LEVEL`: Log level for file logging (default: INFO if log file set else none).
 
-If logging isn't responding to the environment variables, run the `guidellm env` command to validate that the environment variables match and are being set correctly.
+If logging isn't responding to the environment variables, run the `roundup env` command to validate that the environment variables match and are being set correctly.
 
 Examples:
 
 Enable verbose console output for a single run. The interactive progress display can overwrite console log lines, so `--disable-progress` is recommended when reading console logs:
 
 ```bash
-GUIDELLM__LOGGING__CONSOLE_LOG_LEVEL=DEBUG guidellm run ... --disable-progress
+ROUNDUP__LOGGING__CONSOLE_LOG_LEVEL=DEBUG roundup run ... --disable-progress
 ```
 
 Write structured `DEBUG` logs to a file while leaving the console at its default level:
 
 ```bash
-GUIDELLM__LOGGING__LOG_FILE=guidellm.log GUIDELLM__LOGGING__LOG_FILE_LEVEL=DEBUG guidellm run ...
+ROUNDUP__LOGGING__LOG_FILE=roundup.log ROUNDUP__LOGGING__LOG_FILE_LEVEL=DEBUG roundup run ...
 ```
 
 ## Additional Resources
 
-- [CONTRIBUTING.md](https://github.com/vllm-project/guidellm/blob/main/CONTRIBUTING.md): Guidelines for contributing to the project.
-- [CODE_OF_CONDUCT.md](https://github.com/vllm-project/guidellm/blob/main/CODE_OF_CONDUCT.md): Our expectations for community behavior.
-- [tox.ini](https://github.com/vllm-project/guidellm/blob/main/tox.ini): Configuration for Tox environments.
-- [.pre-commit-config.yaml](https://github.com/vllm-project/guidellm/blob/main/.pre-commit-config.yaml): Configuration for pre-commit hooks.
+- [CONTRIBUTING.md](https://github.com/toxicwind/roundup/blob/main/CONTRIBUTING.md): Guidelines for contributing to the project.
+- [CODE_OF_CONDUCT.md](https://github.com/toxicwind/roundup/blob/main/CODE_OF_CONDUCT.md): Our expectations for community behavior.
+- [tox.ini](https://github.com/toxicwind/roundup/blob/main/tox.ini): Configuration for Tox environments.
+- [.pre-commit-config.yaml](https://github.com/toxicwind/roundup/blob/main/.pre-commit-config.yaml): Configuration for pre-commit hooks.

@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.preprocessors.tool_calling module.
+Unit tests for roundup.data.preprocessors.tool_calling module.
 
 ## WRITTEN BY AI ##
 """
@@ -8,11 +8,11 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.data.preprocessors.tool_calling import (
+from roundup.data.preprocessors.tool_calling import (
     ToolCallingMessageExtractor,
     _normalize_message,
 )
-from guidellm.schemas.data import ToolCallingMessageExtractorArgs
+from roundup.schemas.data import ToolCallingMessageExtractorArgs
 
 
 class TestToolCallingMessageExtractorToolResponses:

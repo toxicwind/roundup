@@ -1,6 +1,6 @@
-# GuideLLM Benchmark Testing Best Practice
+# Roundup Benchmark Testing Best Practice
 
-Do first easy-go guidellm benchmark testing from scratch using vLLM Simulator.
+Do first easy-go roundup benchmark testing from scratch using vLLM Simulator.
 
 ## Getting Started
 
@@ -9,24 +9,24 @@ Do first easy-go guidellm benchmark testing from scratch using vLLM Simulator.
 #### 1.1 Create a Conda Environment (recommended)
 
 ```bash
-conda create -n guidellm-bench python=3.11 -y
-conda activate guidellm-bench
+conda create -n roundup-bench python=3.11 -y
+conda activate roundup-bench
 ```
 
 #### 1.2 Install Dependencies
 
 ```bash
-git clone https://github.com/vllm-project/guidellm.git
-cd guidellm
-pip install guidellm
+git clone https://github.com/toxicwind/roundup.git
+cd roundup
+pip install roundup
 ```
 
-For more detailed instructions, refer to [GuideLLM README](https://github.com/vllm-project/guidellm/blob/main/README.md).
+For more detailed instructions, refer to [Roundup README](https://github.com/toxicwind/roundup/blob/main/README.md).
 
 #### 1.3 Verify Installation
 
 ```bash
-guidellm --help
+roundup --help
 ```
 
 #### 1.4 Startup OpenAI-compatible API in vLLM simulator docker container
@@ -92,7 +92,7 @@ ______________________________________________________________________
 ## 🚀 2. Running Benchmarks
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000/,model=tweet-summary-0 \
   --tokenizer kind=huggingface_auto,model=${local_path}/Qwen2.5-1.5B-Instruct \
   --profile kind=sweep \

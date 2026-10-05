@@ -1,0 +1,6 @@
+version = "0.9.0.dev20"
+build_type = "dev"
+build_iteration = "20"
+git_commit = "77e4409f1379fa4f749b8fbded378db339cbd2f3"
+git_branch = "upstream-merge/20261002"
+git_last_tag = "v0.8.0"

@@ -17,7 +17,7 @@ from typing import Any
 
 import pytest
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     AsyncConstantStrategy,
     AsyncPoissonStrategy,
     BackendInterface,
@@ -31,11 +31,11 @@ from guidellm.scheduler import (
     ThroughputStrategy,
     WorkerProcessGroup,
 )
-from guidellm.scheduler.constraints import ConstraintInitializer
-from guidellm.scheduler.schemas import ConversationGraph, ConversationNode
-from guidellm.scheduler.strategies import SchedulingStrategy
-from guidellm.schemas import RequestSettings, RequestTimings
-from guidellm.schemas.scheduler import (
+from roundup.scheduler.constraints import ConstraintInitializer
+from roundup.scheduler.schemas import ConversationGraph, ConversationNode
+from roundup.scheduler.strategies import SchedulingStrategy
+from roundup.schemas import RequestSettings, RequestTimings
+from roundup.schemas.scheduler import (
     MaxDurationConstraintArgs,
     MaxErrorRateConstraintArgs,
     MaxErrorsConstraintArgs,

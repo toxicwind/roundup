@@ -11,18 +11,18 @@ from unittest.mock import patch
 
 import pytest
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     OverSaturationConstraint,
     OverSaturationConstraintInitializer,
     SchedulerState,
     SchedulerUpdateAction,
 )
-from guidellm.scheduler.constraints.saturation import (
+from roundup.scheduler.constraints.saturation import (
     SlopeChecker,
     approx_t_ppf,
 )
-from guidellm.schemas import RequestInfo, RequestTimings
-from guidellm.schemas.scheduler import OverSaturationConstraintArgs
+from roundup.schemas import RequestInfo, RequestTimings
+from roundup.schemas.scheduler import OverSaturationConstraintArgs
 
 
 class TestSlopeCheckerStatisticalAccuracy:

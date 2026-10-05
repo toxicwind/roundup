@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.deserializers.synthetic module.
+Unit tests for roundup.data.deserializers.synthetic module.
 """
 
 import json
@@ -13,17 +13,17 @@ from datasets import IterableDataset
 from faker import Faker
 from pydantic import ValidationError
 
-from guidellm.data import config as config_module
-from guidellm.data.deserializers.synthetic import (
+from roundup.data import config as config_module
+from roundup.data.deserializers.synthetic import (
     DEFAULT_SYNTHETIC_TOOLS,
     SyntheticTextDataset,
     SyntheticTextDatasetDeserializer,
     _SyntheticTextExamplesIterable,
 )
-from guidellm.data.schemas import DataNotSupportedError
-from guidellm.data.schemas.conversation_graph_data import ConversationGraphData
-from guidellm.schemas.data import SyntheticTextDataArgs, SyntheticTextPrefixBucketConfig
-from guidellm.settings import settings
+from roundup.data.schemas import DataNotSupportedError
+from roundup.data.schemas.conversation_graph_data import ConversationGraphData
+from roundup.schemas.data import SyntheticTextDataArgs, SyntheticTextPrefixBucketConfig
+from roundup.settings import settings
 
 
 def _conversation_graph(row: dict) -> ConversationGraphData:

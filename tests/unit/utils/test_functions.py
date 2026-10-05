@@ -5,7 +5,7 @@ from datetime import datetime
 
 import pytest
 
-from guidellm.utils.functions import (
+from roundup.utils.functions import (
     all_defined,
     safe_add,
     safe_divide,

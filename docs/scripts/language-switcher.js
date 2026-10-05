@@ -1,5 +1,5 @@
 (() => {
-  const warningId = "guidellm-stale-translation";
+  const warningId = "roundup-stale-translation";
 
   function ensureTrailingSlash(value) {
     return value.endsWith("/") ? value : `${value}/`;
@@ -56,7 +56,7 @@
   }
 
   function updateLanguageSelector() {
-    const routes = window.GUIDELLM_TRANSLATION_ROUTES || {};
+    const routes = window.ROUNDUP_TRANSLATION_ROUTES || {};
     const root = siteRoot();
     const route = currentRoute(root);
     let englishRoute = route;

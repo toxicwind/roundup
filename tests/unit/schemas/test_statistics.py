@@ -7,14 +7,14 @@ import numpy as np
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from guidellm.schemas import (
+from roundup.schemas import (
     DistributionSummary,
     FunctionObjT,
     Percentiles,
     SampleUncertainty,
     StatusDistributionSummary,
 )
-from guidellm.schemas.base.statistics import PERCENTILE_PROBABILITIES
+from roundup.schemas.base.statistics import PERCENTILE_PROBABILITIES
 
 
 def test_function_obj_type():

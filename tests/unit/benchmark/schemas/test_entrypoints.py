@@ -14,25 +14,25 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
-from guidellm.benchmark.schemas.base import BenchmarkConfig
-from guidellm.scheduler import ThroughputStrategy
-from guidellm.schemas.backends import (
+from roundup.benchmark.schemas.base import BenchmarkConfig
+from roundup.scheduler import ThroughputStrategy
+from roundup.schemas.backends import (
     BackendArgs,
     OpenAIHTTPBackendArgs,
     OpenAIWebSocketBackendArgs,
 )
-from guidellm.schemas.benchmark import (
+from roundup.schemas.benchmark import (
     BenchmarkArgs,
     BenchmarkScenario,
     GenerativeMetricsArgs,
     MetricsArgs,
 )
-from guidellm.utils.arg_string import ArgStringParser
-from guidellm.utils.typing import BLANK
+from roundup.utils.arg_string import ArgStringParser
+from roundup.utils.typing import BLANK
 
 # Conditionally import VLLM backend args if available
 try:
-    from guidellm.schemas.backends import VLLMPythonAsyncBackendArgs
+    from roundup.schemas.backends import VLLMPythonAsyncBackendArgs
 
     HAS_VLLM = True
 except ImportError:
@@ -554,11 +554,11 @@ class TestBenchmarkScenarioEnvVars:
 
     def test_backend_target_from_env(self, monkeypatch):
         """
-        GUIDELLM__SPEC__BACKEND__TARGET sets the backend target.
+        ROUNDUP__SPEC__BACKEND__TARGET sets the backend target.
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://env-server:9000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://env-server:9000")
 
         scenario = BenchmarkScenario.model_validate(
             {"spec": {**_PIPELINE_DEFAULTS, "backend": {"kind": "openai_http"}}}
@@ -573,9 +573,9 @@ class TestBenchmarkScenarioEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__KIND", "openai_http")
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://env-server:9000")
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__MODEL", "env-model")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__KIND", "openai_http")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://env-server:9000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__MODEL", "env-model")
 
         scenario = BenchmarkScenario.model_validate({"spec": _PIPELINE_DEFAULTS})
 
@@ -585,11 +585,11 @@ class TestBenchmarkScenarioEnvVars:
 
     def test_sweep_size_string_coercion_from_env(self, monkeypatch):
         """
-        GUIDELLM__SPEC__PROFILE__SWEEP_SIZE with string value is coerced to int.
+        ROUNDUP__SPEC__PROFILE__SWEEP_SIZE with string value is coerced to int.
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__PROFILE__SWEEP_SIZE", "5")
+        monkeypatch.setenv("ROUNDUP__SPEC__PROFILE__SWEEP_SIZE", "5")
 
         scenario = BenchmarkScenario.model_validate(
             {
@@ -612,7 +612,7 @@ class TestBenchmarkScenarioEnvVars:
 
         ## WRITTEN BY AI ##
         """
-        monkeypatch.setenv("GUIDELLM__SPEC__BACKEND__TARGET", "http://from-env:9000")
+        monkeypatch.setenv("ROUNDUP__SPEC__BACKEND__TARGET", "http://from-env:9000")
 
         scenario = BenchmarkScenario.model_validate(
             {

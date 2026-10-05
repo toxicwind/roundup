@@ -7,8 +7,8 @@ weight: 100
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/vllm-project/guidellm/main/docs/assets/guidellm-logo-light.png">
-    <img alt="GuideLLM Logo" src="https://raw.githubusercontent.com/vllm-project/guidellm/main/docs/assets/guidellm-logo-dark.png" width=55%>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/toxicwind/roundup/main/docs/assets/roundup-logo-light.png">
+    <img alt="Roundup Logo" src="https://raw.githubusercontent.com/toxicwind/roundup/main/docs/assets/roundup-logo-dark.png" width=55%>
   </picture>
 </p>
 
@@ -16,7 +16,7 @@ weight: 100
 面向真实世界大语言模型推理优化、感知 SLO 的基准测试与评估平台
 </h3>
 
-**GuideLLM** 是一个用于评估语言模型在真实工作负载和配置下性能的平台。它可以模拟与 OpenAI 兼容服务器及 vLLM 原生服务器的端到端交互，生成反映生产使用情况的工作负载模式，并生成详细报告，帮助团队了解系统行为、资源需求和运行限制。GuideLLM 支持真实及合成数据集、多模态输入和灵活的执行配置，为工程团队和机器学习团队提供一致的模型行为评估、部署调优及容量规划框架。
+**Roundup** 是一个用于评估语言模型在真实工作负载和配置下性能的平台。它可以模拟与 OpenAI 兼容服务器及 vLLM 原生服务器的端到端交互，生成反映生产使用情况的工作负载模式，并生成详细报告，帮助团队了解系统行为、资源需求和运行限制。Roundup 支持真实及合成数据集、多模态输入和灵活的执行配置，为工程团队和机器学习团队提供一致的模型行为评估、部署调优及容量规划框架。
 
 ## 主要特性
 
@@ -34,15 +34,15 @@ weight: 100
 
   ______________________________________________________________________
 
-  安装 GuideLLM、运行首次基准测试并分析结果，以优化大语言模型部署。
+  安装 Roundup、运行首次基准测试并分析结果，以优化大语言模型部署。
 
-  [:octicons-arrow-right-24: 安装 GuideLLM](./getting-started/install.md)
+  [:octicons-arrow-right-24: 安装 Roundup](./getting-started/install.md)
 
 - :material-book-open-variant:{ .lg .middle } 使用指南
 
   ______________________________________________________________________
 
-  深入了解后端、数据集、指标和服务级别目标等 GuideLLM 基准测试主题。
+  深入了解后端、数据集、指标和服务级别目标等 Roundup 基准测试主题。
 
   [:octicons-arrow-right-24: 阅读英文使用指南](../guides/)
 
@@ -58,7 +58,7 @@ weight: 100
 
   ______________________________________________________________________
 
-  查看完整的 GuideLLM API 参考文档，以便将基准测试集成到工作流中。
+  查看完整的 Roundup API 参考文档，以便将基准测试集成到工作流中。
 
   [:octicons-arrow-right-24: 阅读英文 API 参考](../api/)
 

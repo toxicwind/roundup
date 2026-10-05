@@ -4,20 +4,20 @@ This guide demonstrates how to benchmark Vision-Language Models (VLMs) for tasks
 
 ## Setup
 
-First, ensure you have a running inference server and model compatible with the OpenAI Chat API. GuideLLM supports any OpenAI-compatible server that can handle image inputs through chat/completions endpoint. For the benchmarking examples below, we’ll use vLLM serving the Qwen3-VL model.
+First, ensure you have a running inference server and model compatible with the OpenAI Chat API. Roundup supports any OpenAI-compatible server that can handle image inputs through chat/completions endpoint. For the benchmarking examples below, we’ll use vLLM serving the Qwen3-VL model.
 
 ```bash
 # Qwen3-VL VQA/Captioning
 vllm serve Qwen/Qwen3-VL-2B-Instruct
 ```
 
-Next, either on the same instance or another machine that can reach your server (recommended), install GuideLLM with vision support:
+Next, either on the same instance or another machine that can reach your server (recommended), install Roundup with vision support:
 
 ```bash
-pip install guidellm[vision,recommended]
+pip install roundup[vision,recommended]
 ```
 
-Finally, ensure you have a dataset with supported image files for benchmarking. GuideLLM can handle image data from Hugging Face datasets, local files, URLs, etc. For the examples below, we’ll use the `lmms-lab/MMBench_EN` dataset.
+Finally, ensure you have a dataset with supported image files for benchmarking. Roundup can handle image data from Hugging Face datasets, local files, URLs, etc. For the examples below, we’ll use the `lmms-lab/MMBench_EN` dataset.
 
 ## Processing Options
 
@@ -25,9 +25,9 @@ All of the standard arguments for benchmarking apply to image tasks as well, suc
 
 ### Data Loading
 
-GuideLLM supports multiple methods for loading image data. First, the overall data source must be deserializable by GuideLLM into a Hugging Face dataset. This includes local files, Hugging Face datasets, JSON files, etc.
+Roundup supports multiple methods for loading image data. First, the overall data source must be deserializable by Roundup into a Hugging Face dataset. This includes local files, Hugging Face datasets, JSON files, etc.
 
-Next, the desired image column within the deserializable data source must be supported by GuideLLM’s image data decoder/encoder. Supported formats include:
+Next, the desired image column within the deserializable data source must be supported by Roundup’s image data decoder/encoder. Supported formats include:
 
 - Hugging Face Image feature (preferred)
 - Local file paths (e.g., .jpg, .png)
@@ -37,7 +37,7 @@ Next, the desired image column within the deserializable data source must be sup
 
 ### Data Column Mapping
 
-When specifying the dataset, generally, you will want to map the specific image column to GuideLLM’s `image_column` so it knows which data to process as images. If nothing is specified, GuideLLM will attempt to auto-detect an image column based on commonly used names such as image, picture, etc.
+When specifying the dataset, generally, you will want to map the specific image column to Roundup’s `image_column` so it knows which data to process as images. If nothing is specified, Roundup will attempt to auto-detect an image column based on commonly used names such as image, picture, etc.
 
 To specify the mapping, use the `--data-column-mapper` argument with a JSON string that specifies an existing column name for `image_column`. For example, if your dataset has an image column named `photo`, you would use:
 
@@ -105,7 +105,7 @@ Turn streaming responses on or off (if supported by the backend) using a boolean
 
 ## Expected Results
 
-GuideLLM captures comprehensive metrics across the entire request lifecycle, stored in `GenerativeRequestStats` and aggregated into `GenerativeMetrics`. Results are displayed in the console and saved to local files for further analysis.
+Roundup captures comprehensive metrics across the entire request lifecycle, stored in `GenerativeRequestStats` and aggregated into `GenerativeMetrics`. Results are displayed in the console and saved to local files for further analysis.
 
 ### Output Files
 
@@ -125,7 +125,7 @@ In addition to standard performance metrics like Latency, Time to First Token (T
 
 ### Statistical Analysis
 
-For each metric above, GuideLLM calculates statistical distributions including:
+For each metric above, Roundup calculates statistical distributions including:
 
 - **Values**: Mean, Median, P95, P99, Min, Max.
 - **Rates**: Throughput per second (e.g., `image_pixels/sec`).
@@ -142,7 +142,7 @@ This benchmark tests Vision-Language Models for their ability to answer question
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://192.168.4.12:8000,model=Qwen/Qwen3-VL-2B-Instruct,request_format=/v1/chat/completions \
   --profile kind=synchronous \
   --constraint kind=max_requests,count=20 \
@@ -182,9 +182,9 @@ The above command benchmarks the chat/completions endpoint on the target server 
 ......
 
 ✔ Benchmarking complete, generated 1 benchmark(s)
-…   json    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.json
-…   csv     : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.csv
-…   html    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.html
+…   json    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.json
+…   csv     : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.csv
+…   html    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.html
 ```
 
 ### 2. Image Captioning
@@ -194,7 +194,7 @@ This benchmark tests the model's ability to describe an image without a specific
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=Qwen/Qwen3-VL-2B-Instruct,request_format=/v1/chat/completions \
   --profile kind=synchronous \
   --constraint kind=max_requests,count=20 \
@@ -232,7 +232,7 @@ The above command benchmarks the chat/completions endpoint on the target server 
 ......
 
 ✔ Benchmarking complete, generated 1 benchmark(s)
-…   json    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.json
-…   csv     : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.csv
-…   html    : /Users/markkurtz/code/github/vllm-project/guidellm/benchmarks.html
+…   json    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.json
+…   csv     : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.csv
+…   html    : /Users/markkurtz/code/github/toxicwind/roundup/benchmarks.html
 ```

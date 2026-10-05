@@ -9,7 +9,7 @@ import pytest
 from pydantic import ValidationError
 from typing_extensions import TypeAliasType
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     BackendInterface,
     BackendT,
     ConversationT,
@@ -19,7 +19,7 @@ from guidellm.scheduler import (
     SchedulerState,
     SchedulerUpdateAction,
 )
-from guidellm.schemas import RequestInfo, RequestTimings, StandardBaseModel
+from roundup.schemas import RequestInfo, RequestTimings, StandardBaseModel
 
 
 def test_request_t():

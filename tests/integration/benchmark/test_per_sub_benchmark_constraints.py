@@ -13,27 +13,27 @@ from typing import Any
 
 import pytest
 
-from guidellm.benchmark.entrypoints import (
+from roundup.benchmark.entrypoints import (
     resolve_constraints,
     resolve_to_single_benchmark,
 )
-from guidellm.scheduler.constraints.error import (
+from roundup.scheduler.constraints.error import (
     MaxErrorRateConstraint,
     MaxErrorsConstraint,
 )
-from guidellm.scheduler.constraints.request import (
+from roundup.scheduler.constraints.request import (
     MaxDurationConstraint,
     MaxNumberConstraint,
 )
-from guidellm.scheduler.schemas import SchedulerState
-from guidellm.schemas import RequestInfo
-from guidellm.schemas.benchmark import BenchmarkArgs
-from guidellm.schemas.scheduler import (
+from roundup.scheduler.schemas import SchedulerState
+from roundup.schemas import RequestInfo
+from roundup.schemas.benchmark import BenchmarkArgs
+from roundup.schemas.scheduler import (
     MaxDurationConstraintArgs,
     MaxRequestsConstraintArgs,
     OverSaturationConstraintArgs,
 )
-from guidellm.utils.arg_string import ArgStringParser
+from roundup.utils.arg_string import ArgStringParser
 
 _PIPELINE_DEFAULTS: dict[str, Any] = {
     "data": [{"kind": "synthetic_text", "prompt_tokens": 10, "output_tokens": 10}],

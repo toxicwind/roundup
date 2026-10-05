@@ -6,7 +6,7 @@ import httpx
 import pytest
 from PIL import Image
 
-from guidellm.utils.vision import encode_image
+from roundup.utils.vision import encode_image
 
 
 @pytest.mark.regression
@@ -30,7 +30,7 @@ def test_encode_image_url_preserves_resize_options(resize_kwargs, expected_size)
         200, content=image_bytes, request=httpx.Request("GET", url)
     )
 
-    with patch("guidellm.utils.vision.httpx.get", return_value=response):
+    with patch("roundup.utils.vision.httpx.get", return_value=response):
         result = encode_image(url, **resize_kwargs)
     local_result = encode_image(image_bytes, **resize_kwargs)
 

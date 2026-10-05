@@ -13,8 +13,8 @@ import pytest_asyncio
 from pydantic import ValidationError
 from sanic import Sanic
 
-from guidellm.mock_server.server import MockServer
-from guidellm.schemas.mock_server.config import MockServerConfig
+from roundup.mock_server.server import MockServer
+from roundup.schemas.mock_server.config import MockServerConfig
 
 
 # Start server in a separate process
@@ -235,7 +235,7 @@ class TestMockServerEndpoints:
             assert "created" in model
             assert "owned_by" in model
             assert model["object"] == "model"
-            assert model["owned_by"] == "guidellm-mock"
+            assert model["owned_by"] == "roundup-mock"
             assert model["id"] == "test-model"
 
     @pytest.mark.regression
@@ -618,7 +618,7 @@ class TestMockServerEndpoints:
             assert "GET, POST, OPTIONS" in methods_header
             headers_header = response.headers.get("Access-Control-Allow-Headers", "")
             assert "Content-Type, Authorization" in headers_header
-            assert response.headers.get("Server") == "guidellm-mock-server"
+            assert response.headers.get("Server") == "roundup-mock-server"
 
     @pytest.mark.smoke
     @pytest.mark.asyncio

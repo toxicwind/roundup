@@ -7,7 +7,7 @@ import pytest
 
 from tests.e2e.conftest import E2EServer, free_port, start_mock_server
 from tests.e2e.utils import (
-    GuidellmClient,
+    RoundupClient,
     assert_constraint_triggered,
     assert_no_python_exceptions,
     load_benchmark_report,
@@ -67,8 +67,8 @@ def test_max_error_benchmark(server: E2EServer, e2e_server_kind: str, tmp_path: 
     rate = 10
     max_error_rate = 0.1
 
-    # Create and configure the guidellm client
-    client = GuidellmClient(
+    # Create and configure the roundup client
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,

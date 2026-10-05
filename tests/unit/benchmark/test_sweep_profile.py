@@ -5,9 +5,9 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from guidellm.benchmark.entrypoints import resolve_profile
-from guidellm.benchmark.profiles import ProfileFactory, SweepProfile
-from guidellm.schemas.benchmark import SweepProfileArgs
+from roundup.benchmark.entrypoints import resolve_profile
+from roundup.benchmark.profiles import ProfileFactory, SweepProfile
+from roundup.schemas.benchmark import SweepProfileArgs
 
 
 class TestSweepProfileArgs:

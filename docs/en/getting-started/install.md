@@ -4,11 +4,11 @@ weight: -10
 
 # Install
 
-GuideLLM can be installed using several methods depending on your requirements. Below are the detailed instructions for each installation pathway.
+Roundup can be installed using several methods depending on your requirements. Below are the detailed instructions for each installation pathway.
 
 ## Prerequisites
 
-Before installing GuideLLM, ensure you have the following prerequisites:
+Before installing Roundup, ensure you have the following prerequisites:
 
 - **Operating System:** Linux or MacOS
 
@@ -24,45 +24,45 @@ Before installing GuideLLM, ensure you have the following prerequisites:
 
 ### 1. Install the Latest Release from PyPI
 
-The simplest way to install GuideLLM is via pip from the Python Package Index (PyPI):
+The simplest way to install Roundup is via pip from the Python Package Index (PyPI):
 
 ```bash
-pip install guidellm[recommended]
+pip install roundup[recommended]
 ```
 
-This will install the latest stable release of GuideLLM with recommended dependencies.
+This will install the latest stable release of Roundup with recommended dependencies.
 
 ### 2. Install a Specific Version from PyPI
 
-If you need a specific version of GuideLLM, you can specify the version number during installation. For example, to install version `0.2.0`:
+If you need a specific version of Roundup, you can specify the version number during installation. For example, to install version `0.2.0`:
 
 ```bash
-pip install guidellm==0.2.0
+pip install roundup==0.2.0
 ```
 
 ### 3. Install from Source on the Main Branch
 
-To install the latest development version of GuideLLM from the main branch, use the following command:
+To install the latest development version of Roundup from the main branch, use the following command:
 
 ```bash
-pip install git+https://github.com/vllm-project/guidellm.git
+pip install git+https://github.com/toxicwind/roundup.git
 ```
 
-This will clone the repository and install GuideLLM directly from the main branch.
+This will clone the repository and install Roundup directly from the main branch.
 
 ### 4. Install from a Specific Branch
 
-If you want to install GuideLLM from a specific branch (e.g., `feature-branch`), use the following command:
+If you want to install Roundup from a specific branch (e.g., `feature-branch`), use the following command:
 
 ```bash
-pip install git+https://github.com/vllm-project/guidellm.git@feature-branch
+pip install git+https://github.com/toxicwind/roundup.git@feature-branch
 ```
 
 Replace `feature-branch` with the name of the branch you want to install.
 
 ### 5. Install from a Local Clone
 
-If you have cloned the GuideLLM repository locally and want to install it, navigate to the repository directory and run:
+If you have cloned the Roundup repository locally and want to install it, navigate to the repository directory and run:
 
 ```bash
 pip install .
@@ -78,16 +78,16 @@ This allows you to make changes to the source code and have them reflected immed
 
 ## Verifying the Installation
 
-After installation, you can verify that GuideLLM is installed correctly by running:
+After installation, you can verify that Roundup is installed correctly by running:
 
 ```bash
-guidellm --help
+roundup --help
 ```
 
-This should display the installed version of GuideLLM.
+This should display the installed version of Roundup.
 
 To use the vLLM Python backend (in-process inference), see [vLLM Python backend](../guides/vllm-python-backend.md) for recommended installation (container or existing vLLM environment) and pip installation notes.
 
 ## Troubleshooting
 
-If you encounter any issues during installation, ensure that your Python and pip versions meet the prerequisites. For common runtime errors (debug logging, tokenizer loading, macOS worker crashes), see the [Troubleshooting guide](../guides/troubleshooting.md). For further assistance, please refer to the [GitHub Issues](https://github.com/vllm-project/guidellm/issues) page.
+If you encounter any issues during installation, ensure that your Python and pip versions meet the prerequisites. For common runtime errors (debug logging, tokenizer loading, macOS worker crashes), see the [Troubleshooting guide](../guides/troubleshooting.md). For further assistance, please refer to the [GitHub Issues](https://github.com/toxicwind/roundup/issues) page.

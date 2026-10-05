@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     Environment,
     MaxNumberConstraint,
     NonDistributedEnvironment,
@@ -15,9 +15,9 @@ from guidellm.scheduler import (
     SchedulerState,
     SynchronousStrategy,
 )
-from guidellm.schemas import RequestInfo
-from guidellm.schemas.scheduler import MaxRequestsConstraintArgs
-from guidellm.utils.mixins import InfoMixin
+from roundup.schemas import RequestInfo
+from roundup.schemas.scheduler import MaxRequestsConstraintArgs
+from roundup.utils.mixins import InfoMixin
 
 
 class TestEnvironment:
@@ -259,7 +259,7 @@ class TestNonDistributedEnvironment:
 
         with (
             patch("time.time", return_value=mock_time),
-            patch("guidellm.scheduler.environments.settings") as mock_settings,
+            patch("roundup.scheduler.environments.settings") as mock_settings,
         ):
             mock_settings.scheduler_start_delay_non_distributed = delay
             start_time = await instance.sync_run_start()

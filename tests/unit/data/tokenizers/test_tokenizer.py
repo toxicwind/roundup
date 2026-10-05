@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.tokenizers.tokenizer module.
+Unit tests for roundup.data.tokenizers.tokenizer module.
 
 ### WRITTEN BY AI ###
 """
@@ -8,10 +8,10 @@ from __future__ import annotations
 
 import pytest
 
-import guidellm.data.tokenizers  # noqa: F401 — ensures tokenizers are registered
-from guidellm.data.tokenizers import TokenizerRegistry
-from guidellm.data.tokenizers.huggingface import HuggingFaceTokenizer
-from guidellm.schemas.data import HuggingFaceTokenizerArgs
+import roundup.data.tokenizers  # noqa: F401 — ensures tokenizers are registered
+from roundup.data.tokenizers import TokenizerRegistry
+from roundup.data.tokenizers.huggingface import HuggingFaceTokenizer
+from roundup.schemas.data import HuggingFaceTokenizerArgs
 
 
 class TestTokenizerRegistry:

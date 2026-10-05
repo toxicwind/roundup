@@ -11,7 +11,7 @@ __all__ = [
 ]
 
 # Small BPE tokenizer trained on Faker-style synthetic text (no Hub download).
-# Vocab size 1024; encode/decode matches GuideLLM synthetic_text prompt sizing
+# Vocab size 1024; encode/decode matches Roundup synthetic_text prompt sizing
 # (Faker text -> encode -> truncate -> decode). Regenerated with the `tokenizers`
 # + `transformers` libraries from a Faker corpus when fixtures need updating.
 MINIMAL_TOKENIZER_DIR = Path(__file__).resolve().parent / "minimal"
@@ -19,7 +19,7 @@ MINIMAL_TOKENIZER_DIR = Path(__file__).resolve().parent / "minimal"
 
 def seed_hub_cache_for_model(
     hf_home: Path,
-    model_id: str = "guidellm-test-tokenizer",
+    model_id: str = "roundup-test-tokenizer",
     source: Path | None = None,
     revision: str = "a" * 40,
 ) -> Path:

@@ -1,13 +1,13 @@
 # Datasets
 
-GuideLLM supports various dataset configurations to enable benchmarking and evaluation of large language models (LLMs). This document provides a comprehensive guide to configuring datasets for different use cases, along with detailed examples and rationale for choosing specific pathways.
+Roundup supports various dataset configurations to enable benchmarking and evaluation of large language models (LLMs). This document provides a comprehensive guide to configuring datasets for different use cases, along with detailed examples and rationale for choosing specific pathways.
 
 ## Data Arguments Overview
 
 Dataset and processing options use the "kind" pattern to select a registered implementation and configure parameters:
 
 ```bash
-guidellm run --data kind=<TYPE>,key=value,... [other options...]
+roundup run --data kind=<TYPE>,key=value,... [other options...]
 ```
 
 Repeat `--data` to combine multiple sources. Use comma-separated key=value pairs for flat settings, or serialized JSON when any value is nested.
@@ -20,7 +20,7 @@ The following arguments configure datasets and their processing:
   - `synthetic_text` — generates synthetic prompts on the fly. Required field: `prompt_tokens`. Optional: `output_tokens`, `turns`, `prefix_tokens`, `prefix_count`, `prefix_buckets`, and distribution controls (`prompt_tokens_stdev`, `output_tokens_stdev`, etc.).
   - `huggingface` (alias `hf`) — loads from HuggingFace Hub or a local directory/file. Required field: `source` (dataset ID or path). Pass dataset loading arguments (for example `split`, `name`) via `load_kwargs`.
   - `json_file`, `csv_file`, `text_file`, `parquet_file`, `arrow_file`, `hdf5_file`, `tar_file` — loads from a local file. Required field: `path`.
-  - `db_file` — loads rows from a database using `load_kwargs.sql`. Required field: `uri`, using a SQLAlchemy-style URI. GuideLLM currently supports only SQLite URIs, such as `sqlite:///prompts.db`.
+  - `db_file` — loads rows from a database using `load_kwargs.sql`. Required field: `uri`, using a SQLAlchemy-style URI. Roundup currently supports only SQLite URIs, such as `sqlite:///prompts.db`.
   - `trace_synthetic`, `mooncake`, `weka`, `otel` — replay traces with `--profile kind=replay`. Required field: nested `source` pointing at another dataset kind, for example `source.kind=json_file,source.path=trace.jsonl` or `source.kind=huggingface,source.source=org/dataset`. Optional: `timestamp_column`, `prompt_tokens_column`, `output_tokens_column`, `time_scale`, `copies`, and other format-specific options. See [Trace File Formats](./trace_replay.md).
 
 In addition, you can specify additional arguments to the dataset loading with the data argument `load_kwargs`:
@@ -43,7 +43,7 @@ You can specify the tokenizer with `--tokenizer` and a configuration string. The
 
 If a HuggingFace model requires custom code to load, pass `trust_remote_code` in `load_kwargs`. See [Troubleshooting: trust_remote_code](troubleshooting.md#trust_remote_code-required-by-tokenizer).
 
-If your dataset uses non-standard column names, you can use `--data-column-mapper` to map your columns to GuideLLM's expected column names. This is particularly useful when:
+If your dataset uses non-standard column names, you can use `--data-column-mapper` to map your columns to Roundup's expected column names. This is particularly useful when:
 
 1. Your dataset uses different column names (e.g., `question` instead of `prompt`, `instruction` instead of `text_column`)
 2. You have multiple datasets and need to specify which dataset's columns to use
@@ -59,7 +59,7 @@ The `--data-column-mapper` accepts a string mapping column types to column names
 
 ### Preprocessors
 
-With `--data-preprocessor` you can control the GuideLLM preprocessors to apply: preprocessors include `encode_media`, `tool_calling_message_extractor`, `turn_pivot`.
+With `--data-preprocessor` you can control the Roundup preprocessors to apply: preprocessors include `encode_media`, `tool_calling_message_extractor`, `turn_pivot`.
 
 ### Data Finalizer
 
@@ -72,7 +72,7 @@ Use `--seed` with a configuration string to control how sequences (in scheduling
 ### Example Usage
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=throughput \
   --constraint kind=max_requests,count=1000 \
@@ -84,18 +84,18 @@ guidellm run \
 
 ## Dataset Types
 
-GuideLLM supports several types of datasets, each with its own advantages and use cases. Below are the main dataset types supported by GuideLLM, including synthetic data, Hugging Face datasets, file-based datasets, and in-memory datasets.
+Roundup supports several types of datasets, each with its own advantages and use cases. Below are the main dataset types supported by Roundup, including synthetic data, Hugging Face datasets, file-based datasets, and in-memory datasets.
 
 ### Synthetic Data
 
 Synthetic datasets allow you to generate data on the fly with customizable parameters. This is useful for controlled experiments, stress testing, and simulating specific scenarios. For example, you might want to evaluate how a model handles long prompts or generates outputs with specific characteristics.
 
-GuideLLM supports both synthetic *text* — described below — and synthetic *visual* data (images and short videos) for benchmarking Vision-Language Models. See [Synthetic Visual Data](multimodal/synthetic_vision.md) for the `synthetic_image` and `synthetic_video` `--data` kinds, which can be combined with `synthetic_text` for multimodal prompts.
+Roundup supports both synthetic *text* — described below — and synthetic *visual* data (images and short videos) for benchmarking Vision-Language Models. See [Synthetic Visual Data](multimodal/synthetic_vision.md) for the `synthetic_image` and `synthetic_video` `--data` kinds, which can be combined with `synthetic_text` for multimodal prompts.
 
 #### Example Commands
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=throughput \
   --constraint kind=max_requests,count=1000 \
@@ -105,7 +105,7 @@ guidellm run \
 Or using a JSON config string:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=throughput \
   --constraint kind=max_requests,count=1000 \
@@ -131,12 +131,12 @@ guidellm run \
 
 ### Hugging Face Datasets
 
-GuideLLM supports datasets from the Hugging Face Hub or local directories that follow the `datasets` library format. This allows you to easily leverage a wide range of datasets for benchmarking and evaluation with real-world data.
+Roundup supports datasets from the Hugging Face Hub or local directories that follow the `datasets` library format. This allows you to easily leverage a wide range of datasets for benchmarking and evaluation with real-world data.
 
 #### Example Commands
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=throughput \
   --constraint kind=max_requests,count=1000 \
@@ -146,7 +146,7 @@ guidellm run \
 Or using a local dataset directory:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=throughput \
   --constraint kind=max_requests,count=1000 \
@@ -163,11 +163,11 @@ Pass HuggingFace `load_dataset` options through `load_kwargs`:
 
 - Hugging Face datasets can be specified by ID, a local directory, or a path to a local Python file.
 - A supported Hugging Face datasets format is defined as one that can be loaded using the `datasets` library with the `load_dataset` function and therefore it is representable as a `Dataset`, `DatasetDict`, `IterableDataset`, or `IterableDatasetDict`. More information on the supported data types and additional args for the underlying use of `load_dataset` can be found in the [Hugging Face datasets documentation](https://huggingface.co/docs/datasets/en/loading#hugging-face-hub).
-- A tokenizer is only required if `GUIDELLM__PREFERRED_PROMPT_TOKENS_SOURCE="local"` or `GUIDELLM__PREFERRED_OUTPUT_TOKENS_SOURCE="local"` is set in the environment. In this case, the tokenizer must be specified using `--tokenizer kind=huggingface_auto,model=...`. If not set, the tokenizer will be set to the model passed in or retrieved from the backend.
+- A tokenizer is only required if `ROUNDUP__PREFERRED_PROMPT_TOKENS_SOURCE="local"` or `ROUNDUP__PREFERRED_OUTPUT_TOKENS_SOURCE="local"` is set in the environment. In this case, the tokenizer must be specified using `--tokenizer kind=huggingface_auto,model=...`. If not set, the tokenizer will be set to the model passed in or retrieved from the backend.
 
 ### File-Based Datasets
 
-GuideLLM supports various file formats for datasets, including text, CSV, JSON, and more. These datasets can be used for benchmarking and evaluation, allowing you to work with structured data in a familiar format that matches your use case.
+Roundup supports various file formats for datasets, including text, CSV, JSON, and more. These datasets can be used for benchmarking and evaluation, allowing you to work with structured data in a familiar format that matches your use case.
 
 #### Supported Formats with Examples
 
@@ -193,19 +193,19 @@ GuideLLM supports various file formats for datasets, including text, CSV, JSON, 
   {"prompt": "What is your name?", "output_tokens_count": 3, "additional_column": "baz", "additional_column2": "qux"}
   ```
 
-- **Trace files (`.jsonl`, `.json`, `.csv` or `.parquet` with a supported trace file format)**: Specialized files for replay. Used with `--profile kind=replay` to replay trace events using each row's timestamp and token lengths. Timestamps must be numbers expressed in seconds on a shared timeline with any consistent zero point, except `otel`, which parses ISO-8601 `start_time` values (and HuggingFace-decoded `datetime` objects) into epoch seconds. GuideLLM sorts them and converts them to offsets from the first event before scheduling. See [Trace Replay Benchmarking](../getting-started/benchmark.md#trace-replay-benchmarking).
+- **Trace files (`.jsonl`, `.json`, `.csv` or `.parquet` with a supported trace file format)**: Specialized files for replay. Used with `--profile kind=replay` to replay trace events using each row's timestamp and token lengths. Timestamps must be numbers expressed in seconds on a shared timeline with any consistent zero point, except `otel`, which parses ISO-8601 `start_time` values (and HuggingFace-decoded `datetime` objects) into epoch seconds. Roundup sorts them and converts them to offsets from the first event before scheduling. See [Trace Replay Benchmarking](../getting-started/benchmark.md#trace-replay-benchmarking).
 
   ```json
   {"timestamp": 1234500.0, "input_length": 256, "output_length": 128}
   {"timestamp": 1234500.5, "input_length": 512, "output_length": 64}
   ```
 
-  In this example, the second request is scheduled 0.5 seconds after the first request. Trace rows are ordered by timestamp before GuideLLM schedules requests and generates synthetic payloads. This keeps each scheduled event aligned with the prompt and output token lengths from the same row.
+  In this example, the second request is scheduled 0.5 seconds after the first request. Trace rows are ordered by timestamp before Roundup schedules requests and generates synthetic payloads. This keeps each scheduled event aligned with the prompt and output token lengths from the same row.
 
   Use a supported [trace file format](./trace_replay.md#supported-formats) to enable trace loading:
 
   ```bash
-  guidellm run \
+  roundup run \
     --backend kind=openai_http,target=http://localhost:8000 \
     --profile kind=replay \
     --data kind=trace_synthetic,source.kind=json_file,source.path=path/to/trace.jsonl,time_scale=1.0
@@ -214,7 +214,7 @@ GuideLLM supports various file formats for datasets, including text, CSV, JSON, 
   All trace formats by default look for the columns "timestamp", "input_length", and "output_length". If your trace uses different column names, include `timestamp_column`, `prompt_tokens_column`, and `output_tokens_column` in the data config:
 
   ```bash
-  guidellm run \
+  roundup run \
     --backend kind=openai_http,target=http://localhost:8000 \
     --profile kind=replay \
     --data kind=trace_synthetic,source.kind=json_file,source.path=replay.jsonl,timestamp_column=timestamp,prompt_tokens_column=input_length,output_tokens_column=output_length
@@ -223,7 +223,7 @@ GuideLLM supports various file formats for datasets, including text, CSV, JSON, 
   `otel` uses the same nested `source` field. Token counts come from span attributes rather than top-level columns. Hugging Face is the fastest way to start:
 
   ```bash
-  guidellm run \
+  roundup run \
     --backend kind=openai_http,target=http://localhost:8000 \
     --profile kind=replay \
     --data kind=otel,source.kind=huggingface,source.source=ibm-research/synthetic-conversations-traces \
@@ -255,7 +255,7 @@ GuideLLM supports various file formats for datasets, including text, CSV, JSON, 
 #### Example Commands
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=throughput \
   --constraint kind=max_requests,count=1000 \
@@ -304,7 +304,7 @@ In-memory datasets allow you to directly pass data as Python objects, making the
 #### Example Usage
 
 ```python
-from guidellm.benchmark import benchmark_generative_text
+from roundup.benchmark import benchmark_generative_text
 
 data = [
     {"prompt": "Hello", "output": "Hi"},
@@ -320,24 +320,24 @@ benchmark_generative_text(data=data, ...)
 - For dictionaries, all columns must have the same number of samples.
 - For lists of dictionaries, all items must have the same keys.
 - For lists of items, all elements must be of the same type.
-- A tokenizer is only required if `GUIDELLM__PREFERRED_PROMPT_TOKENS_SOURCE="local"` or `GUIDELLM__PREFERRED_OUTPUT_TOKENS_SOURCE="local"` is set in the environment. In this case, the tokenizer must be specified using `--tokenizer kind=huggingface_auto,model=...`. If not set, the tokenizer will be set to the model passed in or retrieved from the server.
+- A tokenizer is only required if `ROUNDUP__PREFERRED_PROMPT_TOKENS_SOURCE="local"` or `ROUNDUP__PREFERRED_OUTPUT_TOKENS_SOURCE="local"` is set in the environment. In this case, the tokenizer must be specified using `--tokenizer kind=huggingface_auto,model=...`. If not set, the tokenizer will be set to the model passed in or retrieved from the server.
 
 ## Preprocessing Datasets
 
-GuideLLM provides a preprocessing command that allows you to process datasets to have specific prompt and output token sizes. This is particularly useful when you need to standardize your dataset for benchmarking or when your dataset has prompts that don't match your target token requirements.
+Roundup provides a preprocessing command that allows you to process datasets to have specific prompt and output token sizes. This is particularly useful when you need to standardize your dataset for benchmarking or when your dataset has prompts that don't match your target token requirements.
 
 The preprocessing command can:
 
 - Resize prompts to target token lengths
 - Handle prompts that are shorter or longer than the target length using registry-backed strategies
-- Map columns from your dataset to GuideLLM's expected column names
+- Map columns from your dataset to Roundup's expected column names
 - Generate output token counts based on your strategy configuration
 - Save the processed dataset in various formats
 
 ### Basic Usage
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     kind=<DATA_TYPE>,key=value,... \
     <OUTPUT_PATH> \
     --tokenizer kind=huggingface_auto,model=<MODEL> \
@@ -356,7 +356,7 @@ guidellm preprocess dataset \
 ### Example
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     kind=json_file,path=path/to/input_dataset.jsonl \
     "path/to/processed_dataset.jsonl" \
     --tokenizer kind=huggingface_auto,model=gpt2 \
@@ -365,7 +365,7 @@ guidellm preprocess dataset \
 
 ### Preprocess Strategy
 
-The `--strategy` option uses the same registry form as other GuideLLM options (`kind=<name>,...` or JSON). It combines target token-count settings with a short-prompt handling kind.
+The `--strategy` option uses the same registry form as other Roundup options (`kind=<name>,...` or JSON). It combines target token-count settings with a short-prompt handling kind.
 
 **Shared fields (all kinds):**
 
@@ -405,17 +405,17 @@ The `--strategy` option uses the same registry form as other GuideLLM options (`
 --strategy '{"kind":"ignore","prompt_tokens":512,"output_tokens":256,"count_prefix":true}'
 ```
 
-The `--tokenizer` argument specifies the tokenizer to use for calculating token counts (same registry form as `guidellm run --tokenizer`). This is required because the preprocessing command needs to tokenize prompts to ensure they match the target token sizes. For information about using tokenizers in benchmarks, see the [Data Arguments Overview](#data-arguments-overview) section.
+The `--tokenizer` argument specifies the tokenizer to use for calculating token counts (same registry form as `roundup run --tokenizer`). This is required because the preprocessing command needs to tokenize prompts to ensure they match the target token sizes. For information about using tokenizers in benchmarks, see the [Data Arguments Overview](#data-arguments-overview) section.
 
 ### Column Mapping
 
-When your dataset uses non-standard column names, you can use `--data-column-mapper` to map your columns to GuideLLM's expected column names. This is particularly useful when:
+When your dataset uses non-standard column names, you can use `--data-column-mapper` to map your columns to Roundup's expected column names. This is particularly useful when:
 
 1. **Your dataset uses different column names** (e.g., `question` instead of `prompt`, `instruction` instead of `text_column`)
 2. **You have multiple datasets** and need to specify which dataset's columns to use
 3. **Your dataset has system prompts or prefixes** in a separate column
 
-**Column mapping format:** The `--data-column-mapper` option uses registry syntax (same as `guidellm run`):
+**Column mapping format:** The `--data-column-mapper` option uses registry syntax (same as `roundup run`):
 
 ```bash
 --data-column-mapper kind=generative_column_mapper,column_mappings.text_column=question,column_mappings.prefix_column=system_prompt
@@ -453,7 +453,7 @@ user_query,system_message
 You would use:
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     "kind=csv_file,path=dataset.csv" \
     "processed.jsonl" \
     --tokenizer kind=huggingface_auto,model=gpt2 \
@@ -484,7 +484,7 @@ If you're working with multiple datasets and need to specify which dataset's col
 **Example 1: Basic preprocessing with custom column names**
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     kind=csv_file,path=my_dataset.csv \
     "processed_dataset.jsonl" \
     --tokenizer kind=huggingface_auto,model=gpt2 \
@@ -495,7 +495,7 @@ guidellm preprocess dataset \
 **Example 2: Preprocessing with distribution and concatenate strategy**
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     "kind=json_file,path=dataset.jsonl" \
     "processed.jsonl" \
     --tokenizer kind=huggingface_auto,model=gpt2 \
@@ -506,7 +506,7 @@ guidellm preprocess dataset \
 **Example 3: Preprocessing with tokenizer load kwargs, prefix limits, and count_prefix**
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     "kind=json_file,path=dataset.jsonl" \
     "processed.jsonl" \
     --tokenizer kind=huggingface_auto,model=gpt2,load_kwargs.use_fast=false \
@@ -516,7 +516,7 @@ guidellm preprocess dataset \
 **Example 4: Limit processed rows with --data-loader**
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     "kind=json_file,path=large_dataset.jsonl" \
     "processed.jsonl" \
     --tokenizer kind=huggingface_auto,model=gpt2 \
@@ -527,7 +527,7 @@ guidellm preprocess dataset \
 **Example 5: Preprocessing and uploading to Hugging Face Hub**
 
 ```bash
-guidellm preprocess dataset \
+roundup preprocess dataset \
     "kind=json_file,path=my_dataset.jsonl" \
     "processed.jsonl" \
     --tokenizer kind=huggingface_auto,model=gpt2 \
@@ -541,6 +541,6 @@ guidellm preprocess dataset \
 - The `--strategy` option accepts a `PreprocessStrategyArgs` registry type that includes token-count fields (`prompt_tokens`, `output_tokens`, and related distribution fields), `prefix_tokens_max`, `count_prefix`, and a short-prompt `kind`. See [Preprocess Strategy](#preprocess-strategy).
 - The tokenizer is required because the preprocessing command needs to tokenize prompts to ensure they match target token sizes. See the [Data Arguments Overview](#data-arguments-overview) for tokenizer usage in benchmarks.
 - Dataset loader kwargs belong on the positional `DATA` descriptor (`load_kwargs=...`), not a separate `--data-args` flag.
-- Use `--data-loader kind=pytorch,samples=<N>` to stop after writing `N` processed rows. `shuffle` and `num_workers` are accepted for CLI parity with `guidellm run` but are ignored during preprocessing.
-- Column mappings are only needed when your dataset uses non-standard column names. GuideLLM will automatically try common column names if no mapping is provided.
+- Use `--data-loader kind=pytorch,samples=<N>` to stop after writing `N` processed rows. `shuffle` and `num_workers` are accepted for CLI parity with `roundup run` but are ignored during preprocessing.
+- Column mappings are only needed when your dataset uses non-standard column names. Roundup will automatically try common column names if no mapping is provided.
 - The output file format is determined by the file suffix in `OUTPUT_PATH` (e.g., `.json`, `.jsonl`, `.csv`, `.parquet`).

@@ -9,7 +9,7 @@ from typing import Any
 import pytest
 from pydantic import ValidationError
 
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerationRequest,
     GenerationResponse,
     GenerativeRequestStats,

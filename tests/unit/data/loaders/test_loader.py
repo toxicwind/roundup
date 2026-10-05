@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.loaders.loader module.
+Unit tests for roundup.data.loaders.loader module.
 
 ### WRITTEN BY AI ###
 """
@@ -11,12 +11,12 @@ from unittest.mock import MagicMock
 import pytest
 from datasets import Dataset
 
-import guidellm.data.loaders  # noqa: F401 — ensures TorchDataLoader is registered
+import roundup.data.loaders  # noqa: F401 — ensures TorchDataLoader is registered
 
 # Import to ensure deserializer registry is populated
-from guidellm.data.loaders.loader import DataLoaderRegistry
-from guidellm.data.loaders.torch import TorchDataLoader
-from guidellm.schemas.data import TorchDataLoaderArgs
+from roundup.data.loaders.loader import DataLoaderRegistry
+from roundup.data.loaders.torch import TorchDataLoader
+from roundup.schemas.data import TorchDataLoaderArgs
 
 
 class TestDataLoaderRegistry:

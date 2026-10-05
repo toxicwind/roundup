@@ -7,28 +7,28 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.benchmark.schemas.accumulator import GenerativeBenchmarkAccumulator
-from guidellm.benchmark.schemas.base import BenchmarkConfig
-from guidellm.benchmark.schemas.metrics import (
+from roundup.benchmark.schemas.accumulator import GenerativeBenchmarkAccumulator
+from roundup.benchmark.schemas.base import BenchmarkConfig
+from roundup.benchmark.schemas.metrics import (
     GenerativeMetrics,
     GenerativeMetricsSummary,
     GenerativeToolCallMetricsSummary,
     SchedulerMetrics,
 )
-from guidellm.scheduler import (
+from roundup.scheduler import (
     AsyncConstantStrategy,
     SchedulerState,
     SchedulingStrategy,
     ThroughputStrategy,
 )
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerativeRequestStats,
     RequestInfo,
     RequestTimings,
     StatusDistributionSummary,
     UsageMetrics,
 )
-from guidellm.schemas.benchmark import GoodputSLO
+from roundup.schemas.benchmark import GoodputSLO
 
 
 def _make_errored_tool_call_stats(request_id: str) -> GenerativeRequestStats:

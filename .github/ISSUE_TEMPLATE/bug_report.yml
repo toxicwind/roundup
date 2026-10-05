@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug or unexpected behavior in GuideLLM
+description: Report a bug or unexpected behavior in Roundup
 type: Bug
 body:
   - type: markdown
@@ -56,11 +56,11 @@ body:
       required: true
 
   - type: input
-    id: guidellm-version
+    id: roundup-version
     attributes:
-      label: GuideLLM Version
-      description: Output of `guidellm --version`
-      placeholder: "e.g., guidellm version: 0.3.0"
+      label: Roundup Version
+      description: Output of `roundup --version`
+      placeholder: "e.g., roundup version: 0.3.0"
     validations:
       required: true
 
@@ -68,11 +68,11 @@ body:
     id: installation-method
     attributes:
       label: Installation Method
-      description: How did you install GuideLLM?
+      description: How did you install Roundup?
       options:
-        - pip install guidellm
-        - pip install guidellm[recommended]
-        - pip install guidellm[all]
+        - pip install roundup
+        - pip install roundup[recommended]
+        - pip install roundup[all]
         - Official Container Image (Docker)
         - Other
     validations:

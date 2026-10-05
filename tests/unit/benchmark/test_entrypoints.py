@@ -5,16 +5,16 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from guidellm.benchmark import entrypoints as entrypoints_module
-from guidellm.benchmark.benchmarker import Benchmarker
-from guidellm.benchmark.entrypoints import resolve_backend, resolve_output_formats
-from guidellm.benchmark.outputs import GenerativeBenchmarkerOutput
-from guidellm.benchmark.profiles import ProfileFactory
-from guidellm.schemas.backends import (
+from roundup.benchmark import entrypoints as entrypoints_module
+from roundup.benchmark.benchmarker import Benchmarker
+from roundup.benchmark.entrypoints import resolve_backend, resolve_output_formats
+from roundup.benchmark.outputs import GenerativeBenchmarkerOutput
+from roundup.benchmark.profiles import ProfileFactory
+from roundup.schemas.backends import (
     OpenAIHTTPBackendArgs,
     VLLMPythonAsyncBackendArgs,
 )
-from guidellm.schemas.benchmark import (
+from roundup.schemas.benchmark import (
     BenchmarkArgs,
     BenchmarkScenario,
     GoodputSLO,
@@ -67,7 +67,7 @@ async def test_resolve_backend_shuts_down_after_validation_error():
     args = OpenAIHTTPBackendArgs(target="http://localhost:8000")
 
     with (
-        patch("guidellm.benchmark.entrypoints.Backend.create", return_value=backend),
+        patch("roundup.benchmark.entrypoints.Backend.create", return_value=backend),
         pytest.raises(RuntimeError, match="validation failed"),
     ):
         await resolve_backend(args)
@@ -96,7 +96,7 @@ async def test_resolve_backend_skips_startup_for_in_process_backend():
     backend.process_shutdown = AsyncMock()
     args = VLLMPythonAsyncBackendArgs(model="Qwen/Qwen3-0.6B")
 
-    with patch("guidellm.benchmark.entrypoints.Backend.create", return_value=backend):
+    with patch("roundup.benchmark.entrypoints.Backend.create", return_value=backend):
         resolved_backend, model = await resolve_backend(args)
 
     assert resolved_backend is backend
@@ -124,7 +124,7 @@ async def test_resolve_backend_starts_up_for_remote_backend():
     backend.process_shutdown = AsyncMock()
     args = OpenAIHTTPBackendArgs(target="http://localhost:8000")
 
-    with patch("guidellm.benchmark.entrypoints.Backend.create", return_value=backend):
+    with patch("roundup.benchmark.entrypoints.Backend.create", return_value=backend):
         resolved_backend, model = await resolve_backend(args)
 
     assert resolved_backend is backend
@@ -233,7 +233,7 @@ async def test_benchmarker_forwards_objectives_into_benchmark_config():
     slo = GoodputSLO(ttft_ms=1234)
     profile = ProfileFactory.create(SynchronousProfileArgs(), 42, {})
 
-    with patch("guidellm.benchmark.benchmarker.Scheduler", _StubScheduler):
+    with patch("roundup.benchmark.benchmarker.Scheduler", _StubScheduler):
         results = [
             benchmark
             async for benchmark in Benchmarker().run(

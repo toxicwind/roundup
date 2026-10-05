@@ -6,14 +6,14 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve GuideLLM's documentation! Please provide details about your proposed changes below.
+        Thanks for helping improve Roundup's documentation! Please provide details about your proposed changes below.
 
   - type: input
     id: location
     attributes:
       label: Location
       description: What is the URL, file path, or section containing the documentation in question?
-      placeholder: e.g., docs/en/guides/benchmarking.md, https://github.com/vllm-project/guidellm/blob/main/README.md#installation
+      placeholder: e.g., docs/en/guides/benchmarking.md, https://github.com/toxicwind/roundup/blob/main/README.md#installation
     validations:
       required: true
 

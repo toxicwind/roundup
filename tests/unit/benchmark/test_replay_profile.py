@@ -5,12 +5,12 @@ from typing import Any
 
 import pytest
 
-from guidellm.benchmark.entrypoints import resolve_profile
-from guidellm.benchmark.profiles import ProfileFactory, ReplayProfile
-from guidellm.scheduler import (
+from roundup.benchmark.entrypoints import resolve_profile
+from roundup.benchmark.profiles import ProfileFactory, ReplayProfile
+from roundup.scheduler import (
     TraceReplayStrategy,
 )
-from guidellm.schemas.benchmark import ReplayProfileArgs
+from roundup.schemas.benchmark import ReplayProfileArgs
 
 
 def _replay_args(**kwargs) -> ReplayProfileArgs:

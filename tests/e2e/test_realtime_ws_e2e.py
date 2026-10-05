@@ -16,9 +16,9 @@ from typing import Any
 import pytest
 from websockets.asyncio.server import serve
 
-from guidellm.backends.openai.websocket import OpenAIWebSocketBackend
-from guidellm.schemas import GenerationRequest, RequestInfo, RequestTimings
-from guidellm.schemas.backends import OpenAIWebSocketBackendArgs
+from roundup.backends.openai.websocket import OpenAIWebSocketBackend
+from roundup.schemas import GenerationRequest, RequestInfo, RequestTimings
+from roundup.schemas.backends import OpenAIWebSocketBackendArgs
 
 
 def make_realtime_transcription_stub_handler(
@@ -94,7 +94,7 @@ async def test_realtime_ws_full_stack_in_one_event_loop(
     """
     In-process: WebSocket server, OpenAI realtime backend, and torchcodec PCM path.
 
-    No ``guidellm benchmark`` subprocess (avoids worker/hang issues in test envs).
+    No ``roundup benchmark`` subprocess (avoids worker/hang issues in test envs).
     For a live vLLM run, use ``scripts/e2e_realtime_external.sh``.
     """
     port = _free_port()

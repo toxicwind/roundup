@@ -4,20 +4,20 @@ This guide demonstrates how to benchmark Video-Language Models (Video-LLMs) for 
 
 ## Setup
 
-First, ensure you have a running inference server and model compatible with the OpenAI Chat API. GuideLLM supports any OpenAI-compatible server that can handle video inputs through the `chat/completions` endpoint. For the benchmarking examples below, we’ll use vLLM serving the Qwen3-VL model.
+First, ensure you have a running inference server and model compatible with the OpenAI Chat API. Roundup supports any OpenAI-compatible server that can handle video inputs through the `chat/completions` endpoint. For the benchmarking examples below, we’ll use vLLM serving the Qwen3-VL model.
 
 ```bash
 # Qwen3-VL Video QA/Captioning
 vllm serve Qwen/Qwen3-VL-2B-Instruct
 ```
 
-Next, either on the same instance or another machine that can reach your server (recommended), install GuideLLM with vision support:
+Next, either on the same instance or another machine that can reach your server (recommended), install Roundup with vision support:
 
 ```bash
-pip install guidellm[vision,recommended]
+pip install roundup[vision,recommended]
 ```
 
-Finally, ensure you have a dataset with supported video files for benchmarking. GuideLLM can handle video data from Hugging Face datasets, local files, URLs, etc. For the examples below, we’ll use the `lmms-lab/Video-MME` dataset.
+Finally, ensure you have a dataset with supported video files for benchmarking. Roundup can handle video data from Hugging Face datasets, local files, URLs, etc. For the examples below, we’ll use the `lmms-lab/Video-MME` dataset.
 
 ## Processing Options
 
@@ -25,9 +25,9 @@ All of the standard arguments for benchmarking apply to video tasks as well, suc
 
 ### Data Loading
 
-GuideLLM supports multiple methods for loading video data. First, the overall data source must be deserializable by GuideLLM into a Hugging Face dataset. This includes local files, Hugging Face datasets, JSON files, etc.
+Roundup supports multiple methods for loading video data. First, the overall data source must be deserializable by Roundup into a Hugging Face dataset. This includes local files, Hugging Face datasets, JSON files, etc.
 
-Next, the desired video column within the deserializable data source must be supported by GuideLLM’s video data decoder/encoder. Supported formats include:
+Next, the desired video column within the deserializable data source must be supported by Roundup’s video data decoder/encoder. Supported formats include:
 
 - Hugging Face Video feature
 - Local file paths
@@ -37,7 +37,7 @@ Next, the desired video column within the deserializable data source must be sup
 
 ### Data Column Mapping
 
-When specifying the dataset, generally, you will want to map the specific video column to GuideLLM’s `video_column` so it knows which data to process as video. If nothing is specified, GuideLLM will attempt to auto-detect a video column based on commonly used names such as video, clip, etc.
+When specifying the dataset, generally, you will want to map the specific video column to Roundup’s `video_column` so it knows which data to process as video. If nothing is specified, Roundup will attempt to auto-detect a video column based on commonly used names such as video, clip, etc.
 
 To specify the mapping, use the `--data-column-mapper` argument with a JSON string that specifies an existing column name for `video_column`. For example, if your dataset has a video column named `url`, you would use:
 
@@ -100,7 +100,7 @@ Turn streaming responses on or off (if supported by the backend) using a boolean
 
 ## Expected Results
 
-GuideLLM captures comprehensive metrics across the entire request lifecycle, stored in `GenerativeRequestStats` and aggregated into `GenerativeMetrics`. Results are displayed in the console and saved to local files for further analysis.
+Roundup captures comprehensive metrics across the entire request lifecycle, stored in `GenerativeRequestStats` and aggregated into `GenerativeMetrics`. Results are displayed in the console and saved to local files for further analysis.
 
 ### Output Files
 
@@ -120,7 +120,7 @@ In addition to standard performance metrics like Latency, Time to First Token (T
 
 ### Statistical Analysis
 
-For each metric above, GuideLLM calculates statistical distributions including:
+For each metric above, Roundup calculates statistical distributions including:
 
 - **Values**: Mean, Median, P95, P99, Min, Max.
 - **Rates**: Throughput per second (e.g., `video_frames/sec`).
@@ -137,7 +137,7 @@ This benchmark tests Video-Language Models for their ability to answer questions
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=Qwen/Qwen3-VL-2B-Instruct,request_format=/v1/chat/completions \
   --profile kind=synchronous \
   --constraint kind=max_requests,count=50 \
@@ -158,7 +158,7 @@ This benchmark tests the model's ability to describe a video without a specific 
 **Command:**
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000,model=Qwen/Qwen3-VL-2B-Instruct,request_format=/v1/chat/completions \
   --profile kind=synchronous \
   --constraint kind=max_requests,count=50 \

@@ -1,4 +1,4 @@
-"""Tests for ``guidellm preprocess dataset`` CLI registry options."""
+"""Tests for ``roundup preprocess dataset`` CLI registry options."""
 
 from __future__ import annotations
 
@@ -8,9 +8,9 @@ from unittest.mock import patch
 import pytest
 from click.testing import CliRunner
 
-from guidellm.__main__ import cli
+from roundup.__main__ import cli
 
-_dataset_mod = importlib.import_module("guidellm.cli.preprocess.dataset")
+_dataset_mod = importlib.import_module("roundup.cli.preprocess.dataset")
 
 
 @pytest.mark.smoke

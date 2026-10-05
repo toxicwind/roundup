@@ -11,22 +11,22 @@ from unittest.mock import Mock, patch
 import pytest
 from pydantic import Field, ValidationError
 
-from guidellm.backends import Backend
-from guidellm.backends.openai import (
+from roundup.backends import Backend
+from roundup.backends.openai import (
     OpenAIHTTPBackend,
     OpenAIWebSocketBackend,
 )
-from guidellm.backends.vllm_python.batch import VLLMPythonBatchBackend
-from guidellm.backends.vllm_python.vllm import VLLMPythonAsyncBackend
-from guidellm.schemas import GenerationRequest, PydanticClassRegistryMixin, RequestInfo
-from guidellm.schemas.backends import (
+from roundup.backends.vllm_python.batch import VLLMPythonBatchBackend
+from roundup.backends.vllm_python.vllm import VLLMPythonAsyncBackend
+from roundup.schemas import GenerationRequest, PydanticClassRegistryMixin, RequestInfo
+from roundup.schemas.backends import (
     BackendArgs,
     OpenAIHTTPBackendArgs,
     OpenAIWebSocketBackendArgs,
     VLLMPythonAsyncBackendArgs,
     VLLMPythonBatchBackendArgs,
 )
-from guidellm.utils.registry import RegistryMixin
+from roundup.utils.registry import RegistryMixin
 from tests.unit.testing_utils import async_timeout
 
 

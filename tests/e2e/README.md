@@ -1,6 +1,6 @@
 # E2E tests
 
-E2E benchmarks default to GuideLLM's built-in **MockServer** (`guidellm mock-server`). No Docker build or HuggingFace Hub access is required for the default path.
+E2E benchmarks default to Roundup's built-in **MockServer** (`roundup mock-server`). No Docker build or HuggingFace Hub access is required for the default path.
 
 ```shell
 tox -e test-e2e

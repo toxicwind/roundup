@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from guidellm.schemas.data import (
+from roundup.schemas.data import (
     ConcatenatePreprocessStrategyArgs,
     ErrorPreprocessStrategyArgs,
     IgnorePreprocessStrategyArgs,

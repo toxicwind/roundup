@@ -6,7 +6,7 @@ import time
 import pytest
 from pydantic import ValidationError
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     Constraint,
     ConstraintInitializer,
     ConstraintsInitializerFactory,
@@ -17,9 +17,9 @@ from guidellm.scheduler import (
     SchedulerUpdateAction,
     SerializableConstraintInitializer,
 )
-from guidellm.scheduler.constraints.saturation import SlopeChecker
-from guidellm.schemas import RequestInfo, RequestTimings
-from guidellm.schemas.scheduler import OverSaturationConstraintArgs
+from roundup.scheduler.constraints.saturation import SlopeChecker
+from roundup.schemas import RequestInfo, RequestTimings
+from roundup.schemas.scheduler import OverSaturationConstraintArgs
 
 
 class TestOverSaturationConstraintInternal:

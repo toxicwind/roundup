@@ -1,6 +1,6 @@
 # Over-Saturation Stopping
 
-GuideLLM provides over-saturation detection (OSD) to automatically stop benchmarks when a model becomes over-saturated. This feature helps prevent wasted compute resources and ensures that benchmark results remain valid by detecting when the response rate can no longer keep up with the request rate.
+Roundup provides over-saturation detection (OSD) to automatically stop benchmarks when a model becomes over-saturated. This feature helps prevent wasted compute resources and ensures that benchmark results remain valid by detecting when the response rate can no longer keep up with the request rate.
 
 ## What is Over-Saturation?
 
@@ -10,7 +10,7 @@ Think of it like a cashier getting flustered during a sudden rush. As the line g
 
 ## How It Works
 
-GuideLLM's Over-Saturation Detection (OSD) algorithm uses statistical slope detection to identify when a model becomes over-saturated. The algorithm tracks two key metrics over time:
+Roundup's Over-Saturation Detection (OSD) algorithm uses statistical slope detection to identify when a model becomes over-saturated. The algorithm tracks two key metrics over time:
 
 1. **Concurrent Requests**: The number of requests being processed simultaneously
 2. **Time-to-First-Token (TTFT)**: The latency for the first token of each response
@@ -43,7 +43,7 @@ Over-saturation is configured with `kind=over_saturation` in the constraint conf
 Enable over-saturation detection with default settings:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=throughput,max_concurrency=10 \
   --constraint kind=over_saturation
@@ -54,7 +54,7 @@ guidellm run \
 Configure detection parameters in the constraint config string:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=concurrent,streams=16 \
   --constraint kind=over_saturation,mode=enforce,min_seconds=60,max_window_seconds=300,moe_threshold=1.5
@@ -88,7 +88,7 @@ Over-saturation detection is particularly useful in the following scenarios:
 When testing how your system handles increasing load, over-saturation detection automatically stops benchmarks once the system can no longer keep up, preventing wasted compute time on invalid results.
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=sweep,sweep_size=5 \
   --constraint kind=over_saturation
@@ -120,7 +120,7 @@ These metrics can help you understand why over-saturation was detected and fine-
 ## Example: Complete Benchmark with Over-Saturation Detection
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=concurrent,streams=16 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \

@@ -15,7 +15,7 @@ import pytest
 
 from tests.e2e.conftest import E2EServer, start_mock_server
 from tests.e2e.utils import (
-    GuidellmClient,
+    RoundupClient,
     assert_no_python_exceptions,
     load_benchmark_report,
 )
@@ -61,7 +61,7 @@ def _run(
 
     ## WRITTEN BY AI ##
     """
-    client = GuidellmClient(
+    client = RoundupClient(
         target=server.get_url(), output_dir=tmp_path, outputs=report_name
     )
     client.start_benchmark(

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from guidellm.schemas.data import FileDataArgs
+from roundup.schemas.data import FileDataArgs
 
 
 def trace_file_source(data: str | Path) -> FileDataArgs:

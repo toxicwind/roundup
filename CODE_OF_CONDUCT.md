@@ -1,4 +1,4 @@
-# GuideLLM Code of Conduct
+# Roundup Code of Conduct
 
 ## Our Pledge
 

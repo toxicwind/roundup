@@ -10,12 +10,12 @@ import culsans
 import pytest
 from pydantic import BaseModel
 
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerationRequest,
     GenerationResponse,
     RequestInfo,
 )
-from guidellm.utils.messaging import (
+from roundup.utils.messaging import (
     InterProcessMessaging,
     InterProcessMessagingManagerQueue,
     InterProcessMessagingPipe,
@@ -317,7 +317,7 @@ class TestInterProcessMessagingQueue:
         A worker must not take messages off the shared pending queue unless one
         of its consumers is waiting for a message. Otherwise messages sit in a
         busy worker's receive buffer while other workers with free capacity idle
-        (https://github.com/vllm-project/guidellm/issues/1041).
+        (https://github.com/toxicwind/roundup/issues/1041).
 
         ## WRITTEN BY AI ##
         """

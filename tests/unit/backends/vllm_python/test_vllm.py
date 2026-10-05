@@ -16,18 +16,18 @@ from unittest.mock import MagicMock, Mock, patch
 import numpy as np
 import pytest
 
-from guidellm.backends.vllm_python.vllm import (
+from roundup.backends.vllm_python.vllm import (
     VLLMPythonAsyncBackend,
     _has_jinja2_markers,
     _ResolvedRequest,
 )
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerationRequest,
     GenerationResponse,
     RequestInfo,
     UsageMetrics,
 )
-from guidellm.schemas.backends import VLLMPythonAsyncBackendArgs
+from roundup.schemas.backends import VLLMPythonAsyncBackendArgs
 
 
 def _make_vllm_backend(**kwargs) -> VLLMPythonAsyncBackend:
@@ -63,7 +63,7 @@ def backend():
     """VLLMPythonAsyncBackend instance without requiring vllm to be installed."""
     mock_vllm_extras = MagicMock()
     mock_vllm_extras.SamplingParams = _fake_sampling_params
-    with patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm_extras):
+    with patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm_extras):
         yield _make_vllm_backend(model="test-model")
 
 
@@ -142,7 +142,7 @@ class TestResolveRequest:
             }
         )
         with patch(
-            "guidellm.utils.audio._decode_audio",
+            "roundup.utils.audio._decode_audio",
             return_value=mock_decode_result,
         ):
             resolved = backend._resolve_request(request)
@@ -170,7 +170,7 @@ class TestResolveRequest:
             }
         )
         with patch(
-            "guidellm.utils.vision.image_dict_to_pil",
+            "roundup.utils.vision.image_dict_to_pil",
             return_value=mock_pil,
         ):
             resolved = backend._resolve_request(request)
@@ -224,7 +224,7 @@ class TestResolveRequest:
             }
         )
         with patch(
-            "guidellm.utils.audio._decode_audio",
+            "roundup.utils.audio._decode_audio",
             return_value=mock_decode_result,
         ):
             resolved = backend._resolve_request(request)
@@ -258,7 +258,7 @@ class TestResolveRequest:
             }
         )
         with patch(
-            "guidellm.utils.audio._decode_audio",
+            "roundup.utils.audio._decode_audio",
             return_value=mock_decode_result,
         ):
             resolved = backend._resolve_request(request)
@@ -932,7 +932,7 @@ class TestVLLMLifecycle:
         ## WRITTEN BY AI ##
         """
         mock_engine = Mock()
-        with patch("guidellm.backends.vllm_python.vllm.vllm") as mock_vllm:
+        with patch("roundup.backends.vllm_python.vllm.vllm") as mock_vllm:
             mock_vllm.AsyncEngineArgs.return_value = Mock()
             mock_vllm.AsyncLLMEngine.from_engine_args = Mock(return_value=mock_engine)
             backend = _make_vllm_backend(model="test-model")
@@ -949,9 +949,9 @@ class TestVLLMLifecycle:
         """
         mock_engine = Mock()
         with (
-            patch("guidellm.backends.vllm_python.vllm.vllm") as mock_vllm,
+            patch("roundup.backends.vllm_python.vllm.vllm") as mock_vllm,
             patch(
-                "guidellm.backends.vllm_python.vllm.reset_cpu_affinity"
+                "roundup.backends.vllm_python.vllm.reset_cpu_affinity"
             ) as mock_reset,
         ):
             mock_vllm.AsyncEngineArgs.return_value = Mock()
@@ -968,7 +968,7 @@ class TestVLLMLifecycle:
         ## WRITTEN BY AI ##
         """
         mock_engine = Mock()
-        with patch("guidellm.backends.vllm_python.vllm.vllm") as mock_vllm:
+        with patch("roundup.backends.vllm_python.vllm.vllm") as mock_vllm:
             mock_vllm.AsyncEngineArgs.return_value = Mock()
             mock_vllm.AsyncLLMEngine.from_engine_args = Mock(return_value=mock_engine)
             backend = _make_vllm_backend(model="test-model")
@@ -984,7 +984,7 @@ class TestVLLMLifecycle:
         ## WRITTEN BY AI ##
         """
         mock_engine = Mock()
-        with patch("guidellm.backends.vllm_python.vllm.vllm") as mock_vllm:
+        with patch("roundup.backends.vllm_python.vllm.vllm") as mock_vllm:
             mock_vllm.AsyncEngineArgs.return_value = Mock()
             mock_vllm.AsyncLLMEngine.from_engine_args = Mock(return_value=mock_engine)
             backend = _make_vllm_backend(model="test-model")
@@ -1427,7 +1427,7 @@ class TestVLLMResolveAudioFromColumns:
         request.output_metrics = UsageMetrics()
 
         with patch(
-            "guidellm.utils.audio._decode_audio",
+            "roundup.utils.audio._decode_audio",
             return_value=mock_decode_result,
         ):
             backend._engine = Mock()

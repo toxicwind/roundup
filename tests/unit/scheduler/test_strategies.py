@@ -8,7 +8,7 @@ from typing import Literal, TypeVar
 import pytest
 from pydantic import ValidationError
 
-from guidellm.scheduler import (
+from roundup.scheduler import (
     AsyncConstantStrategy,
     AsyncPoissonStrategy,
     ConcurrentStrategy,
@@ -17,8 +17,8 @@ from guidellm.scheduler import (
     SynchronousStrategy,
     ThroughputStrategy,
 )
-from guidellm.scheduler.strategies import StrategyType, TraceReplayStrategy
-from guidellm.schemas import RequestInfo
+from roundup.scheduler.strategies import StrategyType, TraceReplayStrategy
+from roundup.schemas import RequestInfo
 
 
 def test_strategy_type():

@@ -9,8 +9,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from guidellm.benchmark.outputs.html import build_report_view, render_html_report
-from guidellm.scheduler import ConcurrentStrategy
+from roundup.benchmark.outputs.html import build_report_view, render_html_report
+from roundup.scheduler import ConcurrentStrategy
 from tests.unit.benchmark.html_report_fixtures import make_benchmark, report
 
 

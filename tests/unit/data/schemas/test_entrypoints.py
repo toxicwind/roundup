@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.schemas.entrypoints module.
+Unit tests for roundup.data.schemas.entrypoints module.
 
 ### WRITTEN BY AI ###
 """
@@ -10,13 +10,13 @@ import pytest
 from pydantic import ValidationError
 
 # Import subclasses to ensure registry is populated
-import guidellm.data.deserializers  # noqa: F401
-import guidellm.data.finalizers  # noqa: F401
-import guidellm.data.loaders  # noqa: F401
-import guidellm.data.preprocessors  # noqa: F401
-from guidellm.data.loaders.loader import DataLoaderRegistry
-from guidellm.data.tokenizers import TokenizerRegistry
-from guidellm.schemas.data import (
+import roundup.data.deserializers  # noqa: F401
+import roundup.data.finalizers  # noqa: F401
+import roundup.data.loaders  # noqa: F401
+import roundup.data.preprocessors  # noqa: F401
+from roundup.data.loaders.loader import DataLoaderRegistry
+from roundup.data.tokenizers import TokenizerRegistry
+from roundup.schemas.data import (
     DataArgs,
     DataFinalizerArgs,
     DataLoaderArgs,

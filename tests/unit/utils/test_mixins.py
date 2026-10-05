@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.utils.mixins import InfoMixin
+from roundup.utils.mixins import InfoMixin
 
 
 class TestInfoMixin:

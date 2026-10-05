@@ -5,7 +5,7 @@ weight: -4
 
 # Documentation Translations
 
-GuideLLM publishes a small, community-maintained set of Simplified Chinese pages alongside its canonical English documentation. The translation pilot is intentionally limited so that the project can evaluate its maintenance and review cost before expanding it.
+Roundup publishes a small, community-maintained set of Simplified Chinese pages alongside its canonical English documentation. The translation pilot is intentionally limited so that the project can evaluate its maintenance and review cost before expanding it.
 
 ## Policy
 

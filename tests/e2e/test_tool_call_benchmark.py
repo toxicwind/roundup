@@ -7,13 +7,13 @@ import pytest
 
 from tests.e2e.conftest import E2EServer, start_mock_server
 from tests.e2e.utils import (
-    GuidellmClient,
+    RoundupClient,
     assert_no_python_exceptions,
     load_benchmark_report,
 )
 
 # macOS workers segfault with fork; use spawn for maximum compatibility
-_BENCHMARK_ENV = {"GUIDELLM__MP_CONTEXT_TYPE": "spawn"}
+_BENCHMARK_ENV = {"ROUNDUP__MP_CONTEXT_TYPE": "spawn"}
 
 
 @pytest.fixture(scope="module")
@@ -54,7 +54,7 @@ def test_client_tool_call_single_turn(server: E2EServer, tmp_path: Path):
     report_path = tmp_path / report_name
     max_requests = 10
 
-    client = GuidellmClient(
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,
@@ -115,7 +115,7 @@ def test_client_tool_call_multi_turn(server: E2EServer, tmp_path: Path):
     # 5 requests per conversation, use 10 total
     max_requests = 10
 
-    client = GuidellmClient(
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,
@@ -172,7 +172,7 @@ def test_client_tool_call_with_tool_response_tokens(server: E2EServer, tmp_path:
     report_path = tmp_path / report_name
     max_requests = 6
 
-    client = GuidellmClient(
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,
@@ -227,7 +227,7 @@ def test_client_tool_call_responses_api(server: E2EServer, tmp_path: Path):
     report_path = tmp_path / report_name
     max_requests = 10
 
-    client = GuidellmClient(
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,

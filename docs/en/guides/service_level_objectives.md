@@ -99,14 +99,14 @@ This category includes use cases where maximizing throughput is the primary conc
 
 ## Measuring Against These Objectives
 
-The targets above are stated as a threshold plus a share of requests, for example "TTFT ≤ 200ms for 99% of requests". GuideLLM measures both parts directly.
+The targets above are stated as a threshold plus a share of requests, for example "TTFT ≤ 200ms for 99% of requests". Roundup measures both parts directly.
 
 ### Declaring Objectives
 
 Objectives are set on `--metrics`. Each is a per-request threshold in milliseconds, and a request conforms only when it meets all of them:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=concurrent,streams=32 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
@@ -117,7 +117,7 @@ guidellm run \
 | Objective | Compared against    | Notes                                                                                                                                                                                                                                                                                                        |
 | --------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `ttft_ms` | Time to First Token | Requires a streaming backend                                                                                                                                                                                                                                                                                 |
-| `tpot_ms` | Inter-Token Latency | Excludes the first token. This is not GuideLLM's Time Per Output Token, which includes it. It is the closest metric to vLLM's `tpot`, though not identical: vLLM measures to request completion, inter-token latency to the last token received. Requests producing one token or fewer are left undetermined |
+| `tpot_ms` | Inter-Token Latency | Excludes the first token. This is not Roundup's Time Per Output Token, which includes it. It is the closest metric to vLLM's `tpot`, though not identical: vLLM measures to request completion, inter-token latency to the last token received. Requests producing one token or fewer are left undetermined |
 | `e2el_ms` | Request Latency     | Works with streaming and non-streaming backends                                                                                                                                                                                                                                                              |
 
 Two metrics are then reported: SLO attainment, the share of requests meeting every objective, and request goodput, the rate of those conforming requests. Errored requests count against attainment, since a request that failed did not deliver a response within its objective. Requests cancelled when the run hits its duration limit are excluded, since the run ended them rather than the server. An objective naming a metric the workload cannot measure, such as `ttft_ms` against a non-streaming backend, leaves every request undetermined and both metrics are reported as unset rather than zero.
@@ -127,7 +127,7 @@ Two metrics are then reported: SLO attainment, the share of requests meeting eve
 Declaring objectives tells you whether one load level meets them. The `goodput` profile searches for the highest level that does, which is the question behind capacity planning.
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=goodput,target_attainment=0.99 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
@@ -155,7 +155,7 @@ Request rate is the same at 16 and 32 concurrent, so a search driven by throughp
 
 The search appends its outcome to `conclusions` in the benchmark report: every probe with its attainment and interval, the highest passing and lowest failing concurrency, and why the search stopped.
 
-Each probe's attainment is scored against a confidence interval. When that interval straddles the target, the probe ran too briefly to decide the question, and GuideLLM warns rather than reporting a number that looks precise. The same warning is issued when the search stops on its probe budget or stream ceiling, because the level it reports is then a lower bound rather than the highest passing one. If every level tested failed but the deciding intervals straddled the target, the result is reported as indeterminate rather than as objectives that cannot be met. Raising `--constraint kind=max_duration,seconds=...` collects more requests per probe and narrows the interval.
+Each probe's attainment is scored against a confidence interval. When that interval straddles the target, the probe ran too briefly to decide the question, and Roundup warns rather than reporting a number that looks precise. The same warning is issued when the search stops on its probe budget or stream ceiling, because the level it reports is then a lower bound rather than the highest passing one. If every level tested failed but the deciding intervals straddled the target, the result is reported as indeterminate rather than as objectives that cannot be met. Raising `--constraint kind=max_duration,seconds=...` collects more requests per probe and narrows the interval.
 
 A probe that a constraint stops mid-run, such as enforced over-saturation, is recorded but never used as a search bound. Such a run cancels active requests, which are excluded from attainment, so the completed remainder can look conforming at a concurrency the server could not actually sustain.
 

@@ -12,7 +12,7 @@ import math
 import numpy as np
 import pytest
 
-from guidellm.utils.statistics import (
+from roundup.utils.statistics import (
     approx_t_ppf,
     mean_confidence_interval,
     normal_ppf,

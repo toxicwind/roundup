@@ -15,13 +15,13 @@ import pytest
 from pydantic import ValidationError
 from pytest_httpx import HTTPXMock, IteratorStream
 
-from guidellm.backends.backend import Backend
-from guidellm.backends.openai.http import OpenAIHTTPBackend
-from guidellm.backends.openai.request_handlers import (
+from roundup.backends.backend import Backend
+from roundup.backends.openai.http import OpenAIHTTPBackend
+from roundup.backends.openai.request_handlers import (
     OpenAIRequestHandler,
     OpenAIRequestHandlerFactory,
 )
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerationRequest,
     GenerationRequestArguments,
     GenerationResponse,
@@ -30,7 +30,7 @@ from guidellm.schemas import (
     ToolCall,
     ToolCallFunction,
 )
-from guidellm.schemas.backends import OpenAIHTTPBackendArgs
+from roundup.schemas.backends import OpenAIHTTPBackendArgs
 from tests.unit.testing_utils import async_timeout
 
 

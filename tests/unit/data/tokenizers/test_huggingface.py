@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.tokenizers.huggingface module.
+Unit tests for roundup.data.tokenizers.huggingface module.
 
 ### WRITTEN BY AI ###
 """
@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.data.tokenizers.huggingface import HuggingFaceTokenizer
-from guidellm.schemas.data import HuggingFaceTokenizerArgs
+from roundup.data.tokenizers.huggingface import HuggingFaceTokenizer
+from roundup.schemas.data import HuggingFaceTokenizerArgs
 from tests.fixtures.tokenizers import MINIMAL_TOKENIZER_DIR
 
 
@@ -156,7 +156,7 @@ class TestHuggingFaceTokenizer:
             return object()
 
         monkeypatch.setattr(
-            "guidellm.data.tokenizers.huggingface.AutoTokenizer.from_pretrained",
+            "roundup.data.tokenizers.huggingface.AutoTokenizer.from_pretrained",
             fake_from_pretrained,
         )
         config = HuggingFaceTokenizerArgs(

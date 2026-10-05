@@ -6,7 +6,7 @@ from typing import Annotated, Literal, TypeAlias
 
 import pytest
 
-from guidellm.utils.typing import get_literal_vals
+from roundup.utils.typing import get_literal_vals
 
 # Local type definitions to avoid imports from other modules
 LocalProfileType = Literal["synchronous", "async", "concurrent", "throughput", "sweep"]

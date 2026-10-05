@@ -7,16 +7,16 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from guidellm.scheduler.schemas import (
+from roundup.scheduler.schemas import (
     ConversationEdge,
     ConversationGraph,
     ConversationNode,
 )
-from guidellm.scheduler.schemas.conversation_graph import (
+from roundup.scheduler.schemas.conversation_graph import (
     GenerativeConversationGraph,
     GenerativeConversationNode,
 )
-from guidellm.schemas import GenerationRequest, RequestInfo, RequestSettings
+from roundup.schemas import GenerationRequest, RequestInfo, RequestSettings
 
 
 class TestConversationGraphValidation:

@@ -4,8 +4,8 @@ import base64
 
 import pytest
 
-from guidellm.mock_server.models import ChatMessage
-from guidellm.mock_server.multimodal import (
+from roundup.mock_server.models import ChatMessage
+from roundup.mock_server.multimodal import (
     LOSSY_BYTES_PER_SECOND,
     WAV_BYTES_PER_SECOND,
     InvalidContentPartError,
@@ -13,7 +13,7 @@ from guidellm.mock_server.multimodal import (
     accumulate_multimodal_content,
     estimate_audio_seconds,
 )
-from guidellm.schemas.mock_server.config import MockServerConfig
+from roundup.schemas.mock_server.config import MockServerConfig
 
 
 def _config(**kwargs) -> MockServerConfig:

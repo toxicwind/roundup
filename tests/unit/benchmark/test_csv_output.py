@@ -5,13 +5,13 @@ from types import SimpleNamespace
 
 import pytest
 
-from guidellm.benchmark.outputs.csv import GenerativeBenchmarkerCSV
-from guidellm.scheduler import ThroughputStrategy
-from guidellm.schemas import (
+from roundup.benchmark.outputs.csv import GenerativeBenchmarkerCSV
+from roundup.scheduler import ThroughputStrategy
+from roundup.schemas import (
     SampleUncertainty,
     StatusDistributionSummary,
 )
-from guidellm.schemas.base.statistics import PERCENTILE_PROBABILITIES
+from roundup.schemas.base.statistics import PERCENTILE_PROBABILITIES
 from tests.unit.benchmark.html_report_fixtures import (
     make_benchmark,
     metric_summary,

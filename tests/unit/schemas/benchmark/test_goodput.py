@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from guidellm.schemas.benchmark import GoodputSLO
+from roundup.schemas.benchmark import GoodputSLO
 
 
 class TestGoodputSLOValidation:

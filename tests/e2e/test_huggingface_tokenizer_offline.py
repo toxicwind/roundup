@@ -10,12 +10,12 @@ from pathlib import Path
 
 import pytest
 
-from guidellm.data.tokenizers.huggingface import HuggingFaceTokenizer
-from guidellm.schemas.data import HuggingFaceTokenizerArgs
+from roundup.data.tokenizers.huggingface import HuggingFaceTokenizer
+from roundup.schemas.data import HuggingFaceTokenizerArgs
 from tests.fixtures.tokenizers import MINIMAL_TOKENIZER_DIR, seed_hub_cache_for_model
 
 # Unique id so a developer machine's real ``gpt2`` hub cache cannot shadow the fixture.
-_HUB_MODEL_ID = "guidellm-test-tokenizer"
+_HUB_MODEL_ID = "roundup-test-tokenizer"
 
 
 @pytest.mark.sanity
@@ -24,7 +24,7 @@ def test_huggingface_tokenizer_loads_hub_id_from_seeded_cache(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """
-    GuideLLM resolves a hub model id from a seeded local HF cache.
+    Roundup resolves a hub model id from a seeded local HF cache.
 
     Does not contact HuggingFace Hub: the minimal fixture files are copied into
     a hub-style cache under a temporary ``HF_HOME`` with offline env vars set.
@@ -65,7 +65,7 @@ def test_huggingface_tokenizer_loads_hub_id_from_seeded_cache(
 @pytest.mark.timeout(30)
 def test_huggingface_tokenizer_loads_from_vendored_path() -> None:
     """
-    GuideLLM loads the vendored tokenizer directory without Hub access.
+    Roundup loads the vendored tokenizer directory without Hub access.
 
     ## WRITTEN BY AI ##
     """

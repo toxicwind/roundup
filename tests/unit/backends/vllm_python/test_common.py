@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.backends.vllm_python.common import vllm_benchmark_engine_config
+from roundup.backends.vllm_python.common import vllm_benchmark_engine_config
 
 
 class TestVllmBenchmarkEngineConfig:

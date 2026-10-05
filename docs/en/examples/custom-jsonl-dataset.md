@@ -1,12 +1,12 @@
-# GuideLLM Benchmark Testing with a Local Tokenizer and Custom Dataset
+# Roundup Benchmark Testing with a Local Tokenizer and Custom Dataset
 
-Benchmark an already-deployed OpenAI-compatible model endpoint using GuideLLM with a local tokenizer and a custom JSONL prompt dataset, without needing a local copy of the model itself. This example runs GuideLLM via a local `pip install`.
+Benchmark an already-deployed OpenAI-compatible model endpoint using Roundup with a local tokenizer and a custom JSONL prompt dataset, without needing a local copy of the model itself. This example runs Roundup via a local `pip install`.
 
 ## Getting Started
 
 ### 1. Prepare the Tokenizer Files
 
-The model is already deployed and running, for example on GPU, served via vLLM or OpenShift, behind an OpenAI-compatible endpoint. GuideLLM never loads or runs the model, it only talks to it over HTTP. What GuideLLM does need locally is the tokenizer, since it uses it to compute token counts for its metrics such as prompt tokens, output tokens and throughput.
+The model is already deployed and running, for example on GPU, served via vLLM or OpenShift, behind an OpenAI-compatible endpoint. Roundup never loads or runs the model, it only talks to it over HTTP. What Roundup does need locally is the tokenizer, since it uses it to compute token counts for its metrics such as prompt tokens, output tokens and throughput.
 
 From the model's repo, for example the HuggingFace Hub or wherever the model artifacts live, copy the tokenizer files required by your specific model. This example uses a Mistral-family model, which needs only these three files. A pattern that's typical of many tokenizers, but not universal, so treat it as a starting point rather than a fixed requirement for every model:
 
@@ -44,11 +44,11 @@ long_translation_prompts.jsonl  medium_translation_prompts.jsonl  short_translat
 special_tokens_map.json  tokenizer_config.json  tokenizer.json
 ```
 
-Verify your GuideLLM install:
+Verify your Roundup install:
 
 ```bash
-guidellm --version
-guidellm version: 0.7.0
+roundup --version
+roundup version: 0.7.0
 ```
 
 ______________________________________________________________________
@@ -56,7 +56,7 @@ ______________________________________________________________________
 ## 3. Running the Benchmark
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://<PREDICTOR_URL> \
   --data '{"kind":"json_file","path":"/home/<USERNAME>/mistral/long_translation_prompts.jsonl","load_kwargs":{"split":"train"}}' \
   --tokenizer '{"kind":"huggingface_auto","model":"/home/<USERNAME>/mistral"}' \
@@ -68,7 +68,7 @@ guidellm run \
 
 | Argument                                                           | Purpose                                                                                                |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `--backend kind=openai_http,target=...`                            | Points GuideLLM at your OpenAI-compatible predictor endpoint.                                          |
+| `--backend kind=openai_http,target=...`                            | Points Roundup at your OpenAI-compatible predictor endpoint.                                          |
 | `--data kind=json_file,path=...`                                   | Loads prompts from the local JSONL file.                                                               |
 | `--tokenizer kind=huggingface_auto,model=/home/<USERNAME>/mistral` | Loads the tokenizer from the local directory, the 3 files from step 1, instead of downloading a model. |
 | `--profile kind=concurrent,streams=100`                            | Simulates 100 concurrent "users" hitting the endpoint at once.                                         |
@@ -80,4 +80,4 @@ ______________________________________________________________________
 
 - The tokenizer path (`/home/<USERNAME>/mistral` in this example) only needs the 3 tokenizer files, no model weights required.
 - The dataset file path and the tokenizer path can point to different directories or models if you want to mix and match, though in this example they are the same folder for convenience.
-- Swap `--profile kind=concurrent,streams=N` for other GuideLLM profiles, such as `synchronous` or `throughput`, depending on the load pattern you want to test.
+- Swap `--profile kind=concurrent,streams=N` for other Roundup profiles, such as `synchronous` or `throughput`, depending on the load pattern you want to test.

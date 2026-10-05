@@ -13,9 +13,9 @@ from typing import Any, TypeVar
 import pytest
 from rich.console import Console
 
-from guidellm import logger
+from roundup import logger
 
-_logger_module = importlib.import_module("guidellm.logger")
+_logger_module = importlib.import_module("roundup.logger")
 
 # Type variables for proper typing
 F = TypeVar("F", bound=Callable[..., Awaitable[Any]])
@@ -79,7 +79,7 @@ def drain_logger() -> None:
 
 
 def teardown_logger_state() -> None:
-    """Remove all loguru handlers and reset GuideLLM handler tracking."""
+    """Remove all loguru handlers and reset Roundup handler tracking."""
     drain_logger()
     logger.remove()
     _logger_module._console_handler._sink_id = None

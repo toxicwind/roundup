@@ -1,8 +1,8 @@
 import pytest
 from datasets import Dataset
 
-from guidellm.data.deserializers.huggingface import HuggingFaceDatasetDeserializer
-from guidellm.schemas.data import HuggingFaceDataArgs
+from roundup.data.deserializers.huggingface import HuggingFaceDatasetDeserializer
+from roundup.schemas.data import HuggingFaceDataArgs
 
 
 @pytest.fixture

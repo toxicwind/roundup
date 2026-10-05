@@ -75,8 +75,8 @@ jobs:
           image: ${{ github.event.repository.name }}
           platforms: ${{ matrix.platform }}
           build-args: |
-            GUIDELLM_BUILD_TYPE=${{ inputs.build-type }}
-            GUIDELLM_BUILD_EXTRAS=${{ matrix.extras }}
+            ROUNDUP_BUILD_TYPE=${{ inputs.build-type }}
+            ROUNDUP_BUILD_EXTRAS=${{ matrix.extras }}
           tags: ${{ inputs.tag }}-${{ matrix.arch_suffix }}
           layers: true
           containerfiles: |

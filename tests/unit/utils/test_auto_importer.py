@@ -9,7 +9,7 @@ from unittest import mock
 
 import pytest
 
-from guidellm.utils.auto_importer import AutoImporterMixin
+from roundup.utils.auto_importer import AutoImporterMixin
 
 
 class TestAutoImporterMixin:

@@ -17,32 +17,32 @@ from unittest.mock import Mock
 
 import pytest
 
-from guidellm.data.deserializers import TraceDatasetDeserializer
-from guidellm.data.finalizers.generative import GenerativeRequestFinalizer
-from guidellm.data.preprocessors.mappers import GenerativeColumnMapper
-from guidellm.scheduler import (
+from roundup.data.deserializers import TraceDatasetDeserializer
+from roundup.data.finalizers.generative import GenerativeRequestFinalizer
+from roundup.data.preprocessors.mappers import GenerativeColumnMapper
+from roundup.scheduler import (
     BackendInterface,
     MaxDurationConstraint,
     MaxNumberConstraint,
     TraceReplayStrategy,
     WorkerProcessGroup,
 )
-from guidellm.scheduler.schemas import (
+from roundup.scheduler.schemas import (
     ConversationGraph,
     HistoryContext,
 )
-from guidellm.scheduler.schemas.conversation_graph import (
+from roundup.scheduler.schemas.conversation_graph import (
     GenerativeConversationGraph,
     GenerativeConversationNode,
 )
-from guidellm.schemas import GenerationRequest, RequestSettings
-from guidellm.schemas.data import (
+from roundup.schemas import GenerationRequest, RequestSettings
+from roundup.schemas.data import (
     FileDataArgs,
     GenerativeColumnMapperArgs,
     GenerativeRequestFinalizerArgs,
     MinimalTraceFormatArgs,
 )
-from guidellm.schemas.scheduler import (
+from roundup.schemas.scheduler import (
     MaxDurationConstraintArgs,
     MaxRequestsConstraintArgs,
 )

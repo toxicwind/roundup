@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from guidellm.settings import (
+from roundup.settings import (
     DatasetSettings,
     LoggingSettings,
     Settings,
@@ -22,7 +22,7 @@ def test_default_settings(mocker):
     """
     mocker.patch.dict(
         "os.environ",
-        {k: v for k, v in os.environ.items() if not k.startswith("GUIDELLM__")},
+        {k: v for k, v in os.environ.items() if not k.startswith("ROUNDUP__")},
         clear=True,
     )
     loaded = Settings(_env_file=None)
@@ -40,7 +40,7 @@ def test_settings_from_env_variables(mocker):
     mocker.patch.dict(
         "os.environ",
         {
-            "GUIDELLM__logging__console_colorize": "false",
+            "ROUNDUP__logging__console_colorize": "false",
         },
     )
 
@@ -68,12 +68,12 @@ def test_logging_settings_defaults():
 def test_generate_env_file(mocker):
     mocker.patch.dict(
         "os.environ",
-        {k: v for k, v in os.environ.items() if not k.startswith("GUIDELLM__")},
+        {k: v for k, v in os.environ.items() if not k.startswith("ROUNDUP__")},
         clear=True,
     )
     loaded = Settings(_env_file=None)
     env_file_content = loaded.generate_env_file()
-    assert "GUIDELLM__LOGGING__CONSOLE_COLORIZE" in env_file_content
+    assert "ROUNDUP__LOGGING__CONSOLE_COLORIZE" in env_file_content
     assert "REPORT_GENERATION" not in env_file_content
 
 
@@ -82,7 +82,7 @@ def test_reload_settings(mocker):
     mocker.patch.dict(
         "os.environ",
         {
-            "GUIDELLM__logging__console_log_level": "DEBUG",
+            "ROUNDUP__logging__console_log_level": "DEBUG",
         },
     )
     reload_settings()
@@ -94,7 +94,7 @@ def test_print_config(capsys):
     print_config()
     captured = capsys.readouterr()
     assert "Settings:" in captured.out
-    assert "GUIDELLM__LOGGING__CONSOLE_COLORIZE" in captured.out
+    assert "ROUNDUP__LOGGING__CONSOLE_COLORIZE" in captured.out
 
 
 @pytest.mark.sanity
@@ -125,7 +125,7 @@ def test_dataset_settings_defaults():
 def test_table_properties_defaults(mocker):
     mocker.patch.dict(
         "os.environ",
-        {k: v for k, v in os.environ.items() if not k.startswith("GUIDELLM__")},
+        {k: v for k, v in os.environ.items() if not k.startswith("ROUNDUP__")},
         clear=True,
     )
     loaded = Settings(_env_file=None)
@@ -139,8 +139,8 @@ def test_settings_with_env_variables(mocker):
     mocker.patch.dict(
         "os.environ",
         {
-            "GUIDELLM__DATASET__PREFERRED_DATA_COLUMNS": '["custom_column"]',
-            "GUIDELLM__TABLE_BORDER_CHAR": "*",
+            "ROUNDUP__DATASET__PREFERRED_DATA_COLUMNS": '["custom_column"]',
+            "ROUNDUP__TABLE_BORDER_CHAR": "*",
         },
     )
     loaded = Settings()

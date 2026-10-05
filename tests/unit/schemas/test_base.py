@@ -10,7 +10,7 @@ from unittest import mock
 import pytest
 from pydantic import BaseModel, Field, ValidationError
 
-from guidellm.schemas import (
+from roundup.schemas import (
     BaseModelT,
     ErroredT,
     IncompleteT,
@@ -992,7 +992,7 @@ class TestPydanticClassRegistryMixin:
         with (
             mock.patch.object(TestBaseModel, "reload_schema") as mock_reload,
             mock.patch(
-                "guidellm.utils.registry.RegistryMixin.auto_populate_registry",
+                "roundup.utils.registry.RegistryMixin.auto_populate_registry",
                 return_value=True,
             ) as mock_parent_auto,
         ):
@@ -1019,7 +1019,7 @@ class TestPydanticClassRegistryMixin:
         with (
             mock.patch.object(TestBaseModel, "reload_schema") as mock_reload,
             mock.patch(
-                "guidellm.utils.registry.RegistryMixin.auto_populate_registry",
+                "roundup.utils.registry.RegistryMixin.auto_populate_registry",
                 return_value=False,
             ),
         ):

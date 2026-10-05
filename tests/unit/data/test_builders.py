@@ -1,5 +1,5 @@
 """
-Unit tests for guidellm.data.builders module, specifically process_dataset function.
+Unit tests for roundup.data.builders module, specifically process_dataset function.
 """
 
 import json
@@ -15,13 +15,13 @@ import yaml
 from datasets import Dataset
 from transformers import PreTrainedTokenizerBase
 
-from guidellm.data.builders import (
+from roundup.data.builders import (
     push_dataset_to_hub,
 )
-from guidellm.data.entrypoints import (
+from roundup.data.entrypoints import (
     process_dataset,
 )
-from guidellm.schemas.data import (
+from roundup.schemas.data import (
     ConcatenatePreprocessStrategyArgs,
     ErrorPreprocessStrategyArgs,
     IgnorePreprocessStrategyArgs,
@@ -169,9 +169,9 @@ class TestProcessDatasetShortPromptStrategies:
     """Test cases for different PreprocessStrategyArgs kinds."""
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_ignore_strategy(
         self,
         mock_tokenizer_registry,
@@ -215,9 +215,9 @@ class TestProcessDatasetShortPromptStrategies:
         assert len(saved_dataset) <= 2  # At most 2 prompts should remain
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_concatenate_strategy(
         self,
         mock_tokenizer_registry,
@@ -322,9 +322,9 @@ class TestProcessDatasetShortPromptStrategies:
         )
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_pad_strategy(
         self,
         mock_tokenizer_registry,
@@ -392,8 +392,8 @@ class TestProcessDatasetShortPromptStrategies:
                 )
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_error_strategy(
         self,
         mock_tokenizer_registry,
@@ -431,9 +431,9 @@ class TestProcessDatasetColumnNames:
     """Test cases for different column name scenarios."""
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_default_columns(
         self,
         mock_tokenizer_registry,
@@ -479,9 +479,9 @@ class TestProcessDatasetColumnNames:
             assert "output_tokens_count" in row
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_custom_columns_with_mapping(
         self,
         mock_tokenizer_registry,
@@ -527,9 +527,9 @@ class TestProcessDatasetColumnNames:
             assert "output_tokens_count" in row
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_with_prefix_column(
         self,
         mock_tokenizer_registry,
@@ -576,9 +576,9 @@ class TestProcessDatasetColumnNames:
             assert "output_tokens_count" in row
 
     @pytest.mark.regression
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_with_instruction_column(
         self,
         mock_tokenizer_registry,
@@ -632,9 +632,9 @@ class TestProcessDatasetConfigFormats:
     """Test cases for different config format inputs."""
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_config_json(
         self,
         mock_tokenizer_registry,
@@ -670,9 +670,9 @@ class TestProcessDatasetConfigFormats:
         assert mock_save_to_file.called
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_config_key_value(
         self,
         mock_tokenizer_registry,
@@ -709,9 +709,9 @@ class TestProcessDatasetConfigFormats:
         assert mock_save_to_file.called
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_config_file_json(
         self,
         mock_tokenizer_registry,
@@ -758,9 +758,9 @@ class TestProcessDatasetConfigFormats:
         assert mock_save_to_file.called
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_config_file_yaml(
         self,
         mock_tokenizer_registry,
@@ -808,9 +808,9 @@ class TestProcessDatasetConfigFormats:
         assert mock_save_to_file.called
 
     @pytest.mark.regression
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_config_file_config_extension(
         self,
         mock_tokenizer_registry,
@@ -861,9 +861,9 @@ class TestProcessDatasetIntegration:
     """Integration tests for process_dataset function."""
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_successful_processing(
         self,
         mock_tokenizer_registry,
@@ -915,9 +915,9 @@ class TestProcessDatasetIntegration:
             assert isinstance(row["output_tokens_count"], int)
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_limits_samples(
         self,
         mock_tokenizer_registry,
@@ -963,9 +963,9 @@ class TestProcessDatasetIntegration:
         assert len(saved_dataset) == 2
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_empty_after_filtering(
         self,
         mock_tokenizer_registry,
@@ -1012,9 +1012,9 @@ class TestProcessDatasetIntegration:
         assert not mock_save_to_file.called
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_with_prefix_tokens(
         self,
         mock_tokenizer_registry,
@@ -1076,9 +1076,9 @@ class TestProcessDatasetIntegration:
             assert "output_tokens_count" in row
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_count_prefix(
         self,
         mock_tokenizer_registry,
@@ -1152,9 +1152,9 @@ class TestProcessDatasetIntegration:
             )
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_with_different_config_values(
         self,
         mock_tokenizer_registry,
@@ -1222,9 +1222,9 @@ class TestProcessDatasetConfigValidation:
     """Test cases for validating config settings by verifying actual token counts."""
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_fixed_prompt_token_count(
         self,
         mock_tokenizer_registry,
@@ -1277,9 +1277,9 @@ class TestProcessDatasetConfigValidation:
             assert actual_tokens == 100, f"Expected 100 tokens, got {actual_tokens}"
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_fixed_output_token_count(
         self,
         mock_tokenizer_registry,
@@ -1329,9 +1329,9 @@ class TestProcessDatasetConfigValidation:
             assert row["output_tokens_count"] == 75
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_prompt_min_max_constraints(
         self,
         mock_tokenizer_registry,
@@ -1395,9 +1395,9 @@ class TestProcessDatasetConfigValidation:
             )
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_output_min_max_constraints(
         self,
         mock_tokenizer_registry,
@@ -1453,9 +1453,9 @@ class TestProcessDatasetConfigValidation:
         )
 
     @pytest.mark.regression
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_prompt_stdev_distribution(
         self,
         mock_tokenizer_registry,
@@ -1521,9 +1521,9 @@ class TestProcessDatasetConfigValidation:
             assert actual_tokens == row["prompt_tokens_count"]
 
     @pytest.mark.regression
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_output_stdev_distribution(
         self,
         mock_tokenizer_registry,
@@ -1583,9 +1583,9 @@ class TestProcessDatasetConfigValidation:
         assert 45 <= mean_count <= 55, f"Mean {mean_count} not close to expected 50"
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_token_count_accuracy(
         self,
         mock_tokenizer_registry,
@@ -1641,9 +1641,9 @@ class TestProcessDatasetConfigValidation:
             )
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_prompt_trimming_accuracy(
         self,
         mock_tokenizer_registry,
@@ -1696,9 +1696,9 @@ class TestProcessDatasetConfigValidation:
             )
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_prompt_padding_accuracy(
         self,
         mock_tokenizer_registry,
@@ -1775,9 +1775,9 @@ class TestProcessDatasetConfigValidation:
         )
 
     @pytest.mark.regression
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_combined_config_constraints(
         self,
         mock_tokenizer_registry,
@@ -1844,9 +1844,9 @@ class TestProcessDatasetConfigValidation:
             assert actual_tokens == row["prompt_tokens_count"]
 
     @pytest.mark.regression
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_edge_cases_token_counts(
         self,
         mock_tokenizer_registry,
@@ -1933,9 +1933,9 @@ class TestProcessDatasetConfigValidation:
             assert row["output_tokens_count"] == 1
 
     @pytest.mark.regression
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_no_stdev_behavior(
         self,
         mock_tokenizer_registry,
@@ -2096,10 +2096,10 @@ class TestProcessDatasetPushToHub:
     """Test cases for push_to_hub functionality."""
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.push_dataset_to_hub")
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.push_dataset_to_hub")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_push_to_hub_called(
         self,
         mock_tokenizer_registry,
@@ -2146,10 +2146,10 @@ class TestProcessDatasetPushToHub:
         assert isinstance(call_args[0][1], Dataset)
 
     @pytest.mark.sanity
-    @patch("guidellm.data.builders.push_dataset_to_hub")
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.push_dataset_to_hub")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_process_dataset_push_to_hub_not_called(
         self,
         mock_tokenizer_registry,
@@ -2221,9 +2221,9 @@ class TestProcessDatasetStrategyHandlerIntegration:
     """Test cases for strategy handler integration with process_dataset."""
 
     @pytest.mark.smoke
-    @patch("guidellm.data.builders.save_dataset_to_file")
-    @patch("guidellm.data.builders.DatasetDeserializerFactory")
-    @patch("guidellm.data.builders.TokenizerRegistry")
+    @patch("roundup.data.builders.save_dataset_to_file")
+    @patch("roundup.data.builders.DatasetDeserializerFactory")
+    @patch("roundup.data.builders.TokenizerRegistry")
     def test_strategy_handler_called(
         self,
         mock_tokenizer_registry,

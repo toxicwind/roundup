@@ -1,4 +1,4 @@
-"""Shared fixtures and pytest options for GuideLLM E2E tests."""
+"""Shared fixtures and pytest options for Roundup E2E tests."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from typing import Any, Protocol
 import httpx
 import pytest
 
-from guidellm.mock_server.server import MockServer
-from guidellm.schemas.mock_server import MockServerConfig
+from roundup.mock_server.server import MockServer
+from roundup.schemas.mock_server import MockServerConfig
 from tests.e2e.vllm_sim_server import VllmSimServer
 
 MOCK_SERVER_HOST = "127.0.0.1"

@@ -12,8 +12,8 @@ from logot.logged import debug, error, info, warning
 from loguru import logger as loguru_logger
 from rich.live import Live
 
-from guidellm import configure_logger, logger, reinstall_inherited_logger
-from guidellm.settings import LoggingSettings
+from roundup import configure_logger, logger, reinstall_inherited_logger
+from roundup.settings import LoggingSettings
 from tests.unit.testing_utils import (
     _logger_module,
     drain_logger,
@@ -181,15 +181,15 @@ def test_env_var_console_log_level_at_import():
 
     ## WRITTEN BY AI ##
     """
-    env = {k: v for k, v in os.environ.items() if not k.startswith("GUIDELLM__")}
-    env["GUIDELLM__LOGGING__CONSOLE_LOG_LEVEL"] = "ERROR"
+    env = {k: v for k, v in os.environ.items() if not k.startswith("ROUNDUP__")}
+    env["ROUNDUP__LOGGING__CONSOLE_LOG_LEVEL"] = "ERROR"
 
     result = subprocess.run(
         [
             sys.executable,
             "-c",
             (
-                "from guidellm import logger; "
+                "from roundup import logger; "
                 "logger.complete(); "
                 "logger.info('info message'); "
                 "logger.error('error message'); "
@@ -263,7 +263,7 @@ class TestInheritedLoggerMultiprocessing:
     @pytest.mark.parametrize("ctx_name", ["spawn", "forkserver"])
     def test_inherited_worker_logging_custom_format(self, ctx_name, capsys):
         """
-        Worker logs use inherited parent handlers with GuideLLM console format.
+        Worker logs use inherited parent handlers with Roundup console format.
 
         ## WRITTEN BY AI ##
         """

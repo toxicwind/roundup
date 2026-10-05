@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides agents and LLMs with guidance on development practices within the GuideLLM repository.
+This file provides agents and LLMs with guidance on development practices within the Roundup repository.
 
 > **NOTE TO AI**: This file is human maintained and **SHALL NOT** be edited by agents or any LLM.
 
@@ -63,7 +63,7 @@ tox -e tests -- -m regression
 
 - **IMPORTANT**: Every test function written by AI must have `## WRITTEN BY AI ##` at the end of its docstring.
 - Use appropriate markers (`smoke`, `sanity`, `regression`)
-- Tests should be placed in files matching the name and path of the file under tests. E.g. `src/guidellm/benchmark/schemas/generative/entrypoints.py` -> `tests/unit/benchmark/schemas/generative/test_entrypoints.py`.
+- Tests should be placed in files matching the name and path of the file under tests. E.g. `src/roundup/benchmark/schemas/generative/entrypoints.py` -> `tests/unit/benchmark/schemas/generative/test_entrypoints.py`.
 
 ### Quality Requirements
 
@@ -92,14 +92,14 @@ Running benchmarks requires an active model server. Here are some example comman
 
 ```bash
 # Quick sweep benchmark
-uv run guidellm run \
+uv run roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=sweep \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
   --constraint kind=max_requests,count=1000
 
 # Production-like benchmark with specific dataset
-uv run guidellm run \
+uv run roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=constant \
   --data '{"kind":"huggingface","source":"openai/gsm8k","load_kwargs":{"name":"main","split":"test"}}' \
@@ -111,8 +111,8 @@ uv run guidellm run \
 
 ## Resources
 
-- **GitHub**: https://github.com/vllm-project/guidellm
-- **PyPI**: https://pypi.org/project/guidellm/
-- **Container Registry**: https://github.com/vllm-project/guidellm/pkgs/container/guidellm
-- **Documentation**: https://github.com/vllm-project/guidellm/tree/main/docs
-- **Issues**: https://github.com/vllm-project/guidellm/issues
+- **GitHub**: https://github.com/toxicwind/roundup
+- **PyPI**: https://pypi.org/project/roundup/
+- **Container Registry**: https://github.com/toxicwind/roundup/pkgs/container/roundup
+- **Documentation**: https://github.com/toxicwind/roundup/tree/main/docs
+- **Issues**: https://github.com/toxicwind/roundup/issues

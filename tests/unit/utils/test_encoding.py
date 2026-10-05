@@ -6,13 +6,13 @@ from typing import Any, Generic, TypeVar
 import pytest
 from pydantic import BaseModel, Field
 
-from guidellm.schemas import (
+from roundup.schemas import (
     GenerationRequest,
     GenerationResponse,
     RequestInfo,
     RequestTimings,
 )
-from guidellm.utils.encoding import Encoder, MessageEncoding, Serializer
+from roundup.utils.encoding import Encoder, MessageEncoding, Serializer
 
 
 class SampleModel(BaseModel):

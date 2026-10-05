@@ -1,6 +1,6 @@
 # Architecture
 
-GuideLLM is designed to evaluate and optimize large language model (LLM) deployments by simulating real-world inference workloads. The architecture is modular, enabling flexibility and scalability. Below is an overview of the core components and their interactions.
+Roundup is designed to evaluate and optimize large language model (LLM) deployments by simulating real-world inference workloads. The architecture is modular, enabling flexibility and scalability. Below is an overview of the core components and their interactions.
 
 ```
 +------------------+       +------------------+       +------------------+
@@ -34,7 +34,7 @@ GuideLLM is designed to evaluate and optimize large language model (LLM) deploym
 
 ### 1. **Backend**
 
-The `Backend` is an abstract interface for interacting with generative AI backends. It is responsible for processing requests and generating results. GuideLLM supports OpenAI-compatible HTTP servers, such as vLLM, as backends.
+The `Backend` is an abstract interface for interacting with generative AI backends. It is responsible for processing requests and generating results. Roundup supports OpenAI-compatible HTTP servers, such as vLLM, as backends.
 
 - **Responsibilities:**
   - Accept requests from the `RequestsWorker`.

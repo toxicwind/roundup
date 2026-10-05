@@ -6,9 +6,9 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from guidellm.benchmark import CompositeBenchmarkerProgress
-from guidellm.benchmark import benchmarker as module
-from guidellm.benchmark.progress import BenchmarkerProgress
+from roundup.benchmark import CompositeBenchmarkerProgress
+from roundup.benchmark import benchmarker as module
+from roundup.benchmark.progress import BenchmarkerProgress
 
 
 @pytest.mark.regression

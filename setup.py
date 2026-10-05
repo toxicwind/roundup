@@ -92,12 +92,12 @@ def write_version_files() -> tuple[Path, Path]:
 
     :returns: A tuple containing the paths to the version.txt and version.py files.
     """
-    build_type = os.getenv("GUIDELLM_BUILD_TYPE", "dev").lower()
+    build_type = os.getenv("ROUNDUP_BUILD_TYPE", "dev").lower()
     version, tag, build_iteration = get_next_version(
         build_type=build_type,
-        build_iteration=os.getenv("GUIDELLM_BUILD_ITERATION"),
+        build_iteration=os.getenv("ROUNDUP_BUILD_ITERATION"),
     )
-    module_path = Path(__file__).parent / "src" / "guidellm"
+    module_path = Path(__file__).parent / "src" / "roundup"
     version_txt_path = module_path / "version.txt"
     version_py_path = module_path / "version.py"
 

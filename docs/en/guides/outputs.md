@@ -1,15 +1,15 @@
 # Output Types
 
-GuideLLM provides flexible options for outputting benchmark results, catering to both console-based summaries and file-based detailed reports. This document outlines the supported output types, their configurations, and how to utilize them effectively.
+Roundup provides flexible options for outputting benchmark results, catering to both console-based summaries and file-based detailed reports. This document outlines the supported output types, their configurations, and how to utilize them effectively.
 
 ## CLI Output Configuration
 
-Without any `--output` options, `guidellm run` writes `benchmarks.json` and `benchmarks.csv` to the [default results directory](#configuring-file-outputs).
+Without any `--output` options, `roundup run` writes `benchmarks.json` and `benchmarks.csv` to the [default results directory](#configuring-file-outputs).
 
 Output configuration follows the typed registry-backed CLI pattern. Specifying any `--output` replaces the default JSON and CSV outputs, so repeat the option for every file format you want. This example keeps both default formats and adds HTML:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --data kind=synthetic_text,prompt_tokens=256,output_tokens=128 \
   --output kind=json \
@@ -21,7 +21,7 @@ Choose from the [supported file formats](#supported-file-formats) and see [confi
 
 ## Console Output
 
-By default, GuideLLM displays benchmark results and progress directly in the console. Console output is an implicit default: it is not replaced by explicit `--output` options, and specifying `--output kind=console` has no additional effect. The console progress and outputs are divided into multiple sections:
+By default, Roundup displays benchmark results and progress directly in the console. Console output is an implicit default: it is not replaced by explicit `--output` options, and specifying `--output kind=console` has no additional effect. The console progress and outputs are divided into multiple sections:
 
 1. **Initial Setup Progress**: Displays the progress of the initial setup, including server connection and data preparation.
 2. **Benchmark Progress**: Shows the progress of the benchmark runs, including the number of requests completed and the current rate.
@@ -35,7 +35,7 @@ By default, GuideLLM displays benchmark results and progress directly in the con
 To disable interactive progress updates, use `--disable-console-interactive` (alias `--disable-progress`):
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=sweep \
   --constraint kind=max_duration,seconds=30 \
@@ -46,7 +46,7 @@ guidellm run \
 To disable all console output, use `--disable-console` (alias `--disable-console-outputs`):
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=sweep \
   --constraint kind=max_duration,seconds=30 \
@@ -56,7 +56,7 @@ guidellm run \
 
 ## File-Based Outputs
 
-GuideLLM supports saving benchmark results to files in various formats, including JSON, YAML, and CSV. These files can be used for further analysis, reporting, or reloading into Python for detailed exploration.
+Roundup supports saving benchmark results to files in various formats, including JSON, YAML, and CSV. These files can be used for further analysis, reporting, or reloading into Python for detailed exploration.
 
 ### Supported File Formats
 
@@ -72,12 +72,12 @@ For PLOT, the `path` extension selects the image format: PNG, JPG/JPEG, SVG, or 
 
 ### Configuring File Outputs
 
-Omit `path` to use the format's default filename in the directory configured by `GUIDELLM__DEFAULT_RESULTS_DIR`, or in the current directory when the variable is not set. Specify `path=` to set the filename or destination.
+Omit `path` to use the format's default filename in the directory configured by `ROUNDUP__DEFAULT_RESULTS_DIR`, or in the current directory when the variable is not set. Specify `path=` to set the filename or destination.
 
 For example, this command writes JSON to a custom path, in addition to the independent console output:
 
 ```bash
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=sweep \
   --constraint kind=max_duration,seconds=30 \
@@ -99,7 +99,7 @@ Use `sample_size` to set the maximum number of requests **per status group** (co
 
 ```bash
 # Keep full data for only 100 sampled requests per group
-guidellm run \
+roundup run \
   --backend kind=openai_http,target=http://localhost:8000 \
   --profile kind=sweep \
   --constraint kind=max_requests,count=10000 \
@@ -115,7 +115,7 @@ The `--metrics` option also accepts `prefer_response_metrics` (default `true`), 
 JSON files can be reloaded into Python for further analysis using the `GenerativeBenchmarksReport` class. Below is a sample code snippet for reloading results:
 
 ```python
-from guidellm.benchmark import GenerativeBenchmarksReport
+from roundup.benchmark import GenerativeBenchmarksReport
 
 report = GenerativeBenchmarksReport.load_file(
     path="benchmarks.json",
@@ -126,4 +126,4 @@ for benchmark in benchmarks:
     print(benchmark.id_)
 ```
 
-For more details on the `GenerativeBenchmarksReport` class and its methods, refer to the [source code](https://github.com/vllm-project/guidellm/blob/main/src/guidellm/benchmark/schemas/generative/report.py).
+For more details on the `GenerativeBenchmarksReport` class and its methods, refer to the [source code](https://github.com/toxicwind/roundup/blob/main/src/roundup/benchmark/schemas/generative/report.py).

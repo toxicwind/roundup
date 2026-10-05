@@ -4,14 +4,14 @@ from pathlib import Path
 import pytest
 import yaml
 
-from guidellm.benchmark.outputs.output import GenerativeBenchmarkerOutput
-from guidellm.benchmark.outputs.serialized import (
+from roundup.benchmark.outputs.output import GenerativeBenchmarkerOutput
+from roundup.benchmark.outputs.serialized import (
     GenerativeBenchmarkerSerialized,
 )
-from guidellm.benchmark.schemas import (
+from roundup.benchmark.schemas import (
     GenerativeBenchmarksReport,
 )
-from guidellm.schemas.benchmark import (
+from roundup.schemas.benchmark import (
     BenchmarkScenario,
     JSONBenchmarkOutputArgs,
     YAMLBenchmarkOutputArgs,

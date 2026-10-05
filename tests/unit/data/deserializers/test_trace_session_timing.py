@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import pytest
 
-from guidellm.data.deserializers.trace_session_timing import (
+from roundup.data.deserializers.trace_session_timing import (
     TraceSessionTiming,
     graph_max_timestamp,
     graph_min_timestamp,
     shift_graph_timestamps,
 )
-from guidellm.data.schemas.conversation_graph_data import (
+from roundup.data.schemas.conversation_graph_data import (
     ConversationGraphData,
     ConversationTurnData,
 )

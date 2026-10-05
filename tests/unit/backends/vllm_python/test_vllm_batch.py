@@ -15,14 +15,14 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from guidellm.backends.vllm_python.batch import (
+from roundup.backends.vllm_python.batch import (
     VLLMPythonBatchBackend,
     _BatchedRequest,
     _BatchResolvedRequest,
 )
-from guidellm.backends.vllm_python.common import is_scheduler_worker_process
-from guidellm.schemas import GenerationRequest, RequestInfo
-from guidellm.schemas.backends import VLLMPythonBatchBackendArgs
+from roundup.backends.vllm_python.common import is_scheduler_worker_process
+from roundup.schemas import GenerationRequest, RequestInfo
+from roundup.schemas.backends import VLLMPythonBatchBackendArgs
 from tests.unit.testing_utils import async_timeout
 
 
@@ -75,8 +75,8 @@ def batch_backend():
     mock_vllm = MagicMock()
     mock_vllm.SamplingParams = _fake_sampling_params
     with (
-        patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-        patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+        patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+        patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
     ):
         yield _make_batch_backend(model="test-model", batch_size=4)
 
@@ -106,8 +106,8 @@ class TestEngineLaziness:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -124,9 +124,9 @@ class TestEngineLaziness:
         mock_vllm.EngineArgs.return_value = Mock()
         mock_vllm.LLM.from_engine_args.return_value = mock_llm
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.batch.reset_cpu_affinity"),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.reset_cpu_affinity"),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -145,9 +145,9 @@ class TestEngineLaziness:
         mock_vllm.EngineArgs.return_value = Mock()
         mock_vllm.LLM.from_engine_args.return_value = mock_llm
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.batch.reset_cpu_affinity"),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.reset_cpu_affinity"),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -166,9 +166,9 @@ class TestEngineLaziness:
         mock_vllm.EngineArgs.return_value = Mock()
         mock_vllm.LLM.from_engine_args.return_value = mock_llm
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.batch.reset_cpu_affinity"),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.reset_cpu_affinity"),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -187,8 +187,8 @@ class TestEngineLaziness:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -355,8 +355,8 @@ class TestProcessStartupReset:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
         assert backend._batch_lock is None
@@ -370,8 +370,8 @@ class TestProcessStartupReset:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -405,8 +405,8 @@ class TestProcessStartupReset:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -427,8 +427,8 @@ class TestSpawnPickling:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             data = pickle.dumps(backend)
@@ -445,8 +445,8 @@ class TestSpawnPickling:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             restored = pickle.loads(pickle.dumps(backend))  # noqa: S301
@@ -469,8 +469,8 @@ class TestSpawnPickling:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -495,8 +495,8 @@ class TestWorkerBasedPreload:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
             await backend.process_startup()
@@ -513,11 +513,11 @@ class TestWorkerBasedPreload:
         mock_vllm.EngineArgs.return_value = Mock()
         mock_vllm.LLM.from_engine_args.return_value = mock_llm
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.batch.reset_cpu_affinity"),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.reset_cpu_affinity"),
             patch(
-                "guidellm.backends.vllm_python.batch.is_scheduler_worker_process",
+                "roundup.backends.vllm_python.batch.is_scheduler_worker_process",
                 return_value=True,
             ),
         ):
@@ -530,7 +530,7 @@ class TestWorkerBasedPreload:
     def test_is_scheduler_worker_false_in_main(self):
         """Main process is not treated as a scheduler worker. ## WRITTEN BY AI ##"""
         with patch(
-            "guidellm.backends.vllm_python.common.mp.parent_process",
+            "roundup.backends.vllm_python.common.mp.parent_process",
             return_value=None,
         ):
             assert is_scheduler_worker_process() is False
@@ -539,7 +539,7 @@ class TestWorkerBasedPreload:
     def test_is_scheduler_worker_true_in_child(self):
         """Child processes are treated as scheduler workers. ## WRITTEN BY AI ##"""
         with patch(
-            "guidellm.backends.vllm_python.common.mp.parent_process",
+            "roundup.backends.vllm_python.common.mp.parent_process",
             return_value=Mock(),
         ):
             assert is_scheduler_worker_process() is True
@@ -838,8 +838,8 @@ class TestBatchTimeout:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model")
         assert backend._args.batch_timeout == 0.01
@@ -850,8 +850,8 @@ class TestBatchTimeout:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
         ):
             backend = _make_batch_backend(model="test-model", batch_timeout=0.05)
         assert backend._args.batch_timeout == 0.05
@@ -862,8 +862,8 @@ class TestBatchTimeout:
         mock_vllm = MagicMock()
         mock_vllm.SamplingParams = _fake_sampling_params
         with (
-            patch("guidellm.backends.vllm_python.batch.vllm", mock_vllm),
-            patch("guidellm.backends.vllm_python.vllm.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.batch.vllm", mock_vllm),
+            patch("roundup.backends.vllm_python.vllm.vllm", mock_vllm),
             pytest.raises(ValueError),
         ):
             _make_batch_backend(model="test-model", batch_timeout=0)

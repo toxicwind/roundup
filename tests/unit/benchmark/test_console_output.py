@@ -8,13 +8,13 @@ import pytest
 from rich.highlighter import ReprHighlighter
 from rich.text import Text
 
-from guidellm.benchmark.outputs.console import (
+from roundup.benchmark.outputs.console import (
     UNSUPPORTED_PERCENTILE_FOOTNOTE,
     UNSUPPORTED_PERCENTILE_MARKER,
     ConsoleTableColumnsCollection,
     GenerativeBenchmarkerConsole,
 )
-from guidellm.schemas import (
+from roundup.schemas import (
     ConfidenceInterval,
     DistributionSummary,
     Percentiles,

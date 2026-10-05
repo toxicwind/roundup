@@ -12,15 +12,15 @@ from logot import Logot
 from logot.logged import debug, warning
 from pydantic import ValidationError
 
-from guidellm.data.deserializers import DatasetDeserializerFactory
-from guidellm.data.deserializers.trace_common import TraceDatasetDeserializer
-from guidellm.data.schemas import DataNotSupportedError, InvalidRowError
-from guidellm.data.schemas.conversation_graph_data import (
+from roundup.data.deserializers import DatasetDeserializerFactory
+from roundup.data.deserializers.trace_common import TraceDatasetDeserializer
+from roundup.data.schemas import DataNotSupportedError, InvalidRowError
+from roundup.data.schemas.conversation_graph_data import (
     ConversationGraphData,
     ConversationTurnData,
 )
-from guidellm.schemas.data import DEFAULT_SYNTHETIC_TOOLS, WEKATraceFormatArgs
-from guidellm.settings import settings
+from roundup.schemas.data import DEFAULT_SYNTHETIC_TOOLS, WEKATraceFormatArgs
+from roundup.settings import settings
 from tests.unit.data.deserializers.trace_test_utils import trace_file_source
 
 

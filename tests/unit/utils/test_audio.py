@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 import torch
 
-from guidellm.utils import audio as _audio_mod
+from roundup.utils import audio as _audio_mod
 
 
 @pytest.fixture
@@ -104,8 +104,8 @@ def test_encode_audio_with_real_file_path(real_wav_file):
 
 
 @pytest.mark.regression
-@patch("guidellm.utils.audio._encode_audio")
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._encode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_encode_audio_explicit_file_name_overrides_path(
     mock_decoder: MagicMock,
     mock_encode: MagicMock,
@@ -128,8 +128,8 @@ def test_encode_audio_explicit_file_name_overrides_path(
 
 
 @pytest.mark.regression
-@patch("guidellm.utils.audio._encode_audio")
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._encode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_encode_audio_path_defaults_to_basename(
     mock_decoder: MagicMock,
     mock_encode: MagicMock,
@@ -149,8 +149,8 @@ def test_encode_audio_path_defaults_to_basename(
 
 
 @pytest.mark.regression
-@patch("guidellm.utils.audio._encode_audio")
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._encode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_encode_audio_in_memory_defaults_to_resolved_format(
     mock_decoder: MagicMock,
     mock_encode: MagicMock,
@@ -191,8 +191,8 @@ def test_encode_audio_with_dict_input_complete():
     assert result["audio_seconds"] == 1.0
 
 
-@patch("guidellm.utils.audio._encode_audio")
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._encode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_encode_audio_with_url(mock_decoder, mock_encode, sample_audio_tensor):
     """
     URL input: _decode_audio returns codec, format is derived from it.
@@ -237,8 +237,8 @@ def test_encode_audio_different_formats(sample_audio_tensor):
 
 
 @pytest.mark.regression
-@patch("guidellm.utils.audio._encode_audio", return_value=b"encoded_audio")
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._encode_audio", return_value=b"encoded_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_encode_audio_reports_sample_frames_for_non_one_second_audio(
     mock_decode: MagicMock, mock_encode: MagicMock
 ) -> None:
@@ -267,8 +267,8 @@ def test_encode_audio_reports_sample_frames_for_non_one_second_audio(
 
 
 @pytest.mark.regression
-@patch("guidellm.utils.audio._encode_audio", return_value=b"encoded_audio")
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._encode_audio", return_value=b"encoded_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_encode_audio_reports_resampled_output_frames(
     mock_decode: MagicMock, mock_encode: MagicMock
 ) -> None:
@@ -446,7 +446,7 @@ def test_explicit_format_overrides_codec(real_wav_file):
     assert result["mimetype"] == "audio/mp3"
 
 
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_pcm16_append_b64_chunks_rejects_unknown_dict_keys(mock_decode):
     """## WRITTEN BY AI ##"""
     mock_decode.side_effect = AssertionError("_decode_audio should not run")
@@ -454,7 +454,7 @@ def test_pcm16_append_b64_chunks_rejects_unknown_dict_keys(mock_decode):
         _audio_mod.pcm16_append_b64_chunks({"foo": 1})
 
 
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_pcm16_append_b64_chunks_splits_into_multiple_base64_chunks(mock_decode):
     """## WRITTEN BY AI ##"""
     samples = MagicMock()
@@ -468,7 +468,7 @@ def test_pcm16_append_b64_chunks_splits_into_multiple_base64_chunks(mock_decode)
     assert all(isinstance(chunk_b64, str) for chunk_b64 in out)
 
 
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_pcm16_append_b64_chunks_empty_wave_raises(mock_decode):
     """## WRITTEN BY AI ##"""
     samples = MagicMock()
@@ -480,7 +480,7 @@ def test_pcm16_append_b64_chunks_empty_wave_raises(mock_decode):
         _audio_mod.pcm16_append_b64_chunks({"audio": b"x"})
 
 
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_pcm16_append_b64_chunks_downmixes_stereo(mock_decode):
     """## WRITTEN BY AI ##"""
     samples = MagicMock()
@@ -493,7 +493,7 @@ def test_pcm16_append_b64_chunks_downmixes_stereo(mock_decode):
     assert len(out) >= 1
 
 
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_pcm16_append_b64_chunks_audio_dict_passes_outer_sample_rate(mock_decode):
     """## WRITTEN BY AI ##"""
     samples = MagicMock()
@@ -507,7 +507,7 @@ def test_pcm16_append_b64_chunks_audio_dict_passes_outer_sample_rate(mock_decode
     assert mock_decode.call_args.kwargs.get("sample_rate") == 8000
 
 
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_pcm16_append_b64_chunks_sampling_rate_alias(mock_decode):
     """## WRITTEN BY AI ##"""
     samples = MagicMock()
@@ -520,7 +520,7 @@ def test_pcm16_append_b64_chunks_sampling_rate_alias(mock_decode):
     assert mock_decode.call_args.kwargs.get("sample_rate") == 44100
 
 
-@patch("guidellm.utils.audio._decode_audio")
+@patch("roundup.utils.audio._decode_audio")
 def test_pcm16_append_b64_chunks_invalid_decoder_sample_rate_raises(mock_decode):
     """## WRITTEN BY AI ##"""
     samples = MagicMock()

@@ -6,7 +6,7 @@ import pytest
 
 from tests.e2e.conftest import E2EServer
 from tests.e2e.utils import (
-    GuidellmClient,
+    RoundupClient,
     assert_constraint_triggered,
     assert_no_python_exceptions,
     assert_successful_requests_fields,
@@ -24,8 +24,8 @@ def test_max_seconds_benchmark(server: E2EServer, tmp_path: Path):
     report_path = tmp_path / report_name
     rate = 4
     max_seconds = 2
-    # Create and configure the guidellm client
-    client = GuidellmClient(
+    # Create and configure the roundup client
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,
@@ -66,8 +66,8 @@ def test_max_requests_benchmark(server: E2EServer, tmp_path: Path):
     rate = 4
     max_requests = 8
 
-    # Create and configure the guidellm client
-    client = GuidellmClient(
+    # Create and configure the roundup client
+    client = RoundupClient(
         target=server.get_url(),
         output_dir=tmp_path,
         outputs=report_name,

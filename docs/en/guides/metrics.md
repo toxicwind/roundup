@@ -1,6 +1,6 @@
 # Metrics
 
-GuideLLM provides a comprehensive set of metrics to evaluate and optimize the performance of large language model (LLM) deployments. These metrics are designed to help users understand the behavior of their models under various conditions, identify bottlenecks, and make informed decisions about scaling and resource allocation. Below, we outline the key metrics measured by GuideLLM, their definitions, use cases, and how they can be interpreted.
+Roundup provides a comprehensive set of metrics to evaluate and optimize the performance of large language model (LLM) deployments. These metrics are designed to help users understand the behavior of their models under various conditions, identify bottlenecks, and make informed decisions about scaling and resource allocation. Below, we outline the key metrics measured by Roundup, their definitions, use cases, and how they can be interpreted.
 
 ## Request Status Metrics
 
@@ -84,7 +84,7 @@ These metrics provide a breakdown of the overall request statuses, helping users
 ### Turn Scheduling Delay
 
 - **Definition**: `turn_scheduling_delay` is Dispatch Delay minus Turn Predecessor Delay. It is the wait after the request was both due and no longer blocked by a predecessor, including time to deserialize the trace, time spent queued, and worker turnaround. Think time (`requeue_delay`) that runs past the target is included here. Trace replay does not set think time.
-- **Use Case**: Can indicate when GuideLLM could not keep up or the machine was undersized for the benchmark.
+- **Use Case**: Can indicate when Roundup could not keep up or the machine was undersized for the benchmark.
 
 ### Scheduled Latency
 
@@ -127,7 +127,7 @@ Not every metric applies that window the same way:
 - **Request-level metrics**: request totals, request latency, concurrency, and per-request token counts, etc. will include any request whose lifetime overlaps the measurement window, even when the request started during warmup or finished during cooldown.
 - **Event-level metrics**: TTFT, time to first output token (TTFOT), inter-token latency (ITL), and per-token throughput rates will include only events whose timestamps fall inside the window. A request can therefore appear in request totals while some or all of its token events are excluded.
 
-For token latencies specifically, GuideLLM filters on when the event occurs rather than on the whole request span:
+For token latencies specifically, Roundup filters on when the event occurs rather than on the whole request span:
 
 - **TTFT** is included when the interval from request start to first token partially overlaps the measurement window. A request that starts during warmup but streams its first token after warmup ends contributes a TTFT sample; a request whose first token arrives before `measure_start` does not, even if the request completes during the active phase.
 - **TTFOT** uses the first *content* token timestamp (`first_output_token_iteration`), which can differ from TTFT when reasoning or tool tokens precede visible output.
@@ -137,7 +137,7 @@ The purpose of warmup is meant to let the system reach steady state before measu
 
 ## Statistical Summaries
 
-GuideLLM provides detailed statistical summaries for each of the above metrics using the `StatusDistributionSummary` and `DistributionSummary` models. These summaries include the following statistics:
+Roundup provides detailed statistical summaries for each of the above metrics using the `StatusDistributionSummary` and `DistributionSummary` models. These summaries include the following statistics:
 
 ### Summary Statistics
 
@@ -153,7 +153,7 @@ GuideLLM provides detailed statistical summaries for each of the above metrics u
 
 ### Percentiles
 
-GuideLLM calculates a comprehensive set of percentiles for each metric, including:
+Roundup calculates a comprehensive set of percentiles for each metric, including:
 
 - **0.1th Percentile (p001)**: The value below which 0.1% of the data falls.
 - **1st Percentile (p01)**: The value below which 1% of the data falls.
@@ -168,7 +168,7 @@ GuideLLM calculates a comprehensive set of percentiles for each metric, includin
 
 ### Confidence Intervals
 
-Each summary statistic above is an estimate made from a finite number of requests, and GuideLLM reports how precisely each one was measured alongside the value itself.
+Each summary statistic above is an estimate made from a finite number of requests, and Roundup reports how precisely each one was measured alongside the value itself.
 
 - **`mean_ci`**: A two-sided confidence interval for the mean.
 - **`percentile_cis`**: A confidence interval for each reported percentile, or `null` where the run is too short to place one.
@@ -203,7 +203,7 @@ The interval describes how precisely this run measured its own conditions, treat
 - **Min and Max**: Highlight the range of the metric values.
 - **Percentiles**: Offer a detailed view of the distribution, helping identify outliers and performance at different levels of service.
 
-By combining these metrics and statistical summaries, GuideLLM enables users to gain a deep understanding of their LLM deployments, optimize performance, and ensure scalability and cost-effectiveness.
+By combining these metrics and statistical summaries, Roundup enables users to gain a deep understanding of their LLM deployments, optimize performance, and ensure scalability and cost-effectiveness.
 
 ## Applicability of Dispatch Delay and Scheduled Latency
 
