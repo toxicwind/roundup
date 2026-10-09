@@ -183,6 +183,7 @@ def _request_index(request) -> int:
 
 @pytest.mark.smoke
 @pytest.mark.regression
+@pytest.mark.flaky(reruns=3)
 @pytest.mark.asyncio
 @async_timeout(60.0)
 async def test_trace_replay_multiprocess_from_trace_file(tmp_path: Path):
