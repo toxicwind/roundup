@@ -2,1090 +2,1090 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://toxicwind.github.io/roundup/main/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/developer/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/developer/code-of-conduct/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/developer/contributing/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/developer/developing/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/developer/translations/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/examples/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/examples/custom-jsonl-dataset/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/examples/kubernetes-openshift-job/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/examples/practice_on_vllm_simulator/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/getting-started/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/getting-started/analyze/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/getting-started/benchmark/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/getting-started/install/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/getting-started/server/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/architecture/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/backends/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/datasets/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/embeddings/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/geospatial/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/metrics/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/multiturn/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/outputs/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/over_saturation_stopping/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/service_level_objectives/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/tool_calling/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/trace_replay/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/troubleshooting/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/v0.7.0_migration_guide/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/vllm-python-backend/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/vllm-python-batch-backend/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/multimodal/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/multimodal/audio/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/multimodal/image/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/multimodal/synthetic_vision/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/guides/multimodal/video/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/entrypoints/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/logger/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/settings/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/version/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/backend/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/openai/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/openai/common/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/openai/http/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/openai/request_handlers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/openai/websocket/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/vllm_python/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/vllm_python/batch/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/vllm_python/common/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/vllm_python/vllm/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/backends/vllm_python/vllm_response/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/benchmarker/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/entrypoints/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/progress/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/console/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/csv/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/html/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/output/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/plot/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/serialized/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/outputs/html_report/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/asynchronous/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/concurrent/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/goodput/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/profile/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/replay/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/sweep/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/synchronous/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/profiles/throughput/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/scenarios/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/schemas/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/schemas/accumulator/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/schemas/base/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/schemas/benchmark/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/schemas/metrics/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/schemas/report/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/scoring/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/scoring/adapters/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/scoring/instruction/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/scoring/protocol/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/benchmark/scoring/registry/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/cli/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/cli/env/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/cli/export/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/cli/mock_server/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/cli/run/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/cli/preprocess/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/cli/preprocess/dataset/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/builders/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/config/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/entrypoints/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/deserializer/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/file/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/huggingface/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/memory/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/synthetic/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/synthetic_image/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/synthetic_video/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/trace_common/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/trace_minimal/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/trace_mooncake/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/trace_otel/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/trace_session_timing/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/deserializers/trace_weka/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/finalizers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/finalizers/conversation_graph/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/finalizers/finalizer/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/finalizers/generative/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/loaders/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/loaders/loader/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/loaders/torch/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/preprocessors/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/preprocessors/encoders/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/preprocessors/mappers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/preprocessors/preprocessor/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/preprocessors/tool_calling/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/preprocessors/turn_pivot/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/schemas/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/schemas/base/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/schemas/conversation_graph_data/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/tokenizers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/tokenizers/huggingface/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/tokenizers/tokenizer/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/utils/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/data/utils/dataset/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/extras/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/extras/audio/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/extras/numpy/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/extras/plot/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/extras/torch/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/extras/vision/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/extras/vllm/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/models/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/multimodal/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/server/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/utils/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/handlers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/handlers/chat_completions/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/handlers/completions/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/handlers/responses/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/mock_server/handlers/tokenizer/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/dag/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/environments/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/scheduler/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/strategies/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/worker/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/worker_group/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/constraints/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/constraints/constraint/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/constraints/error/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/constraints/factory/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/constraints/request/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/constraints/saturation/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/schemas/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/schemas/backend/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/schemas/conversation/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/schemas/conversation_graph/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/schemas/state/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/scheduler/schemas/types/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/backends/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/backends/backend/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/backends/openai_http/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/backends/openai_websocket/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/backends/vllm_python/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/backends/vllm_python_batch/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/base/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/info/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/request/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/request_stats/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/response/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/statistics/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/base/tool_call/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/entrypoints/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/goodput/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/random/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/transient/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/outputs/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/outputs/console/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/outputs/csv/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/outputs/html/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/outputs/output/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/outputs/plot/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/outputs/serialized/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/asynchronous/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/concurrent/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/goodput/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/profile/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/replay/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/sweep/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/synchronous/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/profiles/throughput/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/benchmark/scenarios/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/cli/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/cli/preprocess/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/entrypoints/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/preprocess/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/file/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/huggingface/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/memory/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/synthetic/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/synthetic_image/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/synthetic_video/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/trace_common/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/trace_minimal/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/trace_mooncake/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/trace_otel/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/deserializers/trace_weka/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/finalizers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/finalizers/generative/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/loaders/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/loaders/torch/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/preprocessors/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/preprocessors/encoders/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/preprocessors/mappers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/preprocessors/tool_calling/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/preprocessors/turn_pivot/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/tokenizers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/data/tokenizers/huggingface/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/mock_server/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/mock_server/config/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/scheduler/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/scheduler/constraints/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/scheduler/constraints/args/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/scheduler/constraints/error/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/scheduler/constraints/request/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/schemas/scheduler/constraints/saturation/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/arg_string/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/audio/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/auto_importer/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/cli/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/click_pydantic/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/colors/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/console/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/default_group/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/dict/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/encoding/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/env_validator/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/functions/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/hf_datasets/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/hf_transformers/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/imports/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/lazy_loader/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/messaging/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/mixins/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/pipe_stdout/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/random/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/registry/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/singleton/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/statistics/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/synchronous/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/text/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/typing/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/reference/roundup/utils/vision/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/zh/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
     <url>
          <loc>https://toxicwind.github.io/roundup/main/zh/getting-started/install/</loc>
-         <lastmod>2026-10-05</lastmod>
+         <lastmod>2026-10-09</lastmod>
     </url>
 </urlset>
