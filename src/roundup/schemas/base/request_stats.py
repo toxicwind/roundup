@@ -90,6 +90,7 @@ class GenerativeRequestStats(StandardBaseDict):
             if not data.get(key):
                 data.pop(key, None)
         return data
+
     info: RequestInfo = Field(description="Request metadata and timing information")
     input_metrics: UsageMetrics = Field(
         description="Token usage statistics for the input prompt"

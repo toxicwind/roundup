@@ -7,6 +7,9 @@ from roundup.schemas.data.tokenizers import HuggingFaceTokenizerArgs
 
 __all__ = ["HuggingFaceTokenizer"]
 
+_HTTP_UNAUTHORIZED = 401
+_HTTP_NOT_FOUND = 404
+
 
 def _classify_load_error(model: str, err: Exception) -> str:
     """Turn an AutoTokenizer.from_pretrained failure into an actionable message.
@@ -56,13 +59,13 @@ def _classify_load_error(model: str, err: Exception) -> str:
             "--tokenizer kind=huggingface_auto,model=<org>/<repo>."
         )
     status = getattr(getattr(err, "response", None), "status_code", None)
-    if status == 401 or "401 client error" in low:
+    if status == _HTTP_UNAUTHORIZED or "401 client error" in low:
         return (
             f"Unauthorized (HTTP 401) loading the tokenizer for {model!r}. "
             "The repo may be gated or private: accept its terms and set "
             "HF_TOKEN or HUGGING_FACE_HUB_TOKEN."
         )
-    if status == 404 or "404 client error" in low:
+    if status == _HTTP_NOT_FOUND or "404 client error" in low:
         return (
             f"Tokenizer files for {model!r} were not found (HTTP 404). "
             "Check the repo id for typos, or pass an explicit tokenizer repo, e.g. "
@@ -88,12 +91,15 @@ class HuggingFaceTokenizer(DataTokenizer):
     def __call__(self) -> PreTrainedTokenizerBase:
         if self._tokenizer is not None:
             return self._tokenizer
+        model = self._config.model
+        if model is None:
+            raise ValueError("The 'name' field must be provided")
         try:
             from_pretrained = AutoTokenizer.from_pretrained(
-                self._config.model,
+                model,
                 **self._config.load_kwargs,
             )
         except Exception as err:
-            raise ValueError(_classify_load_error(self._config.model, err)) from err
+            raise ValueError(_classify_load_error(model, err)) from err
         self._tokenizer = from_pretrained
         return from_pretrained

@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import uuid
 from abc import ABC
-from collections.abc import AsyncIterator, Awaitable
+from collections.abc import AsyncIterator
 from typing import Any, Generic
 
 from roundup.benchmark.profiles import Profile

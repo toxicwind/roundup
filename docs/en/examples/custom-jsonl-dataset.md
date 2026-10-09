@@ -68,7 +68,7 @@ roundup run \
 
 | Argument                                                           | Purpose                                                                                                |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `--backend kind=openai_http,target=...`                            | Points Roundup at your OpenAI-compatible predictor endpoint.                                          |
+| `--backend kind=openai_http,target=...`                            | Points Roundup at your OpenAI-compatible predictor endpoint.                                           |
 | `--data kind=json_file,path=...`                                   | Loads prompts from the local JSONL file.                                                               |
 | `--tokenizer kind=huggingface_auto,model=/home/<USERNAME>/mistral` | Loads the tokenizer from the local directory, the 3 files from step 1, instead of downloading a model. |
 | `--profile kind=concurrent,streams=100`                            | Simulates 100 concurrent "users" hitting the endpoint at once.                                         |

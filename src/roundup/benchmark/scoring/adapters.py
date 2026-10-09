@@ -12,7 +12,7 @@ from typing import Any
 
 from .protocol import Scorer, ScorerResult
 
-__all__ = ["strip_thinking_blocks", "ThinkingBlockStripper"]
+__all__ = ["ThinkingBlockStripper", "strip_thinking_blocks"]
 
 DEFAULT_TAGS = ("think", "thinking", "reasoning", "thought", "scratchpad")
 
@@ -52,9 +52,7 @@ def _remove_blocks(text: str, tags: tuple[str, ...]) -> tuple[str, bool]:
                 break
             stripped = new
         # Orphan closing tags (malformed/nesting residue): remove the tag.
-        new, n = re.subn(
-            r"</" + tag + r"\s*>", "", stripped, flags=re.IGNORECASE
-        )
+        new, n = re.subn(r"</" + tag + r"\s*>", "", stripped, flags=re.IGNORECASE)
         stripped, stripped_any = new, stripped_any or n > 0
         # Self-closing tag (<tag/>): an empty element. Remove the tag
         # alone; following content is real answer text, never thinking.

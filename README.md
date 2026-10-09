@@ -2,11 +2,7 @@
 
 <div align="right">
 
-[![License](https://img.shields.io/github/license/toxicwind/roundup?style=for-the-badge)](LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/roundup?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/roundup/)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://pypi.org/project/roundup/)
-[![Nightly Build](https://img.shields.io/github/actions/workflow/status/toxicwind/roundup/nightly.yml?branch=main&label=Nightly%20Build&style=for-the-badge)](https://github.com/toxicwind/roundup/actions/workflows/nightly.yml)
-[![Docs](https://img.shields.io/badge/Docs-mkdocs-1BC070?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://toxicwind.github.io/roundup)
+[![License](https://img.shields.io/github/license/toxicwind/roundup?style=for-the-badge)](LICENSE) [![PyPI](https://img.shields.io/pypi/v/roundup?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/roundup/) [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://pypi.org/project/roundup/) [![Nightly Build](https://img.shields.io/github/actions/workflow/status/toxicwind/roundup/nightly.yml?branch=main&label=Nightly%20Build&style=for-the-badge)](https://github.com/toxicwind/roundup/actions/workflows/nightly.yml) [![Docs](https://img.shields.io/badge/Docs-mkdocs-1BC070?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://toxicwind.github.io/roundup)
 
 </div>
 
@@ -103,6 +99,7 @@ roundup run --backend kind=openai_http,target=http://localhost:8000 \
   --constraint kind=max_requests,count=100 \
   --data kind=synthetic_text,prompt_tokens=64,output_tokens=32
 ```
+
 Specifying `--output` replaces the default JSON and CSV outputs. See [output configuration](docs/en/guides/outputs.md#cli-output-configuration) for examples of selecting formats, including generating HTML alongside JSON and CSV.
 
 ## Output Files and Reports
@@ -198,16 +195,16 @@ See [Synthetic Visual Data](docs/en/guides/multimodal/synthetic_vision.md) for t
 
 **Key knobs** (full reference: `roundup run --help`)
 
-| Flag | Meaning |
-| --- | --- |
-| `--backend kind=<TYPE>,<CONFIG>…` | Backend type + config, e.g. `openai_http,target=…`, `request_format=/v1/chat/completions` |
-| `--profile kind=<type>,…` | Traffic pattern: `synchronous`, `concurrent`, `throughput`, `constant`, `poisson`, `sweep` |
-| `--constraint kind=<type>,…` | `max_duration`, `max_requests`, `max_errors`, `over_saturation` |
-| `--data kind=<type>,…` | `synthetic_text`, `synthetic_image`, `synthetic_video`, `huggingface`, `json_file`, `csv_file`, `text_file`, `trace_synthetic`… |
-| `--data-column-mapper` | Column-mapping preprocessor, e.g. `kind=generative_column_mapper,column_mappings.text_column=article` |
-| `--tokenizer` | Tokenizer for synthetic data / local counting, e.g. `huggingface_auto "model=gpt2"` |
-| `--config` (`-c`, `--scenario`) | Built-in scenario name or path to a custom scenario file |
-| `--output` | Replace default JSON+CSV outputs (add HTML, plots, …) |
+| Flag                              | Meaning                                                                                                                         |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `--backend kind=<TYPE>,<CONFIG>…` | Backend type + config, e.g. `openai_http,target=…`, `request_format=/v1/chat/completions`                                       |
+| `--profile kind=<type>,…`         | Traffic pattern: `synchronous`, `concurrent`, `throughput`, `constant`, `poisson`, `sweep`                                      |
+| `--constraint kind=<type>,…`      | `max_duration`, `max_requests`, `max_errors`, `over_saturation`                                                                 |
+| `--data kind=<type>,…`            | `synthetic_text`, `synthetic_image`, `synthetic_video`, `huggingface`, `json_file`, `csv_file`, `text_file`, `trace_synthetic`… |
+| `--data-column-mapper`            | Column-mapping preprocessor, e.g. `kind=generative_column_mapper,column_mappings.text_column=article`                           |
+| `--tokenizer`                     | Tokenizer for synthetic data / local counting, e.g. `huggingface_auto "model=gpt2"`                                             |
+| `--config` (`-c`, `--scenario`)   | Built-in scenario name or path to a custom scenario file                                                                        |
+| `--output`                        | Replace default JSON+CSV outputs (add HTML, plots, …)                                                                           |
 
 ## Fork addition: response-quality scoring
 
@@ -215,12 +212,12 @@ Roundup natively measures latency, throughput, and token distributions — it ne
 
 ### Scorers
 
-| Module | Role |
-| --- | --- |
-| `roundup.benchmark.scoring.protocol` | `Scorer` protocol: `name`, `score(output, expected=None, context=None) -> ScorerResult(score, details)` |
-| `roundup.benchmark.scoring.registry` | `register_scorer` / `get_scorer` — scorers referenced by name in scenario config |
-| `roundup.benchmark.scoring.instruction` | `InstructionFollowingScorer` — deterministic sentinel scoring: exact normalized match = `2.0`, sentinel present with extra text = `1.0`, missing/empty/error = `0.0` |
-| `roundup.benchmark.scoring.adapters` | `ThinkingBlockStripper` — strips `<think>`, `<thinking>`, `<reasoning>`, `<thought>`, `<scratchpad>`, and fenced thinking blocks (true nesting, innermost-first) before delegating; reports under `<scorer>_nothink` with `stripped: bool` |
+| Module                                  | Role                                                                                                                                                                                                                                       |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `roundup.benchmark.scoring.protocol`    | `Scorer` protocol: `name`, `score(output, expected=None, context=None) -> ScorerResult(score, details)`                                                                                                                                    |
+| `roundup.benchmark.scoring.registry`    | `register_scorer` / `get_scorer` — scorers referenced by name in scenario config                                                                                                                                                           |
+| `roundup.benchmark.scoring.instruction` | `InstructionFollowingScorer` — deterministic sentinel scoring: exact normalized match = `2.0`, sentinel present with extra text = `1.0`, missing/empty/error = `0.0`                                                                       |
+| `roundup.benchmark.scoring.adapters`    | `ThinkingBlockStripper` — strips `<think>`, `<thinking>`, `<reasoning>`, `<thought>`, `<scratchpad>`, and fenced thinking blocks (true nesting, innermost-first) before delegating; reports under `<scorer>_nothink` with `stripped: bool` |
 
 ### Wiring it in a scenario
 
@@ -245,35 +242,35 @@ metrics:
 
 Grounded in `src/roundup/` — the component chain mirrors [`docs/en/guides/architecture.md`](docs/en/guides/architecture.md):
 
-| Directory | Role |
-| --- | --- |
-| `benchmark/` | `Benchmarker` (aggregates per-benchmark schedulers), `BenchmarkAggregator`, profiles, scenarios, output writers (`outputs/` incl. self-contained HTML report), and the fork's `scoring/` module |
-| `scheduler/` | Multiprocessing/asyncio request scheduler — strategies, worker pool, constraints, DAG of benchmark environments |
-| `backends/` | Backend implementations: `openai` (HTTP, incl. websocket audio) and `vllm_python` (in-process vLLM API) |
-| `data/` | Dataset loading, synthetic generators (text/image/video/audio), tokenizers, multimodal preprocessors |
-| `schemas/` | Pydantic configs for benchmark specs, scenarios (`*.json` scenario files), and requests |
-| `cli/` | Click CLI: `run`, `export`, `preprocess`, `mock-server`, `env` |
-| `mock_server/` | OpenAI-compatible mock server for pipeline testing |
-| `settings.py` | `ROUNDUP__*` env-var configuration (e.g. `ROUNDUP__SPEC__BACKEND`, `ROUNDUP__DEFAULT_RESULTS_DIR`) |
+| Directory      | Role                                                                                                                                                                                            |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `benchmark/`   | `Benchmarker` (aggregates per-benchmark schedulers), `BenchmarkAggregator`, profiles, scenarios, output writers (`outputs/` incl. self-contained HTML report), and the fork's `scoring/` module |
+| `scheduler/`   | Multiprocessing/asyncio request scheduler — strategies, worker pool, constraints, DAG of benchmark environments                                                                                 |
+| `backends/`    | Backend implementations: `openai` (HTTP, incl. websocket audio) and `vllm_python` (in-process vLLM API)                                                                                         |
+| `data/`        | Dataset loading, synthetic generators (text/image/video/audio), tokenizers, multimodal preprocessors                                                                                            |
+| `schemas/`     | Pydantic configs for benchmark specs, scenarios (`*.json` scenario files), and requests                                                                                                         |
+| `cli/`         | Click CLI: `run`, `export`, `preprocess`, `mock-server`, `env`                                                                                                                                  |
+| `mock_server/` | OpenAI-compatible mock server for pipeline testing                                                                                                                                              |
+| `settings.py`  | `ROUNDUP__*` env-var configuration (e.g. `ROUNDUP__SPEC__BACKEND`, `ROUNDUP__DEFAULT_RESULTS_DIR`)                                                                                              |
 
 **Backend support:** OpenAI-compatible HTTP servers (any vendor, incl. vLLM) via `openai_http`, and in-process vLLM via `vllm_python`. Endpoints covered: `/completions`, `/chat/completions`, `/embeddings`, `/audio/transcriptions`, `/audio/translations`. **Outputs:** console, JSON, CSV, HTML, plots. **Container:** multi-arch images at `ghcr.io/toxicwind/roundup` (`linux/amd64` + `linux/arm64`):
 
-| Tag | Meaning |
-| --- | --- |
-| `vX.Y.Z` | Immutable release (multi-arch from `v0.7.0+`) |
-| `stable` | Newest full release |
-| `latest` | Newest release tag (may include pre-releases) |
-| `nightly` | Tip of `main` |
+| Tag       | Meaning                                       |
+| --------- | --------------------------------------------- |
+| `vX.Y.Z`  | Immutable release (multi-arch from `v0.7.0+`) |
+| `stable`  | Newest full release                           |
+| `latest`  | Newest release tag (may include pre-releases) |
+| `nightly` | Tip of `main`                                 |
 
 ## Comparison
 
-| Tool | CLI | API | High Perf | Full Metrics | Data Modalities | Profiles | Backends | Output Types |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **Roundup** | ✅ | ✅ | ✅ | ❌ | Text, Image, Audio, Video | Synchronous, Concurrent, Throughput, Constant, Poisson, Sweep | OpenAI-compatible | console, json, csv, html |
-| [inference-perf](https://github.com/kubernetes-sigs/inference-perf) | ✅ | ❌ | ✅ | ❌ | Text | Concurrent, Constant, Poisson, Sweep | OpenAI-compatible | json, png |
-| [genai-bench](https://github.com/sgl-project/genai-bench) | ✅ | ❌ | ❌ | ❌ | Text, Image, Embedding, ReRank | Concurrent | OpenAI-compatible, Hosted Cloud | console, xlsx, png |
-| [llm-perf](https://github.com/ray-project/llmperf) | ❌ | ❌ | ✅ | ❌ | Text | Concurrent | OpenAI-compatible, Hosted Cloud | json |
-| [vllm/benchmarks](https://github.com/vllm-project/vllm/tree/main/benchmarks) | ✅ | ❌ | ❌ | ❌ | Text | Synchronous, Throughput, Constant, Sweep | OpenAI-compatible, vLLM API | console, png |
+| Tool                                                                         | CLI | API | High Perf | Full Metrics | Data Modalities                | Profiles                                                      | Backends                        | Output Types             |
+| ---------------------------------------------------------------------------- | --- | --- | --------- | ------------ | ------------------------------ | ------------------------------------------------------------- | ------------------------------- | ------------------------ |
+| **Roundup**                                                                  | ✅  | ✅  | ✅        | ❌           | Text, Image, Audio, Video      | Synchronous, Concurrent, Throughput, Constant, Poisson, Sweep | OpenAI-compatible               | console, json, csv, html |
+| [inference-perf](https://github.com/kubernetes-sigs/inference-perf)          | ✅  | ❌  | ✅        | ❌           | Text                           | Concurrent, Constant, Poisson, Sweep                          | OpenAI-compatible               | json, png                |
+| [genai-bench](https://github.com/sgl-project/genai-bench)                    | ✅  | ❌  | ❌        | ❌           | Text, Image, Embedding, ReRank | Concurrent                                                    | OpenAI-compatible, Hosted Cloud | console, xlsx, png       |
+| [llm-perf](https://github.com/ray-project/llmperf)                           | ❌  | ❌  | ✅        | ❌           | Text                           | Concurrent                                                    | OpenAI-compatible, Hosted Cloud | json                     |
+| [vllm/benchmarks](https://github.com/vllm-project/vllm/tree/main/benchmarks) | ✅  | ❌  | ❌        | ❌           | Text                           | Synchronous, Throughput, Constant, Sweep                      | OpenAI-compatible, vLLM API     | console, png             |
 
 Roundup is the only one in the table with both a Python API and full latency distributions (TTFT/ITL), and this fork adds response-quality scoring that none of them measure.
 
@@ -322,6 +319,7 @@ Standards: Black formatting, Ruff linting, Mypy type checking, pytest unit tests
 **Active development:** OTEL/WEKA trace replay; standard-workflow scenario improvements; stackable scenario files; per-benchmark constraint overrides; gRPC backend for vLLM-native servers.
 
 ## Docs
+
 Full reference at [toxicwind.github.io/roundup](https://toxicwind.github.io/roundup) and in [`docs/en/`](docs/en/):
 
 - [**Installation Guide**](https://github.com/toxicwind/roundup/blob/main/docs/en/getting-started/install.md) - This guide provides step-by-step instructions for installing Roundup, including prerequisites and setup tips.

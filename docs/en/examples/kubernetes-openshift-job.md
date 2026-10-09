@@ -209,15 +209,15 @@ spec:
 
 The example is written to pass restricted Pod Security Standards / restricted-v2 SCC:
 
-| Control         | Setting                                                                                                                        |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Non-root        | `runAsNonRoot: true`, no privileged SCC needed                                                                                 |
-| Capabilities    | `drop: [ALL]`, `allowPrivilegeEscalation: false`                                                                               |
+| Control         | Setting                                                                                                                       |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Non-root        | `runAsNonRoot: true`, no privileged SCC needed                                                                                |
+| Capabilities    | `drop: [ALL]`, `allowPrivilegeEscalation: false`                                                                              |
 | Root filesystem | `readOnlyRootFilesystem: true` — writable paths are explicit `emptyDir` mounts (`/home/roundup`, `/tmp`) plus the results PVC |
-| Seccomp         | `RuntimeDefault`                                                                                                               |
-| Service account | `automountServiceAccountToken: false` — the client needs no Kubernetes API access                                              |
-| Host access     | No `hostNetwork`, `hostPID`, or host mounts                                                                                    |
-| GPUs            | None requested — GPUs belong to the serve Deployment, not the benchmark client                                                 |
+| Seccomp         | `RuntimeDefault`                                                                                                              |
+| Service account | `automountServiceAccountToken: false` — the client needs no Kubernetes API access                                             |
+| Host access     | No `hostNetwork`, `hostPID`, or host mounts                                                                                   |
+| GPUs            | None requested — GPUs belong to the serve Deployment, not the benchmark client                                                |
 
 Additional hardening you may want per your environment:
 
@@ -235,17 +235,17 @@ Additional hardening you may want per your environment:
 
 ## Customization cheat sheet
 
-| Flag (in `args`)                                   | Typical use                                                        |
-| -------------------------------------------------- | ------------------------------------------------------------------ |
+| Flag (in `args`)                                   | Typical use                                                       |
+| -------------------------------------------------- | ----------------------------------------------------------------- |
 | `--backend kind=openai_http`                       | Backend type; the URL comes from `ROUNDUP__SPEC__BACKEND__TARGET` |
-| `--profile kind=concurrent,streams=4`              | `concurrent` / `constant` / `sweep` / …                            |
-| `--constraint kind=max_duration,seconds=600`       | `max_duration` and/or `max_requests` [repeatable]                  |
-| `--data kind=synthetic_text,prompt_tokens=256`     | `synthetic_text` or Hugging Face / file sources [repeatable]       |
-| `--data-loader kind=pytorch,samples=200`           | Clip how many dataset rows are loaded                              |
-| `--output kind=json,path=/results/benchmarks.json` | `json` / `csv` / `html` / `yaml` / `console` [repeatable]          |
+| `--profile kind=concurrent,streams=4`              | `concurrent` / `constant` / `sweep` / …                           |
+| `--constraint kind=max_duration,seconds=600`       | `max_duration` and/or `max_requests` [repeatable]                 |
+| `--data kind=synthetic_text,prompt_tokens=256`     | `synthetic_text` or Hugging Face / file sources [repeatable]      |
+| `--data-loader kind=pytorch,samples=200`           | Clip how many dataset rows are loaded                             |
+| `--output kind=json,path=/results/benchmarks.json` | `json` / `csv` / `html` / `yaml` / `console` [repeatable]         |
 
-| Env var                            | Typical use                           |
-| ---------------------------------- | ------------------------------------- |
+| Env var                           | Typical use                           |
+| --------------------------------- | ------------------------------------- |
 | `ROUNDUP__SPEC__BACKEND__TARGET`  | Endpoint URL — often from a ConfigMap |
 | `ROUNDUP__SPEC__BACKEND__API_KEY` | Endpoint credential — from a Secret   |
 | `ROUNDUP__DEFAULT_RESULTS_DIR`    | Defaults to `/results` in the image   |

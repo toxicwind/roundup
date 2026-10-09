@@ -15,11 +15,12 @@ from __future__ import annotations
 import random
 import time
 from collections.abc import Callable
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import Field, PrivateAttr
 
 from roundup.benchmark.schemas.base import BenchmarkAccumulator, BenchmarkConfig
+from roundup.benchmark.scoring import resolve_scorers
 from roundup.scheduler import SchedulerState
 from roundup.schemas import (
     GenerationRequest,
@@ -866,8 +867,6 @@ class GenerativeBenchmarkAccumulator(
 
         # Resolve the scorer pipeline once per benchmark run. Unknown names
         # raise KeyError here (fail fast) rather than mid-run.
-        from roundup.benchmark.scoring import resolve_scorers
-
         self._scorers = resolve_scorers(self.config.scorers, self.config.scorer_config)
 
     def update_estimate(

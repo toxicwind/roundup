@@ -105,8 +105,8 @@ Assisted-by: GitHub Copilot gpt-4o
 
 Shared [Agent Skills](https://agentskills.io/specification) live under `.agents/skills/` (the cross-client convention). Cursor loads that path natively; Claude Code follows the tracked `.claude/skills` symlink to the same directory.
 
-| Skill                                                                        | Purpose                                                                                                                                                         |
-| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Skill                                                                      | Purpose                                                                                                                                                        |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`roundup-weekly-summary`](.agents/skills/roundup-weekly-summary/SKILL.md) | Generate an externally shareable nested-list summary of Roundup GitHub activity for the past week (`scripts/fetch_activity.sh` gathers PR/issue JSON via `gh`) |
 
 Ask for a weekly summary, team activity update, or status digest of Roundup to invoke it. Requires the `gh` CLI authenticated for `toxicwind/roundup`.

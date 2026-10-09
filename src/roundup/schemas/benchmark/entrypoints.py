@@ -173,7 +173,12 @@ class GenerativeMetricsArgs(MetricsArgs):
             "(use valid JSON with double quotes)."
         ),
         examples=[
-            {"instruction_following": {"sentinel": "ABSTRACT-7X3Q", "strip_thinking": True}}
+            {
+                "instruction_following": {
+                    "sentinel": "ABSTRACT-7X3Q",
+                    "strip_thinking": True,
+                }
+            }
         ],
         json_schema_extra={"argument_alias": "scorer-config"},
     )

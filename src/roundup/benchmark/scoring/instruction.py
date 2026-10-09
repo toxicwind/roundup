@@ -61,7 +61,7 @@ class InstructionFollowingScorer:
         self,
         output: str,
         expected: str | None = None,
-        context: dict[str, Any] | None = None,
+        context: dict[str, Any] | None = None,  # noqa: ARG002 - part of the Scorer protocol signature
     ) -> ScorerResult:
         sentinel = expected if expected is not None else self.sentinel
         details: dict[str, Any] = {"sentinel": sentinel}

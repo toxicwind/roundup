@@ -950,9 +950,7 @@ class TestVLLMLifecycle:
         mock_engine = Mock()
         with (
             patch("roundup.backends.vllm_python.vllm.vllm") as mock_vllm,
-            patch(
-                "roundup.backends.vllm_python.vllm.reset_cpu_affinity"
-            ) as mock_reset,
+            patch("roundup.backends.vllm_python.vllm.reset_cpu_affinity") as mock_reset,
         ):
             mock_vllm.AsyncEngineArgs.return_value = Mock()
             mock_vllm.AsyncLLMEngine.from_engine_args = Mock(return_value=mock_engine)

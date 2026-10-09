@@ -49,12 +49,9 @@ def _fail_with(monkeypatch: pytest.MonkeyPatch, exc: Exception):
 def test_invalid_repo_id_suggests_explicit_tokenizer(monkeypatch):
     """'qwen3:4b'-style names get an actionable message, not a raw traceback."""
     _fail_with(monkeypatch, HFValidationError("bad repo id"))
-    with pytest.raises(ValueError, match="not a valid Hugging Face repo id"):
+    with pytest.raises(ValueError, match="not a valid Hugging Face repo id") as excinfo:
         _tokenizer("qwen3:4b")()
-    try:
-        _tokenizer("qwen3:4b")()
-    except ValueError as err:
-        assert "--tokenizer kind=huggingface_auto,model=" in str(err)
+    assert "--tokenizer kind=huggingface_auto,model=" in str(excinfo.value)
 
 
 @pytest.mark.sanity

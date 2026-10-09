@@ -118,7 +118,12 @@ class BenchmarkConfig(StandardBaseDict):
             "so reasoning models are graded on their answer text."
         ),
         examples=[
-            {"instruction_following": {"sentinel": "ABSTRACT-7X3Q", "strip_thinking": True}}
+            {
+                "instruction_following": {
+                    "sentinel": "ABSTRACT-7X3Q",
+                    "strip_thinking": True,
+                }
+            }
         ],
     )
 
@@ -134,6 +139,7 @@ class BenchmarkConfig(StandardBaseDict):
             if not data.get(key):
                 data.pop(key, None)
         return data
+
     confidence: float | None = Field(
         default=0.95,
         gt=0.0,

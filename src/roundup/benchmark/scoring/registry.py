@@ -9,10 +9,10 @@ from typing import Any
 from .protocol import Scorer
 
 __all__ = [
-    "register_scorer",
-    "register_scorer_factory",
     "get_scorer",
     "list_scorers",
+    "register_scorer",
+    "register_scorer_factory",
 ]
 
 _lock = threading.Lock()

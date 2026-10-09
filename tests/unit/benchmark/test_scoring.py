@@ -1,7 +1,14 @@
 """Unit tests for pluggable response-quality scoring."""
 
+from types import SimpleNamespace
+
 import pytest
 
+from roundup.benchmark.schemas import (
+    BenchmarkConfig,
+    GenerativeBenchmark,
+    GenerativeBenchmarkAccumulator,
+)
 from roundup.benchmark.scoring import (
     InstructionFollowingScorer,
     ScorerResult,
@@ -12,6 +19,14 @@ from roundup.benchmark.scoring import (
     resolve_scorers,
     strip_thinking_blocks,
 )
+from roundup.scheduler import ConcurrentStrategy, SchedulerState
+from roundup.schemas import (
+    GenerativeRequestStats,
+    RequestInfo,
+    RequestTimings,
+    UsageMetrics,
+)
+from roundup.schemas.benchmark.entrypoints import GenerativeMetricsArgs
 
 SENTINEL = "ABSTRACT-7X3Q"
 
@@ -87,7 +102,9 @@ def test_instruction_result_carries_scorer_name():
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("tag", ["think", "thinking", "reasoning", "thought", "scratchpad"])
+@pytest.mark.parametrize(
+    "tag", ["think", "thinking", "reasoning", "thought", "scratchpad"]
+)
 def test_strip_thinking_blocks_each_tag(tag):
     text = f"before <{tag}>internal monologue</{tag}> after"
     assert strip_thinking_blocks(text) == "before  after"
@@ -288,10 +305,6 @@ def test_resolve_scorers_without_strip_thinking_flag():
 
 
 def _make_accumulator(scorers):
-    from types import SimpleNamespace
-
-    from roundup.benchmark.schemas.accumulator import GenerativeBenchmarkAccumulator
-
     # model_construct runs model_post_init, which needs these config attrs.
     config = SimpleNamespace(sample_size=None, scorers=[], scorer_config={})
     acc = GenerativeBenchmarkAccumulator.model_construct(config=config)
@@ -302,17 +315,13 @@ def _make_accumulator(scorers):
 
 
 def _make_stats(output):
-    from roundup.schemas.base.request_stats import GenerativeRequestStats
-
     return GenerativeRequestStats.model_construct(
         output=output, scores={}, score_details={}
     )
 
 
 def test_score_request_records_scores_and_totals():
-    acc = _make_accumulator(
-        [InstructionFollowingScorer(sentinel=SENTINEL)]
-    )
+    acc = _make_accumulator([InstructionFollowingScorer(sentinel=SENTINEL)])
     stats = _make_stats(SENTINEL)
     acc._score_request(stats)
     assert stats.scores == {"instruction_following": 2.0}
@@ -338,7 +347,8 @@ def test_score_request_empty_output_scores_zero():
     assert stats.scores == {"instruction_following": 0.0}
     assert stats.score_details["instruction_following"]["match"] == "none"
     total = acc.quality_totals["instruction_following"]
-    assert total["n"] == 1.0 and total["sum"] == 0.0
+    assert total["n"] == 1.0
+    assert total["sum"] == 0.0
 
 
 def test_score_request_none_output_scores_zero():
@@ -436,8 +446,6 @@ def test_no_scorer_request_shape_empty():
 
 
 def test_compile_quality_aggregates():
-    from roundup.benchmark.schemas.benchmark import GenerativeBenchmark
-
     acc = _make_accumulator([])
     acc.quality_totals = {
         "instruction_following": {"sum": 3.0, "min": 0.0, "max": 2.0, "n": 2.0}
@@ -453,8 +461,6 @@ def test_compile_quality_aggregates():
 
 
 def test_compile_quality_empty_when_no_scorers():
-    from roundup.benchmark.schemas.benchmark import GenerativeBenchmark
-
     acc = _make_accumulator([])
     acc.quality_totals = {}
     quality, instrument = GenerativeBenchmark._compile_quality(acc)
@@ -468,16 +474,12 @@ def test_compile_quality_empty_when_no_scorers():
 
 
 def test_benchmark_config_scorer_fields():
-    from roundup.benchmark.schemas.base import BenchmarkConfig
-
     config = BenchmarkConfig.model_construct()
     assert config.scorers == []
     assert config.scorer_config == {}
 
 
 def test_metrics_args_scorer_fields():
-    from roundup.schemas.benchmark.entrypoints import GenerativeMetricsArgs
-
     args = GenerativeMetricsArgs.model_construct(
         scorers=["instruction_following"],
         scorer_config={"instruction_following": {"sentinel": SENTINEL}},
@@ -487,8 +489,6 @@ def test_metrics_args_scorer_fields():
 
 
 def test_metrics_args_scorer_defaults_empty():
-    from roundup.schemas.benchmark.entrypoints import GenerativeMetricsArgs
-
     args = GenerativeMetricsArgs.model_construct()
     assert args.scorers == []
     assert args.scorer_config == {}
@@ -502,45 +502,31 @@ def test_metrics_args_scorer_defaults_empty():
 # The scoring feature is additive-only: nothing may be removed or retyped, and
 # the new scoring fields must serialize empty on a no-scorer run.
 #
-# Pre-scoring field lists below were read from
-# `git show 74ec8623^:<path>`:
-#   - src/roundup/benchmark/schemas/benchmark.py  (GenerativeBenchmark)
-#   - src/roundup/schemas/base/request_stats.py   (GenerativeRequestStats)
-#   - src/roundup/benchmark/schemas/base.py       (BenchmarkConfig)
+# Pre-scoring field lists below were read from `git show 74ec8623^` for the
+# GenerativeBenchmark, GenerativeRequestStats, and BenchmarkConfig schemas.
 # ---------------------------------------------------------------------------
 
-from roundup.benchmark.schemas import (
-    BenchmarkConfig,
-    GenerativeBenchmark,
-    GenerativeBenchmarkAccumulator,
-)
-from roundup.scheduler import ConcurrentStrategy, SchedulerState
-from roundup.schemas import (
-    GenerativeRequestStats,
-    RequestInfo,
-    RequestTimings,
-    UsageMetrics,
-)
-
 _BASE_TIME = 1000.0  # non-zero epoch base; a window starting at 0.0 reads unset
+
+
+# isinstance(True, int) is True, so bool must precede int here.
+_JSON_TYPE_BY_TYPE = (
+    (bool, "boolean"),
+    (int, "integer"),
+    (float, "number"),
+    (str, "string"),
+    (list, "array"),
+    (dict, "object"),
+)
 
 
 def _json_type(value) -> str:
     """Coarse JSON type of a model_dump(mode="json") value."""
     if value is None:
         return "null"
-    if isinstance(value, bool):
-        return "boolean"
-    if isinstance(value, int):
-        return "integer"
-    if isinstance(value, float):
-        return "number"
-    if isinstance(value, str):
-        return "string"
-    if isinstance(value, list):
-        return "array"
-    if isinstance(value, dict):
-        return "object"
+    for typ, name in _JSON_TYPE_BY_TYPE:
+        if isinstance(value, typ):
+            return name
     raise AssertionError(f"non-JSON value of type {type(value)}: {value!r}")
 
 
@@ -645,9 +631,7 @@ def _compile_no_scorer_benchmark() -> GenerativeBenchmark:
         request_id="req-shape-1",
         request_args="--prompt hello",
         output="hello world",
-        info=RequestInfo(
-            request_id="req-shape-1", status="completed", timings=timings
-        ),
+        info=RequestInfo(request_id="req-shape-1", status="completed", timings=timings),
         input_metrics=UsageMetrics(text_tokens=8),
         output_metrics=UsageMetrics(text_tokens=16),
     )
@@ -778,7 +762,7 @@ def test_no_scorer_config_additive_scoring_keys_only():
     EXACTLY: empty scoring config keys are omitted, not serialized empty."""
     report = _compile_no_scorer_benchmark().model_dump(mode="json")
     config = report["config"]
-    assert _PRE_SCORING_CONFIG_KEYS <= set(config), (
+    assert set(config) >= _PRE_SCORING_CONFIG_KEYS, (
         "pre-scoring config keys removed: "
         f"{sorted(_PRE_SCORING_CONFIG_KEYS - set(config))}"
     )

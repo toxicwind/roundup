@@ -28,16 +28,16 @@ from .registry import (
 )
 
 __all__ = [
+    "InstructionFollowingScorer",
     "Scorer",
     "ScorerResult",
-    "InstructionFollowingScorer",
     "ThinkingBlockStripper",
-    "strip_thinking_blocks",
-    "register_scorer",
-    "register_scorer_factory",
     "get_scorer",
     "list_scorers",
+    "register_scorer",
+    "register_scorer_factory",
     "resolve_scorers",
+    "strip_thinking_blocks",
 ]
 
 

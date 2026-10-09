@@ -1,8 +1,6 @@
 # Upstream Merge Workflow — roundup
 
-**Fork:** `toxicwind/roundup`
-**Upstream:** `toxicwind/roundup`
-**Renamed:** 2026-09-30 (roundup → roundup, ranch western theme)
+**Fork:** `toxicwind/roundup` **Upstream:** `toxicwind/roundup` **Renamed:** 2026-09-30 (roundup → roundup, ranch western theme)
 
 This document describes how to merge upstream roundup changes without losing our patches.
 
