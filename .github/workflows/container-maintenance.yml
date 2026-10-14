@@ -17,15 +17,33 @@ jobs:
   cleanup-container-tags:
     runs-on: ubuntu-latest
     steps:
+      # Replaces snok/container-retention-policy@v3.1.0 (pinned d3bdcf5):
+      # the action panics on the Jan-2026 GitHub packages API response shape
+      # ("Failed to fetch packages: missing field `id`", upstream issue #119,
+      # closed with no fix). Same policy via gh: delete versions that are
+      # untagged or tagged pr-* (incl. pr-N-amd64/pr-N-arm64) with updated_at
+      # older than 2 weeks. Keeps nightly/release tags untouched.
       - name: Delete PR and untagged images older than 2 weeks
-        uses: snok/container-retention-policy@d3bdcf5ce9b05f685154e4a16c39233b245e3d53 # v3.1.0
-        with:
-          account: ${{ github.repository_owner }}
-          token: ${{ github.token }}
-          image-names: ${{ github.event.repository.name }}
-          image-tags: "pr-*"  # This will match pr-N, pr-N-amd64, pr-N-arm64
-          cut-off: 2w
-          dry-run: false
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          IMAGE: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          cutoff_epoch="$(date -u -d '14 days ago' +%s)"
+          echo "Cutoff: $(date -u -d @${cutoff_epoch} --iso-8601=seconds)"
+          gh api "orgs/${OWNER}/packages/container/${IMAGE}/versions" --paginate \
+            --jq -r --argjson cutoff "${cutoff_epoch}" '
+              .[] | select(
+                ((.metadata.container.tags | length == 0)
+                 or (.metadata.container.tags | any(test("^pr-"))))
+                and ((.updated_at | fromdateiso8601) < $cutoff)
+              ) | "\(.id)\t\(.metadata.container.tags | join(","))\t\(.updated_at)"' \
+          | while IFS=$'\t' read -r vid vtags vupdated; do
+              echo "Deleting version ${vid} (tags: ${vtags:-<untagged>}, updated: ${vupdated})"
+              gh api -X DELETE "orgs/${OWNER}/packages/container/${IMAGE}/versions/${vid}" --silent
+            done
+          echo "Retention cleanup complete."
 
   push-container-tags:
     runs-on: ubuntu-latest
@@ -45,6 +63,7 @@ jobs:
           set -euo pipefail  # Fail pipe if any command fails
           skopeo list-tags docker://ghcr.io/${{ github.repository }} | jq --raw-output '.Tags[]' > tags
       - name: Select stable and latest release tags
+        id: select
         run: |
           set -euo pipefail
           # shellcheck source=scripts/container_image_tags.sh
@@ -54,10 +73,15 @@ jobs:
           LATEST_TAG="$(select_latest_tag tags)"
 
           if [[ -z "${STABLE_TAG}" || -z "${LATEST_TAG}" ]]; then
-            echo "ERROR: could not resolve stable/latest tags from registry tag list" >&2
+            # No semver release tags published yet (registry holds only
+            # nightly/pr tags): nothing to retag. Skip cleanly instead of
+            # failing the weekly maintenance run until the first release
+            # is published.
+            echo "NOTICE: no semver release tags in registry; skipping stable/latest retag" >&2
             echo "---- tags (head) ----" >&2
             head -n 50 tags >&2 || true
-            exit 1
+            echo "has_release_tags=false" >> "${GITHUB_OUTPUT}"
+            exit 0
           fi
 
           # Never retag from a single-arch source (defends against broken publishes).
@@ -66,8 +90,10 @@ jobs:
 
           echo "stable_tag=${STABLE_TAG}" >> "${GITHUB_ENV}"
           echo "latest_tag=${LATEST_TAG}" >> "${GITHUB_ENV}"
+          echo "has_release_tags=true" >> "${GITHUB_OUTPUT}"
           echo "Selected stable=${STABLE_TAG} latest=${LATEST_TAG}"
       - name: Update latest and stable tags
+        if: steps.select.outputs.has_release_tags == 'true'
         run: |
           set -euo pipefail
           # --all preserves the full multi-arch index. Without it, skopeo copies
@@ -79,6 +105,7 @@ jobs:
             "docker://ghcr.io/${{ github.repository }}:${{ env.latest_tag }}" \
             "docker://ghcr.io/${{ github.repository }}:latest"
       - name: Verify latest and stable are multi-arch
+        if: steps.select.outputs.has_release_tags == 'true'
         run: |
           set -euo pipefail
           # shellcheck source=scripts/container_image_tags.sh
