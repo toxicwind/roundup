@@ -32,9 +32,9 @@ jobs:
           set -euo pipefail
           cutoff_epoch="$(date -u -d '14 days ago' +%s)"
           echo "Cutoff: $(date -u -d @${cutoff_epoch} --iso-8601=seconds)"
-          gh api "orgs/${OWNER}/packages/container/${IMAGE}/versions" --paginate \
-            --jq -r --argjson cutoff "${cutoff_epoch}" '
-              .[] | select(
+          gh api "orgs/${OWNER}/packages/container/${IMAGE}/versions" --paginate --slurp \
+          | jq -r --argjson cutoff "${cutoff_epoch}" '
+              .[][] | select(
                 ((.metadata.container.tags | length == 0)
                  or (.metadata.container.tags | any(test("^pr-"))))
                 and ((.updated_at | fromdateiso8601) < $cutoff)
