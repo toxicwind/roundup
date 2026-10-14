@@ -45,7 +45,7 @@ jobs:
           # Install mkdocs
           uv pip install "mkdocs<2.0.0" mkdocs-material mike \
             mkdocs-gen-files mkdocs-nav-weight mkdocs-section-index \
-            mkdocs-minify-plugin "mkdocstrings[python]>=1.0.7" mkdocs-api-autonav
+            mkdocs-minify-plugin "mkdocstrings[python]>=0.30,<1.0" "pymdown-extensions<12" mkdocs-api-autonav
       - name: Deploy docs
         run: |
           uv run --no-sync python docs/scripts/check_translations.py
