@@ -32,7 +32,7 @@ jobs:
           set -euo pipefail
           cutoff_epoch="$(date -u -d '14 days ago' +%s)"
           echo "Cutoff: $(date -u -d @${cutoff_epoch} --iso-8601=seconds)"
-          gh api "orgs/${OWNER}/packages/container/${IMAGE}/versions" --paginate --slurp \
+          gh api "users/${OWNER}/packages/container/${IMAGE}/versions" --paginate --slurp \
           | jq -r --argjson cutoff "${cutoff_epoch}" '
               .[][] | select(
                 ((.metadata.container.tags | length == 0)
@@ -41,7 +41,7 @@ jobs:
               ) | "\(.id)\t\(.metadata.container.tags | join(","))\t\(.updated_at)"' \
           | while IFS=$'\t' read -r vid vtags vupdated; do
               echo "Deleting version ${vid} (tags: ${vtags:-<untagged>}, updated: ${vupdated})"
-              gh api -X DELETE "orgs/${OWNER}/packages/container/${IMAGE}/versions/${vid}" --silent
+              gh api -X DELETE "users/${OWNER}/packages/container/${IMAGE}/versions/${vid}" --silent
             done
           echo "Retention cleanup complete."
 
