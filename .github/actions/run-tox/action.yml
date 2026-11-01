@@ -31,7 +31,11 @@ runs:
       shell: bash
     - name: Install dependencies
       run: |
-        uv pip install --system tox tox-uv
+        # Pinned: unpinned tox/tox-uv broke Nightly 2026-11-01 (run 41256068500):
+        # tox 4.67.5 + tox-uv 1.37.3 rejects --runner uv-venv-lock-runner
+        # ("invalid choice", empty choices) on every 3.13 test job, while
+        # 4.67.4/1.37.2 passed on the same head SHA the previous night.
+        uv pip install --system "tox==4.67.4" "tox-uv==1.37.2"
       shell: bash
     - name: Run tox
       run: |
