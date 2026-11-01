@@ -35,7 +35,21 @@ runs:
         # tox 4.67.5 + tox-uv 1.37.3 rejects --runner uv-venv-lock-runner
         # ("invalid choice", empty choices) on every 3.13 test job, while
         # 4.67.4/1.37.2 passed on the same head SHA the previous night.
-        uv pip install --system "tox==4.67.4" "tox-uv==1.37.2"
+        # 3.10 split (verification Nightly 41257883223, 2026-11-01): tox>=4.65.1
+        # and tox-uv>=1.37 both require Python>=3.11, so the 4.67.4/1.37.2
+        # pin is uninstallable on 3.10 ("tox==4.67.4 depends on
+        # Python>=3.11"). 3.10 therefore uses the last 3.10-compatible
+        # pair: tox 4.65.0 (>=3.10; 4.65.1+ dropped 3.10) + tox-uv 1.36.1
+        # (>=3.10; 1.37+ dropped 3.10; its tox-uv-bare 1.36.1 requires
+        # tox>=4.52.1, satisfied by 4.65.0). Verified: pip resolver
+        # simulation for Python 3.10 succeeds, and the pair registers
+        # uv-venv-lock-runner and completes a lock-runner fixture run.
+        # 3.11+ keep the pair proven green on the 2026-11-01 pin run.
+        if [[ "${{ inputs.python-version }}" == 3.10* ]]; then
+          uv pip install --system "tox==4.65.0" "tox-uv==1.36.1"
+        else
+          uv pip install --system "tox==4.67.4" "tox-uv==1.37.2"
+        fi
       shell: bash
     - name: Run tox
       run: |
